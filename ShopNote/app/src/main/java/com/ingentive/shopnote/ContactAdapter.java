@@ -1,4 +1,4 @@
-package com.ingentive.pro.myapp;
+package com.ingentive.shopnote;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -56,8 +56,8 @@ public class ContactAdapter extends BaseAdapter {
         tPhoneNumber = (TextView)vi.findViewById(R.id.tvPhone);
 
 
-        tvId.setText(data.get(postion).getID()+"");
-        tPhoneNumber.setText(data.get(postion).getPhoneNumber());
+        //tvId.setText(data.get(postion).getID()+"");
+        //tPhoneNumber.setText(data.get(postion).getPhoneNumber());
 
         return vi;
     }

@@ -1,4 +1,4 @@
-package com.ingentive.pro.myapp;
+package com.ingentive.shopnote;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;

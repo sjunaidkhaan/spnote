@@ -1,0 +1,742 @@
+1,Baby Clothes
+1,Tshirt
+1,T-Shirt
+1,Jacket
+1,Pants
+1,Jeans
+1,Polo Shirt
+1,Dress Shirt
+1,Business Shirt
+1,Shorts
+1,Swimmers
+1,Board Shorts
+1,Cargo Pants
+1,Slacks
+1,Khaki Pants
+1,Hat
+1,Sunglasses
+1,Socks
+1,Underwear
+1,Shoes
+1,Singlet
+1,Tie
+1,Belt
+1,Raincoat
+1,Shirt
+1,Jersey
+1,Stockings
+1,Pyjamas
+1,Lingerie
+1,Dress
+1,Bra
+1,Panties
+1,Blouse
+1,Top
+2,Baby Food
+2,Diapers
+2,Formula
+2,Lotion
+2,Face Wash
+2,Wipes
+2,Baby Powder
+2,Cat Food
+2,Cat Litter
+2,Dog Food
+2,Flea Treatment
+2,Pet Shampoo
+2,Dog Shampoo
+2,Cat Shampoo
+2,Pet Treats
+2,Bird Feed
+2,Fish Food
+2,Deodorant
+2,Soap
+2,Cosmetics
+2,Cotton Swabs
+2,Cotton Buds
+2,Cotton Balls
+2,Facial Cleanser
+2,Tissue
+2,Tampons
+2,Panty Liners
+2,Floss
+2,Hair Gel
+2,Styling Gel
+2,Lip Balm
+2,Hair Wax
+2,Hair Spray
+2,Mouthwash
+2,Razors
+2,Shampoo
+2,Sunblock
+2,Toilet Paper
+2,Toothpaste
+2,Shaving Cream
+2,Conditioner
+2,Foundation
+2,Eye Liner
+2,Blush
+2,Perfume
+2,Lipstick
+2,Moisturizer
+2,Mascara
+2,Nail Polish
+2,Pads
+2,Nappies
+2,Diapers
+2,Baby Wipes
+2,Talcum Powder
+2,Hand Wash
+2,Aluminum Foil
+2,Napkins
+2,Non-stick Spray
+2,Paper Towels
+2,Plastic Wrap
+2,Sandwich Bags
+2,Wax Paper
+2,Baking Paper
+2,Freezer Bags
+2,Plastic Bags
+2,Air Freshener
+2,Bathroom Cleaner
+2,Detergent
+2,Dishwashing Liquid
+2,Garbage Bags
+2,Glass Cleaner
+2,Mop
+2,Sponges
+2,Bleach
+2,Dishwasher Powder
+2,Dishwasher Tablets
+2,Surface Spray
+2,Hand Sanitizer
+2,Fabric Softener
+2,Cigarettes
+2,Batteries
+2,Charcoal
+2,Birthday Card
+2,Insect Repellent
+2,Light Bulbs
+2,Newspaper
+2,Gift Card
+2,Farewell Card
+2,Notepad
+2,Glue
+2,Paper
+2,Pens
+2,Stamps
+2,Envelopes
+2,Tape
+2,Pencils
+2,Hangers
+2,Skewers
+2,Kebab Sticks
+2,Umbrella
+2,Broom
+2,Forks
+2,Spoons
+2,Silverware
+2,Knives
+2,Chopsticks
+2,Pot
+2,Pan
+2,Wok
+2,Bowls
+2,Plates
+2,Mechanical Pencil
+2,Hair Dye
+2,Hook
+2,Utensils
+2,Presents
+2,WD40
+2,Pampers
+2,Dove
+2,Rexona
+2,Omo
+2,Axe
+2,Sunsilk
+2,Jif
+2,Brut
+2,Qtips
+2,Vaseline
+2,Pantene
+2,Gillette
+2,Dawn
+2,Colgate
+2,Crest
+2,Tampax
+2,Always
+2,Flowers
+2,Scrubber
+2,Drying Rack
+2,Magazine
+3,Cold Medicine
+3,Cough Syrup
+3,Cough Lozenges
+3,Bandages
+3,Vitamins
+3,Aspirin
+3,Antihistamines
+3,Plastic Bandage
+3,Antacid
+3,Bandaids
+3,Pain Relief
+3,Nasal Spray
+3,Nasal Strips
+3,Chest Rub
+3,Petroleum Jelly
+3,Medicine
+3,Pain Killers
+3,Paracetamol
+3,Multivitamins
+3,Liquid Bandage
+3,Nicotine Gum
+3,Nicotine Patch
+3,Ibuprofen
+3,Zyrtec
+3,Tylenol
+3,Benadryl
+3,Halls
+3,Strepsils
+3,Advil
+3,Nexium
+3,Metamucil
+3,Codral
+3,Sudafed
+3,Vicks Vaporub
+3,Metamucil
+3,Pepto Bismol
+3,Vaporub
+4,Asparagus
+4,Broccoli
+4,Carrots
+4,Cauliflower
+4,Celery
+4,Corn
+4,Cucumbers
+4,Lettuce
+4,Mushrooms
+4,Onions
+4,Peppers
+4,Potatoes
+4,Spinach
+4,Squash
+4,Zucchini
+4,Tomatoes
+4,Mint
+4,Coriander
+4,Arugula
+4,Pumpkin
+4,Olives
+4,Rosemary
+4,Oregano
+4,Tomatillos
+4,Cilantro
+4,Cinnamon
+4,Garlic
+4,Ginger
+4,Paprika
+4,Parsley
+4,Spring Onion
+4,Shallots
+4,Scallions
+4,Vegetables
+4,Basil
+4,Sweet Potato
+4,Yam
+4,Radish
+4,Sprouts
+4,Brussel Sprouts
+4,Green Beans
+4,String Beans
+4,Capsicum
+4,Bok Choy
+4,Asian Greens
+4,Asian Vegetables
+4,Greens
+4,Chestnuts
+4,Water Chestnuts
+4,Chillis
+4,Salad
+4,Leeks
+4,Sage
+4,Thyme
+4,Tamarind
+4,Eggplant
+4,Cabbage
+4,Vanilla Bean
+4,Butternut Squash
+4,Apples
+4,Avocados
+4,Bananas
+4,Strawberries
+4,Cherries
+4,Grapefruit
+4,Red Grapes
+4,Kiwifruits
+4,Lemons
+4,Melon
+4,Nectarines
+4,Oranges
+4,Peaches
+4,Pears
+4,Plums
+4,Lime
+4,Watermelon
+4,Wintermelon
+4,Rockmelon
+4,Cantaloupe
+4,Mandarins
+4,Blackberries
+4,Raspberries
+4,Blueberries
+4,Green Grapes
+4,Fruit
+4,Mango
+4,Figs
+4,Passionfruit
+4,Pineapple
+4,Pomelo
+4,Pomegranate
+4,Coconut
+4,Jackfruit
+4,Lychee
+4,Grapes
+5,Bagels
+5,English Muffins
+5,Muffins
+5,Cake
+5,Bread
+5,Scones
+5,Baguettes
+5,Croissants
+5,Donuts
+5,Apple Pie
+5,Fruit Mince Pie
+5,Pastries
+5,Bread Rolls
+5,Buns
+5,Hotdog Rolls
+5,Hamburger Buns
+5,Burger Buns
+5,Pie
+5,Cupcakes
+5,Cronuts
+5,Ciabatta
+5,Sourdough
+5,Brioche
+6,Iced Tea
+6,Beer
+6,Soda
+6,Champagne
+6,Gin
+6,Orange Juice
+6,Cola
+6,Red Wine
+6,Rum
+6,Saké
+6,Soda
+6,Sports Drink
+6,Whiskey
+6,Vodka
+6,Apple Juice
+6,Scotch
+6,Pineapple Juice
+6,Tropical Juice
+6,Grape Juice
+6,Grape Soda
+6,Orange Soda
+6,Energy Drink
+6,Spring Water
+6,Sparkling Water
+6,White Wine
+6,Iced Coffee
+6,Watermelon Juice
+6,Soft Drink
+6,Ginger Ale
+6,Ginger Beer
+6,Apple Cider
+6,Pear Cider
+6,Apricot Nector
+6,Mango Juice
+6,Tomato Juice
+6,Drinks
+6,OJ
+6,Water
+6,Bottled Water
+6,Cordial
+6,Chocolate Milk
+6,Root Beer
+6,Coke
+6,Pepsi
+6,Fresca
+6,Dr Pepper
+6,Red Bull
+6,Gatorade
+6,Powerade
+6,Fanta
+6,Bacardi
+6,Hennessey
+6,Jack Daniels
+6,Jim Beam
+6,Absolut
+6,Captain Morgan
+6,Fireball
+6,Titos
+6,Jose Cuervo
+6,Patron
+6,Grey Goose
+6,Finlandia
+6,Smirnoff
+6,Baileys
+6,Johnny Walker
+6,V8
+6,Minute Maid
+6,Tab
+6,Capri Sun
+6,A&W
+6,Sprite
+6,7up
+6,Lift
+6,Monster
+6,Mr Pibb
+6,Solo
+6,Coke Zero
+6,Pepsi Max
+6,Diet Coke
+6,Diet Pepsi
+6,Wine
+7,Frozen Fish
+7,French Fries
+7,Ice Cream
+7,Sorbet
+7,Pizza
+7,Popsicles
+7,Ice Blocks
+7,Frozen Peas
+7,Frozen Corn
+7,Pastry
+7,Frozen Meal
+7,Frozen Dinner
+7,Puff Pastry
+7,Frozen Lasagna
+7,Frozen Vegetables
+7,Chicken Nuggets
+7,Gelato
+7,Peas
+7,Tater Tots
+7,Magnum
+7,Icey Pole
+7,Ben & Jerrys
+7,Garlic Bread
+7,Fish Sticks
+7,Pigs in a Blanket
+7,Meatballs
+7,Lean Cuisine
+7,Eggo
+7,Frozen Waffles
+7,Frozen Pancakes
+7,Potato Wedges
+7,Wedges
+8,Hummus
+8,Baba Ghanoush
+8,Tofu
+8,Dip
+8,Pate
+8,Eggs
+8,Butter
+8,Margarine
+8,Milk
+8,Half and Half
+8,Sour Cream
+8,Whipped Cream
+8,Cream
+8,Yogurt
+8,Blue Cheese
+8,Cheddar Cheese
+8,Cottage Cheese
+8,Cream Cheese
+8,Feta Cheese
+8,Goat Cheese
+8,Mozzarella Cheese
+8,Parmesan Cheese
+8,Provolone Cheese
+8,Ricotta Cheese
+8,Sliced Cheese
+8,Cheese
+8,Swiss Cheese
+8,Pepperjack Cheese
+8,Rennet
+8,Parmesan Cheese
+8,Cheese Slices
+8,Sliced Cheese
+8,Pizza Base
+8,French Onion Dip
+8,Guacamole
+8,Roquefort
+8,Greek Yogurt
+8,Philadelphia Cream Cheese
+8,Kraft Singles
+9,Bacon
+9,Beef
+9,Chicken
+9,Chicken Drumsticks
+9,Chicken Wings
+9,Chicken Breasts
+9,Chicken Thighs
+9,Ground Beef
+9,Ham
+9,Hot Dogs
+9,Luncheon Meat
+9,Turkey
+9,Sausages
+9,Wurst
+9,Liverwurst
+9,Bologna
+9,Mortadella
+9,Ground Turkey
+9,Ground Chicken
+9,Pork
+9,Pork Chops
+9,Kangaroo
+9,Lamb
+9,Venison
+9,Lamb Chops
+9,Hamburger Patties
+9,Meat
+9,Steak
+9,Ground Pork
+9,Ground Sausage
+9,Mince
+9,Chorizo
+9,Salami
+9,Pepperoni
+9,Turkey Bacon
+9,Canadian Bacon
+9,Sausage Patties
+9,Baby Back Ribs
+9,Pork Ribs
+9,Beef Ribs
+9,Turkey Breast
+9,Emu
+9,Catfish
+9,Crab
+9,Lobster
+9,Mussels
+9,Oysters
+9,Salmon
+9,Shrimp
+9,Tilapia
+9,Tuna
+9,Halibut
+9,Clams
+9,Octopus
+9,Prawns
+9,Scallops
+9,Goat
+9,Trout
+9,Fish
+9,Sardines
+9,Mackeral
+9,Cod
+9,Squid
+9,Crayfish
+9,Calamari
+10,Bouillon Cubes
+10,Cereal
+10,Granola
+10,Coffee
+10,Peanut Oil
+10,Tea
+10,Mac and Cheese
+10,Macaroni and Cheese
+10,Olive Oil
+10,Waffle Mix
+10,Pancake Mix
+10,Pasta
+10,Spaghetti
+10,Peanut Butter
+10,Lasagna Sheets
+10,Pickles
+10,Rice
+10,Vegetable oil
+10,Vinegar
+10,Salt
+10,Sugar
+10,Pepper
+10,Chili Flakes
+10,Oil Spray
+10,BBQ Sauce
+10,Gravy
+10,Honey
+10,Hot Sauce
+10,Ketchup
+10,Mayonnaise
+10,Pasta Sauce
+10,Relish
+10,Salad Dressing
+10,Salsa
+10,Soy Sauce
+10,Steak Sauce
+10,Maple Syrup
+10,Worcestershire Sauce
+10,Ranch Dressing
+10,Blue Cheese Dressing
+10,Mustard
+10,Strawberry Jelly
+10,Tomato Sauce
+10,Golden Syrup
+10,Grape Jelly
+10,Raspberry Jelly
+10,Soy Sauce
+10,Fish Sauce
+10,Hoisin Sauce
+10,Sesame Oil
+10,Curry Powder
+10,Curry Paste
+10,Sweet Chilli Sauce
+10,Broth
+10,Chicken Broth
+10,Beef Broth
+10,Fish Broth
+10,Caeser Dressing
+10,Italian Dressing
+10,Jelly
+10,AppleSauce
+10,Baked Beans
+10,Stock
+10,Chicken Stock
+10,Beef Stock
+10,Fish Stock
+10,Canned Tuna
+10,Canned Soup
+10,Canned Tomatoes
+10,Canned Fruits
+10,Canned Pasta
+10,Tomato Paste
+10,Black Beans
+10,Pinto Beans
+10,Baking Powder
+10,Bread Crumbs
+10,Cake Mix
+10,Icing
+10,Chocolate
+10,Flour
+10,Shortening
+10,Sugar
+10,Sweetner
+10,Yeast
+10,Cocoa
+10,Brownie Mix
+10,Biscuits
+10,Cookies
+10,Candy
+10,Crackers
+10,Dried Fruit
+10,Granola Bars
+10,Nuts
+10,Cashew Nuts
+10,Oatmeal
+10,Oats
+10,Popcorn
+10,Potato Chips
+10,Pretzels
+10,Gum
+10,Corn Chips
+10,Muesli Bars
+10,Cocoa
+10,Sultanas
+10,Raisins
+10,Cumin
+10,Miso
+10,Wasabi
+10,Peanuts
+10,Walnuts
+10,Hazelnuts
+10,Almonds
+10,Nut Mix
+10,Trail Mix
+10,Condensed Milk
+10,Evaporated Milk
+10,Pickles
+10,Coleslaw
+10,Potato Salad
+10,Pasta Salad
+10,Noodles
+10,Taco Shells
+10,Taco Seasoning
+10,Tacos
+10,Tortillas
+10,Poultry Seasoning
+10,Seasoning
+10,Wraps
+10,Dessicated Coconut
+10,Chickpeas
+10,Ramen
+10,Quinoa
+10,Numeg
+10,Cardamom
+10,Spices
+10,Snacks
+10,Chips
+10,Crisps
+10,Bars
+10,Polenta
+10,Cornmeal
+10,Vanilla Extract
+10,Protein Bars
+10,Protein Powder
+10,Pam
+10,Sriracha
+10,Jello
+10,Hamburger Helper
+10,Oreos
+10,Clif Bars
+10,Lipton
+10,Vegemite
+10,Pringles
+10,Lays
+10,Doritos
+10,Kettle Chips
+10,Tang
+10,Milo
+10,Nesquik
+10,Cheerios
+10,Chex
+10,Cinnamon Toast Crunch
+10,Cocoa Puffs
+10,Count Chocula
+10,Franken Berry
+10,Golden Grahams
+10,Lucky Charms
+10,Oatmeal Crsip
+10,Wheaties
+10,Trix
+10,All Bran
+10,Poptarts
+10,Cinnabon
+10,Corn Flakes
+10,Crunch Nut
+10,Froot Loops
+10,Frosted Flakes
+10,Mini Wheats
+10,Krave
+10,Rice Krispies
+10,Nature Valley Bars
+10,Velveeta
+10,Quaker Oats
+10,Spam
+10,M&Ms
+10,Mars Bar
+10,Hershey's Chocolates
+10,Snickers
+10,Almond Joy
+10,Babe Ruth
+10,Bounty
+10,Kit Kat
+10,Milky Way
+10,Lindt
+10,Mounds
+10,Reeses
+10,Twix
+10,Toblerone

@@ -1,4 +1,4 @@
-package com.ingentive.pro.myapp;
+package com.ingentive.shopnote;
 
 import android.content.Context;
 import android.os.Bundle;

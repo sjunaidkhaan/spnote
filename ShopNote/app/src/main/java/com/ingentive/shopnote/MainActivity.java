@@ -1,7 +1,4 @@
-package com.ingentive.pro.myapp;
-
-import android.app.Fragment;
-import android.support.design.widget.TabLayout;
+package com.ingentive.shopnote;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
@@ -13,26 +10,56 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
+import com.ingentive.shopnote.model.CurrentListModel;
+import com.ingentive.shopnote.model.DictionaryModel;
+import com.ingentive.shopnote.model.FavoritListModel;
+import com.ingentive.shopnote.model.HistoryModel;
+import com.ingentive.shopnote.model.InventoryModel;
+import com.ingentive.shopnote.model.SectionModel;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+
 public class MainActivity extends AppCompatActivity implements FragmentDrawer.FragmentDrawerListener{
 
     private Toolbar mToolbar;
     private FragmentDrawer drawerFragment;
-    DatabaseHandler db;
+    public DatabaseHandler db;
+    public static String LOG_MSG = "MAINACTIVITY";
+    String fileName = "";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         mToolbar = (Toolbar) findViewById(R.id.app_bar);
+        db = new DatabaseHandler(this);
+        //db.addHistory(new HistoryModel("24-12-2015", "Bread","1"));
+        //db.addFavorit(new FavoritListModel("Bread"));
+       // db.addCurrentList(new CurrentListModel(1, "Bread",0, "a", 1));
+       try {
+            /*fileName = "dictionary";
+            PlayWithRawFiles(fileName);*/
+           /*fileName = "sectionorder";
+           PlayWithRawFiles(fileName);*/
+           fileName = "currentlist";
+           PlayWithRawFiles(fileName);
+           /*fileName = "inventrylist";
+           PlayWithRawFiles(fileName);*/
+          /* fileName = "setting";
+           PlayWithRawFiles(fileName);*/
+            //Toast.makeText(getApplicationContext(),""+listItem, Toast.LENGTH_LONG).show();
 
-        /*db = new DatabaseHandler(this);
-        db.addContact(new Contact("Azhar Abbas", "0346-6969193"));
-        db.addContact(new Contact("Mazhar Abbas", "0346-5391802"));
-        db.addContact(new Contact("Muhammad Ali", "0346-7158475"));
-        db.addContact(new Contact("Ali Abbas", "0346-7856544"));
-        db.addContact(new Contact("Azaan Ali", "0346-7454515"));*/
+        } catch (IOException e) {
+            Toast.makeText(getApplicationContext(),
+                    "Problems: " + e.getMessage(), Toast.LENGTH_LONG).show();
+        }
 
+        db = new DatabaseHandler(this);
         setSupportActionBar(mToolbar);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
+
 
         drawerFragment = (FragmentDrawer)
                 getSupportFragmentManager().findFragmentById(R.id.fragment_navigation_drawer);
@@ -42,6 +69,29 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
         displayView(2);
         TabFragment fragment = new TabFragment();
 
+    }
+
+    public void PlayWithRawFiles(String filname) throws IOException {
+        String str="";
+        //StringBuffer buf = new StringBuffer();
+        InputStream file_Name = this.getAssets().open(filname);
+        BufferedReader reader = new BufferedReader(new InputStreamReader(file_Name));
+        if (file_Name!=null) {
+            while ((str = reader.readLine()) != null) {
+
+                String[] separated = str.split(",");
+                db = new DatabaseHandler(this);
+               // db.addDictionary(new DictionaryModel(separated[1], Integer.parseInt(separated[0])));
+               /* db.addSection(new SectionModel(Integer.parseInt(separated[0]),separated[1],
+                            "ic_tab_call",Integer.parseInt(separated[3])));*/
+                /*db.addCurrentList(new CurrentListModel(Integer.parseInt(separated[0]), separated[1],
+                        Integer.parseInt(separated[2]), separated[3], Integer.parseInt(separated[4])));*/
+                //db.addInventry(new InventoryModel(Integer.parseInt(separated[0]),separated[1]));
+               // db.addHistory(new HistoryModel(separated[0], separated[1],,,,,,,,,,,,,,,));
+
+            }
+        }
+        file_Name.close();
     }
 
     @Override

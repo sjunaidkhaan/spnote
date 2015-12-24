@@ -1,4 +1,4 @@
-package com.ingentive.pro.myapp;
+package com.ingentive.shopnote;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -52,9 +52,9 @@ public class NameAdapter extends BaseAdapter {
 
         TextView tvName;
 
-        tvName = (TextView)vi.findViewById(R.id.tvName);
+        //tvName = (TextView)vi.findViewById(R.id.tvName);
 
-        tvName.setText(data.get(postion).getName());
+        //tvName.setText(data.get(postion).getName());
         return vi;
     }
 }

@@ -1,4 +1,4 @@
-package com.ingentive.pro.myapp;
+package com.ingentive.shopnote;
 
 import android.app.Activity;
 import android.os.Bundle;
@@ -41,9 +41,9 @@ public class ContactFragment extends Fragment {
 
         View rootView =  inflater.inflate(R.layout.fragment_contact, null);
         mListView = (ListView) rootView.findViewById(R.id.listView_contact);
-        db = new DatabaseHandler(getActivity());
-        List<Contact> contacts = db.getAllContacts();
-        mListView.setAdapter(new ContactAdapter(getActivity(), contacts, R.layout.custom_row_contact));
+        //db = new DatabaseHandler(getActivity());
+       // List<Contact> contacts = db.getAllContacts();
+        //mListView.setAdapter(new ContactAdapter(getActivity(), contacts, R.layout.custom_row_contact));
 
         return rootView;
     }
