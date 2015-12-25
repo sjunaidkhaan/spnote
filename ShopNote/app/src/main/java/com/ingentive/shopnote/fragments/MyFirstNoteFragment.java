@@ -1,4 +1,4 @@
-package com.ingentive.shopnote;
+package com.ingentive.shopnote.fragments;
 
 
 import android.app.Fragment;
@@ -12,11 +12,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.ingentive.shopnote.R;
+
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class TabFragment extends android.support.v4.app.Fragment {
+public class MyFirstNoteFragment extends android.support.v4.app.Fragment {
 
     public static TabLayout tabLayout;
     public static ViewPager viewPager;
@@ -76,10 +78,10 @@ public class TabFragment extends android.support.v4.app.Fragment {
         public android.support.v4.app.Fragment getItem(int position)
         {
             switch (position){
-                case 0 : return new OneFragment();
-                case 1 : return new TwoFragment();
-                case 2 : return new ThreeFragment();
-                case 3 : return new FourFragment();
+                case 0 : return new DictionaryFragment();
+                case 1 : return new ShopFragment();
+                case 2 : return new FavoritsFragment();
+                case 3 : return new HistoryFragment();
             }
             return null;
         }
@@ -100,13 +102,13 @@ public class TabFragment extends android.support.v4.app.Fragment {
 
             switch (position){
                 case 0 :
-                    return "ONE";
+                    return "List";
                 case 1 :
-                    return "TWO";
+                    return "Shop";
                 case 2 :
-                    return "THREE";
+                    return "Favorits";
                 case 3 :
-                    return "FOUR";
+                    return "History";
 
             }
             return null;

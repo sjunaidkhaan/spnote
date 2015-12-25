@@ -9,6 +9,9 @@ public class ScreenTextModel {
     String mName;
     String mTxt;
 
+    public ScreenTextModel() {
+
+    }
     public ScreenTextModel(int scrTxtId,String mName,String mTxt) {
         this.scrTxtId = scrTxtId;
         this.mName = mName;
@@ -20,17 +23,6 @@ public class ScreenTextModel {
         this.mTxt = mTxt;
     }
 
-    public void setmName(String mName) {
-        this.mName = mName;
-    }
-
-    public void setmTxt(String mTxt) {
-        this.mTxt = mTxt;
-    }
-
-    public void setScrTxtId(int scrTxtId) {
-        this.scrTxtId = scrTxtId;
-    }
     public int getScrTxtId() {
         return scrTxtId;
     }
@@ -41,9 +33,5 @@ public class ScreenTextModel {
 
     public String getmTxt() {
         return mTxt;
-    }
-
-    public ScreenTextModel() {
-
     }
 }

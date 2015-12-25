@@ -6,47 +6,31 @@ package com.ingentive.shopnote.model;
 public class HistoryModel {
 
     int historyId;
-    String datePaurchased;
+    String datePurchased;
     String itemName;
     String quantity;
 
     public HistoryModel() {
 
     }
-    public HistoryModel(int historyId,String datePaurchased,String itemName,String quantity) {
+    public HistoryModel(int historyId,String datePurchased,String itemName,String quantity) {
         this.historyId = historyId;
         this.itemName = itemName;
         this.quantity = quantity;
-        this.datePaurchased = datePaurchased;
+        this.datePurchased = datePurchased;
     }
-    public HistoryModel(String datePaurchased,String itemName,String quantity) {
+    public HistoryModel(String datePurchased,String itemName,String quantity) {
         this.itemName = itemName;
         this.quantity = quantity;
-        this.datePaurchased = datePaurchased;
-    }
-
-    public void setItemName(String itemName) {
-        this.itemName = itemName;
-    }
-
-    public void setQuantity(String quantity) {
-        this.quantity = quantity;
-    }
-
-    public void setDatePaurchased(String datePaurchased) {
-        this.datePaurchased = datePaurchased;
-    }
-
-    public void setHistoryId(int historyId) {
-        this.historyId = historyId;
+        this.datePurchased = datePurchased;
     }
 
     public String getItemName() {
         return itemName;
     }
 
-    public String getDatePaurchased() {
-        return datePaurchased;
+    public String getDatePurchased() {
+        return datePurchased;
     }
 
     public int getHistoryId() {

@@ -6,150 +6,89 @@ package com.ingentive.shopnote.model;
 public class SettingModel {
     int settingId;
     String regEmail;
-    boolean listNo;
-    boolean shopBySection;
-    boolean listIntro;
-    boolean searchIntro;
+    int shopBySection;
+    int favBySection;
+    int listIntro;
+    int shopIntro;
+    int searchIntro;
+    int sectionIntro;
+    int favIntro;
+    int historyIntro;
+    int listEditIntro;
+    int addIntro;
+    int userRated;
 
-    public boolean isSectionIntro() {
-        return sectionIntro;
-    }
-
-    public void setSectionIntro(boolean sectionIntro) {
-        this.sectionIntro = sectionIntro;
-    }
-
-    boolean sectionIntro;
-    boolean favIntro;
-    boolean historyIntro;
-    boolean listEditIntro;
-    boolean addIntro;
-    boolean userRated;
-
-    public SettingModel() {
-
-    }
-    public SettingModel(int settingId,String regEmail ,boolean listNo,boolean shopBySection,
-                        boolean listIntro,boolean searchIntro,boolean sectionIntro,boolean favIntro,boolean historyIntro,
-                        boolean listEditIntro, boolean addIntro,boolean userRated) {
+    public SettingModel(int settingId,String regEmail ,int favBySection,int shopBySection,int listIntro,
+                        int shopIntro,int favIntro,int historyIntro,int listEditIntro,
+                        int sectionIntro,int searchIntro,int addIntro, int userRated) {
         this.settingId = settingId;
-        this.sectionIntro = sectionIntro;
         this.regEmail = regEmail;
-        this.listNo = listNo;
+        this.favBySection = favBySection;
         this.shopBySection = shopBySection;
         this.listIntro = listIntro;
-        this.searchIntro = searchIntro;
+        this.shopIntro = shopIntro;
         this.favIntro = favIntro;
         this.historyIntro = historyIntro;
         this.listEditIntro = listEditIntro;
+        this.sectionIntro = sectionIntro;
+        this.searchIntro = searchIntro;
         this.addIntro = addIntro;
         this.userRated = userRated;
 
     }
-    public SettingModel(String regEmail ,boolean listNo,boolean shopBySection,
-                        boolean listIntro,boolean searchIntro,boolean sectionIntro,boolean favIntro,boolean historyIntro,
-                        boolean listEditIntro, boolean addIntro,boolean userRated) {
-        this.sectionIntro = sectionIntro;
+    public SettingModel(String regEmail ,int favBySection,int shopBySection,int listIntro,
+                        int shopIntro,int favIntro,int historyIntro,int listEditIntro,
+                        int sectionIntro,int searchIntro,int addIntro, int userRated) {
+
         this.regEmail = regEmail;
-        this.listNo = listNo;
+        this.favBySection = favBySection;
         this.shopBySection = shopBySection;
         this.listIntro = listIntro;
-        this.searchIntro = searchIntro;
+        this.shopIntro = shopIntro;
         this.favIntro = favIntro;
         this.historyIntro = historyIntro;
         this.listEditIntro = listEditIntro;
+        this.sectionIntro = sectionIntro;
+        this.searchIntro = searchIntro;
         this.addIntro = addIntro;
         this.userRated = userRated;
 
     }
-
-    public boolean isListNo() {
-        return listNo;
+    public int getListIntro() {
+        return listIntro;
     }
-
-    public void setListNo(boolean listNo) {
-        this.listNo = listNo;
+    public int getFavBySection() {
+        return favBySection;
     }
-
-    public int getSettingId() {
-        return settingId;
+    public int getShopIntro() {
+        return shopIntro;
     }
-
-    public void setSettingId(int settingId) {
-        this.settingId = settingId;
-    }
-
     public String getRegEmail() {
         return regEmail;
     }
-
-    public void setRegEmail(String regEmail) {
-        this.regEmail = regEmail;
-    }
-
-    public boolean isShopBySection() {
+    public int getShopBySection() {
         return shopBySection;
     }
-
-    public void setShopBySection(boolean shopBySection) {
-        this.shopBySection = shopBySection;
-    }
-
-    public boolean isListIntro() {
-        return listIntro;
-    }
-
-    public void setListIntro(boolean listIntro) {
-        this.listIntro = listIntro;
-    }
-
-    public boolean isSearchIntro() {
+    public int getSearchIntro() {
         return searchIntro;
     }
-
-    public void setSearchIntro(boolean searchIntro) {
-        this.searchIntro = searchIntro;
+    public int getSectionIntro() {
+        return sectionIntro;
     }
-
-    public boolean isFavIntro() {
+    public int getFavIntro() {
         return favIntro;
     }
-
-    public void setFavIntro(boolean favIntro) {
-        this.favIntro = favIntro;
-    }
-
-    public boolean isHistoryIntro() {
+    public int getHistoryIntro() {
         return historyIntro;
     }
-
-    public void setHistoryIntro(boolean historyIntro) {
-        this.historyIntro = historyIntro;
-    }
-
-    public boolean isListEditIntro() {
+    public int getListEditIntro() {
         return listEditIntro;
     }
-
-    public void setListEditIntro(boolean listEditIntro) {
-        this.listEditIntro = listEditIntro;
-    }
-
-    public boolean isAddIntro() {
+    public int getAddIntro() {
         return addIntro;
     }
-
-    public void setAddIntro(boolean addIntro) {
-        this.addIntro = addIntro;
-    }
-
-    public boolean isUserRated() {
+    public int getUserRated() {
         return userRated;
     }
-
-    public void setUserRated(boolean userRated) {
-        this.userRated = userRated;
-    }
-
 
 }

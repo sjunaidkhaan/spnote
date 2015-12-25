@@ -5,7 +5,19 @@ package com.ingentive.shopnote.model;
  */
 public class DictionaryModel {
 
-    int decId;
+    public void setDicId(int dicId) {
+        this.dicId = dicId;
+    }
+
+    public void setSectionId(int sectionId) {
+        this.sectionId = sectionId;
+    }
+
+    public void setItemName(String itemName) {
+        this.itemName = itemName;
+    }
+
+    int dicId;
     int sectionId;
     String itemName;
 
@@ -17,8 +29,8 @@ public class DictionaryModel {
         this.sectionId = sectionId;
     }
 
-    public DictionaryModel(int decId, String itemName,int sectionId) {
-        this.decId = decId;
+    public DictionaryModel(int dicId, String itemName,int sectionId) {
+        this.dicId = dicId;
         this.itemName = itemName;
         this.sectionId = sectionId;
     }
@@ -26,23 +38,11 @@ public class DictionaryModel {
         return sectionId;
     }
 
-    public int getDectionaryId() {
-        return decId;
+    public int getDictionaryId() {
+        return dicId;
     }
 
     public String getItemName() {
         return itemName;
     }
-    public void setDecId(int decId) {
-        this.decId = decId;
-    }
-
-    public void setSectionId(int sectionId) {
-        this.sectionId = sectionId;
-    }
-
-    public void setItemName(String itemName) {
-        this.itemName = itemName;
-    }
-
 }

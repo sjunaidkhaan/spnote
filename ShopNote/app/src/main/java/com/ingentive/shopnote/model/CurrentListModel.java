@@ -32,31 +32,6 @@ public class CurrentListModel {
         return checked;
     }
 
-    public void setChecked(int checked) {
-        this.checked = checked;
-    }
-    public void setListNo(int listNo) {
-        this.listNo = listNo;
-    }
-
-    public void setOrderNo(int orderNo) {
-        this.orderNo = orderNo;
-    }
-
-    public void setCurrListId(int currListId) {
-        this.currListId = currListId;
-    }
-
-
-    public void setItemName(String itemName) {
-        this.itemName = itemName;
-    }
-
-    public void setQuantity(String quantity) {
-        this.quantity = quantity;
-    }
-
-
     public String getQuantity() {
         return quantity;
     }

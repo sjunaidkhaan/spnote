@@ -10,12 +10,15 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
+import com.ingentive.shopnote.fragments.MyFirstNoteFragment;
 import com.ingentive.shopnote.model.CurrentListModel;
 import com.ingentive.shopnote.model.DictionaryModel;
 import com.ingentive.shopnote.model.FavoritListModel;
 import com.ingentive.shopnote.model.HistoryModel;
 import com.ingentive.shopnote.model.InventoryModel;
+import com.ingentive.shopnote.model.ScreenTextModel;
 import com.ingentive.shopnote.model.SectionModel;
+import com.ingentive.shopnote.model.SettingModel;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -28,29 +31,31 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
     private FragmentDrawer drawerFragment;
     public DatabaseHandler db;
     public static String LOG_MSG = "MAINACTIVITY";
-    String fileName = "";
+    String fileName = "emptyfile";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         mToolbar = (Toolbar) findViewById(R.id.app_bar);
-        db = new DatabaseHandler(this);
-        //db.addHistory(new HistoryModel("24-12-2015", "Bread","1"));
-        //db.addFavorit(new FavoritListModel("Bread"));
-       // db.addCurrentList(new CurrentListModel(1, "Bread",0, "a", 1));
-       try {
-            /*fileName = "dictionary";
-            PlayWithRawFiles(fileName);*/
-           /*fileName = "sectionorder";
-           PlayWithRawFiles(fileName);*/
-           fileName = "currentlist";
-           PlayWithRawFiles(fileName);
-           /*fileName = "inventrylist";
-           PlayWithRawFiles(fileName);*/
-          /* fileName = "setting";
-           PlayWithRawFiles(fileName);*/
-            //Toast.makeText(getApplicationContext(),""+listItem, Toast.LENGTH_LONG).show();
 
+      try {
+          PlayWithRawFiles(fileName);
+          /*fileName = "dictionary";
+          PlayWithRawFiles(fileName);
+          fileName = "sectionorder";
+          PlayWithRawFiles(fileName);
+          fileName = "currentlist";
+          PlayWithRawFiles(fileName);
+          fileName = "favoritlist";
+          PlayWithRawFiles(fileName);
+          fileName = "inventrylist";
+          PlayWithRawFiles(fileName);
+          fileName = "settinglist";
+          PlayWithRawFiles(fileName);
+          fileName = "historylist";
+          PlayWithRawFiles(fileName);
+          fileName = "screentextlist";
+          PlayWithRawFiles(fileName);*/
         } catch (IOException e) {
             Toast.makeText(getApplicationContext(),
                     "Problems: " + e.getMessage(), Toast.LENGTH_LONG).show();
@@ -67,28 +72,90 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
         drawerFragment.setUp(R.id.fragment_navigation_drawer, (DrawerLayout) findViewById(R.id.drawer_layout), mToolbar);
         drawerFragment.setDrawerListener(this);
         displayView(2);
-        TabFragment fragment = new TabFragment();
+        MyFirstNoteFragment fragment = new MyFirstNoteFragment();
 
     }
 
     public void PlayWithRawFiles(String filname) throws IOException {
         String str="";
+        String[] separated;
         //StringBuffer buf = new StringBuffer();
         InputStream file_Name = this.getAssets().open(filname);
         BufferedReader reader = new BufferedReader(new InputStreamReader(file_Name));
         if (file_Name!=null) {
-            while ((str = reader.readLine()) != null) {
-
-                String[] separated = str.split(",");
+            if(filname.equals("dictionary")){
                 db = new DatabaseHandler(this);
-               // db.addDictionary(new DictionaryModel(separated[1], Integer.parseInt(separated[0])));
-               /* db.addSection(new SectionModel(Integer.parseInt(separated[0]),separated[1],
-                            "ic_tab_call",Integer.parseInt(separated[3])));*/
-                /*db.addCurrentList(new CurrentListModel(Integer.parseInt(separated[0]), separated[1],
-                        Integer.parseInt(separated[2]), separated[3], Integer.parseInt(separated[4])));*/
-                //db.addInventry(new InventoryModel(Integer.parseInt(separated[0]),separated[1]));
-               // db.addHistory(new HistoryModel(separated[0], separated[1],,,,,,,,,,,,,,,));
-
+                while ((str = reader.readLine()) != null) {
+                    separated= str.split(",");
+                    db.addDictionary(new DictionaryModel(separated[1], Integer.parseInt(separated[0])));
+                }
+                db.close();
+            }
+            else  if(filname.equals("sectionorder")){
+                db = new DatabaseHandler(this);
+                while ((str = reader.readLine()) != null) {
+                    separated= str.split(",");
+                    db.addSection(new SectionModel(Integer.parseInt(separated[0]),separated[1],
+                            "ic_tab_call",Integer.parseInt(separated[3])));
+                }
+                db.close();
+            }
+            else  if(filname.equals("currentlist")) {
+                db = new DatabaseHandler(this);
+                while ((str = reader.readLine()) != null) {
+                    separated = str.split(",");
+                    db.addCurrentList(new CurrentListModel(Integer.parseInt(separated[0]), separated[1],
+                            Integer.parseInt(separated[2]), separated[3], Integer.parseInt(separated[4])));
+                }
+                db.close();
+            }
+            else  if(filname.equals("favoritlist")) {
+                db = new DatabaseHandler(this);
+                while ((str = reader.readLine()) != null) {
+                    separated = str.split(",");
+                    db.addFavorit(new FavoritListModel(separated[0]));
+                }
+                db.close();
+            }
+            else  if(filname.equals("inventrylist")) {
+                db = new DatabaseHandler(this);
+                while ((str = reader.readLine()) != null) {
+                    separated = str.split(",");
+                    db.addInventry(new InventoryModel(Integer.parseInt(separated[0]), separated[1]));
+                }
+                db.close();
+            }
+            else  if(filname.equals("settinglist")) {
+                db = new DatabaseHandler(this);
+                while ((str = reader.readLine()) != null) {
+                    separated = str.split(",");
+                    db.addSetting(new SettingModel(separated[0], Integer.parseInt(separated[1]),
+                            Integer.parseInt(separated[2]), Integer.parseInt(separated[3]),
+                            Integer.parseInt(separated[4]), Integer.parseInt(separated[5]),
+                            Integer.parseInt(separated[6]), Integer.parseInt(separated[7]),
+                            Integer.parseInt(separated[8]), Integer.parseInt(separated[9]),
+                            Integer.parseInt(separated[10]), Integer.parseInt(separated[11])));
+                }
+                db.close();
+            }
+            else  if(filname.equals("historylist")) {
+                db = new DatabaseHandler(this);
+                while ((str = reader.readLine()) != null) {
+                    separated = str.split(",");
+                    db.addHistory(new HistoryModel(separated[0], separated[1],separated[2]));
+                }
+                db.close();
+            }
+            else  if(filname.equals("screentextlist")) {
+                db = new DatabaseHandler(this);
+                while ((str = reader.readLine()) != null) {
+                    separated = str.split(",");
+                    db.addScreenText(new ScreenTextModel(separated[0], separated[1]));
+                }
+                db.close();
+            }
+            else  if(filname.equals("emptyfile")){
+                Toast.makeText(getApplicationContext(),"empty file",Toast.LENGTH_LONG).show();
             }
         }
         file_Name.close();
@@ -129,7 +196,7 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
                 title = getString(R.string.title_name);
                 break;
             case 2:
-                fragment = new TabFragment();
+                fragment = new MyFirstNoteFragment();
                 title = getString(R.string.nav_item_firstnote);
                 break;
             default:

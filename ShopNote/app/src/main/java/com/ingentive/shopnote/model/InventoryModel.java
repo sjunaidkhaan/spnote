@@ -26,25 +26,14 @@ public class InventoryModel {
         return inventoryId;
     }
 
-    public void setInventoryId(int inventoryId) {
-        this.inventoryId = inventoryId;
-    }
-
     public int getListNo() {
         return listNo;
-    }
-
-    public void setListNo(int listNo) {
-        this.listNo = listNo;
     }
 
     public String getListName() {
         return listName;
     }
 
-    public void setListName(String listName) {
-        this.listName = listName;
-    }
 
 
 }

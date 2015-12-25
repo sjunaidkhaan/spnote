@@ -16,7 +16,6 @@ public class FavoritListModel {
         this.itemName = itemName;
     }
     public FavoritListModel(String itemName) {
-        this.favListId = favListId;
         this.itemName = itemName;
     }
 
@@ -27,13 +26,5 @@ public class FavoritListModel {
     public String getItemName() {
         return itemName;
     }
-    public void setFavListId(int favListId) {
-        this.favListId = favListId;
-    }
-
-    public void setItemName(String itemName) {
-        this.itemName = itemName;
-    }
-
 
 }

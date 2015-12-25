@@ -14,15 +14,8 @@ public class SectionModel {
         return sectionOrderNo;
     }
 
-    public void setSectionOrderNo(int sectionOrderNo) {
-        this.sectionOrderNo = sectionOrderNo;
-    }
     public int getDefaultSection() {
         return defaultSection;
-    }
-
-    public void setDefaultSection(int defaultSection) {
-        this.defaultSection = defaultSection;
     }
 
     int defaultSection;
@@ -44,23 +37,10 @@ public class SectionModel {
         this.sectionImage = sectionImage;
         this.defaultSection = defaultSection;
     }
-    public void setSectionId(int sectionId) {
-        this.sectionId = sectionId;
-    }
-
-    public void setSectionName(String sectionName) {
-        this.sectionName = sectionName;
-    }
-
-    public void setSectionImage(String sectionImage) {
-        this.sectionImage = sectionImage;
-    }
-
 
     public int getSectionId() {
         return sectionId;
     }
-
     public String getSectionName() {
         return sectionName;
     }
