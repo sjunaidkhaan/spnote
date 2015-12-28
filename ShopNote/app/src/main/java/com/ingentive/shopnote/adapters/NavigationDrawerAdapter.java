@@ -1,21 +1,25 @@
-package com.ingentive.shopnote;
+package com.ingentive.shopnote.adapters;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.ingentive.shopnote.R;
+import com.ingentive.shopnote.model.NavDrawerItemModel;
 
 import java.util.Collections;
 import java.util.List;
 
 public class NavigationDrawerAdapter extends RecyclerView.Adapter<NavigationDrawerAdapter.MyViewHolder> {
-    List<NavDrawerItem> data = Collections.emptyList();
+    List<NavDrawerItemModel> data = Collections.emptyList();
     private LayoutInflater inflater;
     private Context context;
 
-    public NavigationDrawerAdapter(Context context, List<NavDrawerItem> data) {
+    public NavigationDrawerAdapter(Context context, List<NavDrawerItemModel> data) {
         this.context = context;
         inflater = LayoutInflater.from(context);
         this.data = data;
@@ -35,8 +39,9 @@ public class NavigationDrawerAdapter extends RecyclerView.Adapter<NavigationDraw
 
     @Override
     public void onBindViewHolder(MyViewHolder holder, int position) {
-        NavDrawerItem current = data.get(position);
+        NavDrawerItemModel current = data.get(position);
         holder.title.setText(current.getTitle());
+        holder.icon.setImageResource(R.drawable.ic_tab_call);
     }
 
     @Override
@@ -46,10 +51,12 @@ public class NavigationDrawerAdapter extends RecyclerView.Adapter<NavigationDraw
 
     class MyViewHolder extends RecyclerView.ViewHolder {
         TextView title;
+        ImageView icon;
 
         public MyViewHolder(View itemView) {
             super(itemView);
             title = (TextView) itemView.findViewById(R.id.title);
+            icon = (ImageView)itemView.findViewById(R.id.image);
         }
     }
 }

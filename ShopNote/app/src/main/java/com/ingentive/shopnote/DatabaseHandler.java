@@ -12,6 +12,7 @@ import com.ingentive.shopnote.model.DictionaryModel;
 import com.ingentive.shopnote.model.FavoritListModel;
 import com.ingentive.shopnote.model.HistoryModel;
 import com.ingentive.shopnote.model.InventoryModel;
+import com.ingentive.shopnote.model.ListModel;
 import com.ingentive.shopnote.model.ScreenTextModel;
 import com.ingentive.shopnote.model.SectionModel;
 import com.ingentive.shopnote.model.SettingModel;
@@ -155,6 +156,23 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         }
         return dictList;
     }
+
+   /* public List<ListModel> getAllContacts() {
+        List<ListModel> mList = new ArrayList<ListModel>();
+        String selectQuery = "SELECT  * FROM " + Const.TABLE_DICTIONARY;
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(selectQuery, null);
+        if (cursor.moveToFirst()) {
+            do {
+                DictionaryModel dicModel = new DictionaryModel();
+                dicModel.setDicId(Integer.parseInt(cursor.getString(0)));
+                dicModel.setItemName(cursor.getString(1));
+                dicModel.setSectionId(Integer.parseInt(cursor.getString(2)));
+                dictList.add(dicModel);
+            } while (cursor.moveToNext());
+        }
+        return dictList;
+    }*/
     /*
     Contact getSection(int id) {
         SQLiteDatabase db = this.getReadableDatabase();

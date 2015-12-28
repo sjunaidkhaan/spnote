@@ -1,19 +1,26 @@
-package com.ingentive.shopnote;
+package com.ingentive.shopnote.model;
 
-public class NavDrawerItem {
+public class NavDrawerItemModel {
     private boolean showNotify;
     private String title;
 
+    int iconId;
+    public int getIconId() {
+        return iconId;
+    }
 
-    public NavDrawerItem() {
+    public void setIconId(int iconId) {
+        this.iconId = iconId;
+    }
+
+    public NavDrawerItemModel() {
 
     }
 
-    public NavDrawerItem(boolean showNotify, String title) {
+    public NavDrawerItemModel(boolean showNotify, String title) {
         this.showNotify = showNotify;
         this.title = title;
     }
-
     public boolean isShowNotify() {
         return showNotify;
     }

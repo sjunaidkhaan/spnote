@@ -4,6 +4,7 @@
     android:id="@+id/drawer_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
     android:elevation="7dp">
 
     <RelativeLayout
@@ -11,7 +12,6 @@
         android:layout_height="match_parent"
         android:fitsSystemWindows="true"
         tools:context=".MainActivity">
-
         <include
             android:id="@+id/app_bar"
             layout="@layout/toolbar" />
