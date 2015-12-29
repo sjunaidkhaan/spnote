@@ -19,7 +19,7 @@ public class MyFirstNoteFragment extends android.support.v4.app.Fragment {
     public int[] tabIcons = {
             R.drawable.list_unselected,
             R.drawable.shop_unselected,
-            R.drawable.favorites_unselected,
+            R.drawable.favoritess_unselected,
             R.drawable.history_unselected
     };
 
@@ -44,17 +44,10 @@ public class MyFirstNoteFragment extends android.support.v4.app.Fragment {
             @Override
             public void run() {
                 tabLayout.setupWithViewPager(viewPager);
-<<<<<<< HEAD
                 tabLayout.getTabAt(0).setCustomView(R.layout.custom_tab_item_list);
                 tabLayout.getTabAt(1).setCustomView(R.layout.custom_tab_item_shop);
                 tabLayout.getTabAt(2).setCustomView(R.layout.custom_tab_item_fav);
                 tabLayout.getTabAt(3).setCustomView(R.layout.custom_tab_item_his);
-=======
-                tabLayout.getTabAt(0).setIcon(R.drawable.list_unselected);
-                tabLayout.getTabAt(1).setIcon(R.drawable.shop_unselected);
-                tabLayout.getTabAt(2).setIcon(R.drawable.favorites_unselected);
-                tabLayout.getTabAt(3).setIcon(R.drawable.history_unselected);
->>>>>>> bc567d09cf9315defb9492ec73467fc2d3a7d989
             }
         });
 
