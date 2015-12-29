@@ -16,10 +16,10 @@ public class MyFirstNoteFragment extends android.support.v4.app.Fragment {
     public static TabLayout tabLayout;
     public static ViewPager viewPager;
     public static int int_items = 4 ;
-    public int[] tabIcons = {
+    public int[] tabIconsO = {
             R.drawable.list_unselected,
             R.drawable.shop_unselected,
-            R.drawable.favorites_unselected,
+            R.drawable.favoritess_unselected,
             R.drawable.history_unselected
     };
 
@@ -34,6 +34,7 @@ public class MyFirstNoteFragment extends android.support.v4.app.Fragment {
         tabLayout = (TabLayout) x.findViewById(R.id.tabs);
         viewPager = (ViewPager) x.findViewById(R.id.viewpager);
         viewPager.setAdapter(new MyAdapter(getChildFragmentManager()));
+
         /**
          * Now , this is a workaround ,
          * The setupWithViewPager dose't works without the runnable .
@@ -43,9 +44,15 @@ public class MyFirstNoteFragment extends android.support.v4.app.Fragment {
         tabLayout.post(new Runnable() {
             @Override
             public void run() {
+
                 tabLayout.setupWithViewPager(viewPager);
+                tabLayout.getTabAt(0).setCustomView(R.layout.custom_tab_item_list);
+                tabLayout.getTabAt(1).setCustomView(R.layout.custom_tab_item_shop);
+                tabLayout.getTabAt(2).setCustomView(R.layout.custom_tab_item_fav);
+                tabLayout.getTabAt(3).setCustomView(R.layout.custom_tab_item_his);
             }
         });
+
         return x;
     }
 
@@ -81,18 +88,22 @@ public class MyFirstNoteFragment extends android.support.v4.app.Fragment {
          */
         @Override
         public CharSequence getPageTitle(int position) {
-            switch (position) {
-                case 0:
-                    return "List";
-                case 1:
-                    return "Shop";
-                case 2:
-                    return "Favorits";
-                case 3:
-                    return "History";
-            }
+//            switch (position) {
+//                case 0:
+//                    return "List";
+//                case 1:
+//                    return "Shop";
+//                case 2:
+//                    return "Favorites";
+//                case 3:
+//                    return "History";
+//            }
 
             return null;
         }
     }
+
+//    public void setTabIcons(int[] tabIcons) {
+//        this.tabIcons = tabIcons;
+//    }
 }
