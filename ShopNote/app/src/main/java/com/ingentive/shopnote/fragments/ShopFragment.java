@@ -10,13 +10,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 
+import com.ingentive.shopnote.MainActivity;
 import com.ingentive.shopnote.R;
 
 
 public class ShopFragment extends Fragment {
 
-    private Toolbar mToolbar;
-    private EditText editTitle;
     public ShopFragment() {
         // Required empty public constructor
     }
@@ -33,10 +32,6 @@ public class ShopFragment extends Fragment {
         // Inflate the layout for this fragment
         //return inflater.inflate(R.layout.fragment_shop, container, false);
         View view = inflater.inflate(R.layout.fragment_shop, container, false);
-        View toolbar_view = inflater.inflate(R.layout.toolbar, container, false);
-        editTitle = (EditText) toolbar_view.findViewById(R.id.etTitleEdit);
-        editTitle.setEnabled(true);
-        editTitle.setText("EditText");
         return view;
     }
 }

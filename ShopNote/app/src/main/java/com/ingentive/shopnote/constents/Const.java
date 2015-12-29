@@ -34,8 +34,8 @@ public class Const {
     public static final String NAME_NAME = "name";
     public static final String NAME_TEXT = "text";
     public static final String NAME_REGISTERED_EMAIL = "reg_email";
-    public static final String NAME_FAVORIES_BY_SECTION = "fav_by_secr";
-    public static final String NAME_SHOP_BY_SECTION = "shop_by_secr";
+    public static final String NAME_FAVORIES_BY_SECTION = "fav_by_section";
+    public static final String NAME_SHOP_BY_SECTION = "shop_by_section";
     public static final String NAME_LIST_INTRO = "list_intro";
     public static final String NAME_SHOP_INTRO = "shop_intro";
     public static final String NAME_FAVORIT_INTRO= "fav_Intro";

@@ -1,15 +1,18 @@
 package com.ingentive.shopnote;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -39,14 +42,28 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
     String fileName = "empty file";
     AlertDialog.Builder builder1;
     AlertDialog.Builder alertDialogBuilder;
-    private EditText editTitle;
+    SharedPreferences.Editor editor;
+    public static final String MyPREFERENCES = "MyPrefs" ;
+    String dbCreate ;
+    public static final String Phone = "phoneKey";
+    public static final String Email = "emailKey";
+    SharedPreferences prefs;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        mToolbar = (Toolbar) findViewById(R.id.app_bar);
-        editTitle = (EditText)findViewById(R.id.etTitleEdit);
+
+        prefs = getSharedPreferences(MyPREFERENCES, MODE_PRIVATE);
+        String restoredText = prefs.getString(dbCreate, null);
+        if (restoredText != null) {
+            String name = prefs.getString(dbCreate, "No name defined");
+            Toast.makeText(getApplicationContext(),name,Toast.LENGTH_LONG).show();
+        }else{
+            editor = prefs.edit();
+            editor.putString(dbCreate,"success");
+            editor.commit();
+        }
 
         try {
             if (fileName.equals("empty file")) {
@@ -69,25 +86,23 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
                 PlayWithRawFiles(fileName);
                 fileName = "screentextlist";
                 PlayWithRawFiles(fileName);
+
             }
         } catch (IOException e) {
             Toast.makeText(getApplicationContext(),
                     "Problems: " + e.getMessage(), Toast.LENGTH_LONG).show();
         }
-
-        db = new DatabaseHandler(this);
+        prefs = getSharedPreferences(MyPREFERENCES, getApplication().MODE_PRIVATE);
+        mToolbar = (Toolbar) findViewById(R.id.app_bar);
         setSupportActionBar(mToolbar);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
-
-
         drawerFragment = (FragmentDrawer)
                 getSupportFragmentManager().findFragmentById(R.id.fragment_navigation_drawer);
 
         drawerFragment.setUp(R.id.fragment_navigation_drawer, (DrawerLayout) findViewById(R.id.drawer_layout), mToolbar);
         drawerFragment.setDrawerListener(this);
         displayView(3);
-        editTitle.setText("My First Shopnote");
-        editTitle.setEnabled(false);
+
         firstDialog();
         MyFirstNoteFragment fragment = new MyFirstNoteFragment();
 
