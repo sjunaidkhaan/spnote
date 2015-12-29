@@ -4,23 +4,19 @@
     <string name="action_search">Search</string>
     <string name="drawer_open">Open</string>
     <string name="drawer_close">Close</string>
-    <string name="nav_item_email_list">Email List</string>
+    <string name="nav_item_share_list">Share List</string>
     <string name="nav_item_manage_sections">Manage Sections</string>
-    <string name="nav_item_organize_shopping">Organize Shopping</string>
-    <string name="nav_item_organize_favorites">Organize Favorites</string>
+    <string name="nav_item_send_feedback">Send Your Feedback</string>
     <string name="nav_item_first_note">My First Note</string>
 
     <!-- navigation drawer item labels  -->
     <string-array name="nav_drawer_labels">
-        <item>@string/nav_item_email_list</item>
+        <item>@string/nav_item_share_list</item>
         <item>@string/nav_item_manage_sections</item>
-        <item>@string/nav_item_organize_shopping</item>
-        <item>@string/nav_item_organize_favorites</item>
-        <item>@string/nav_item_first_note</item>
+        <item>@string/nav_item_send_feedback</item>
     </string-array>
-    <string name="title_email_list">Email List</string>
+    <string name="title_share_list">Share List</string>
     <string name="title_manage_sections">Manage Sections</string>
-    <string name="title_organize_shopping">Organize Shopping</string>
-    <string name="title_organize_favorites">Organize Favorites</string>
-    <string name="title_first_note">My First Note</string>
+    <string name="title_send_feedback">Send Your Feedback</string>
+    <string name="title_first_note">My First Shopnote</string>
 </resources>

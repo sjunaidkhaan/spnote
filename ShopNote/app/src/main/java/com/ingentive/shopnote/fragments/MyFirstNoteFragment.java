@@ -46,10 +46,17 @@ public class MyFirstNoteFragment extends android.support.v4.app.Fragment {
             public void run() {
 
                 tabLayout.setupWithViewPager(viewPager);
+<<<<<<< HEAD
                 tabLayout.getTabAt(0).setCustomView(R.layout.custom_tab_item_list);
                 tabLayout.getTabAt(1).setCustomView(R.layout.custom_tab_item_shop);
                 tabLayout.getTabAt(2).setCustomView(R.layout.custom_tab_item_fav);
                 tabLayout.getTabAt(3).setCustomView(R.layout.custom_tab_item_his);
+=======
+                tabLayout.getTabAt(0).setIcon(R.drawable.list_unselected).setText("LIST");
+            tabLayout.getTabAt(1).setIcon(R.drawable.shop_unselected).setText("HELLO");
+            tabLayout.getTabAt(2).setIcon(R.drawable.favorites_unselected).setText("BELLO");
+                tabLayout.getTabAt(3).setIcon(R.drawable.history_unselected).setText("BELLO");
+>>>>>>> 925c54f12fb8cfdccee2ac7029cac59ded423330
             }
         });
 

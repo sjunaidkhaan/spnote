@@ -1,6 +1,6 @@
 package com.ingentive.shopnote;
-import android.content.Intent;
-import android.graphics.Point;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
@@ -12,12 +12,10 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
-import com.ingentive.shopnote.fragments.EmailListFragment;
+import com.ingentive.shopnote.fragments.FeedbackFragment;
 import com.ingentive.shopnote.fragments.ManageSectionsFragment;
 import com.ingentive.shopnote.fragments.MyFirstNoteFragment;
-import com.ingentive.shopnote.fragments.OrganizeFavoritesFragment;
-import com.ingentive.shopnote.fragments.OrganizeShoppingFragment;
-import com.ingentive.shopnote.fragments.SettingsFragment;
+import com.ingentive.shopnote.fragments.ShareListFragment;
 import com.ingentive.shopnote.model.CurrentListModel;
 import com.ingentive.shopnote.model.DictionaryModel;
 import com.ingentive.shopnote.model.FavoritListModel;
@@ -26,48 +24,49 @@ import com.ingentive.shopnote.model.InventoryModel;
 import com.ingentive.shopnote.model.ScreenTextModel;
 import com.ingentive.shopnote.model.SectionModel;
 import com.ingentive.shopnote.model.SettingModel;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 
-public class MainActivity extends AppCompatActivity implements FragmentDrawer.FragmentDrawerListener{
+public class MainActivity extends AppCompatActivity implements FragmentDrawer.FragmentDrawerListener {
 
     private Toolbar mToolbar;
     private FragmentDrawer drawerFragment;
     public DatabaseHandler db;
     public static String LOG_MSG = "MAINACTIVITY";
     String fileName = "empty file";
-    Point p;
+    AlertDialog.Builder builder1;
+    AlertDialog.Builder alertDialogBuilder;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         mToolbar = (Toolbar) findViewById(R.id.app_bar);
 
-      try {
-          if(fileName.equals("empty file")){
+        try {
+            if (fileName.equals("empty file")) {
              /* Toast.makeText(getApplicationContext(),
                       "empty file", Toast.LENGTH_LONG).show();*/
-          }else{
-              fileName = "dictionary";
-              PlayWithRawFiles(fileName);
-              fileName = "sectionorder";
-              PlayWithRawFiles(fileName);
-              fileName = "currentlist";
-              PlayWithRawFiles(fileName);
-              fileName = "favoritlist";
-              PlayWithRawFiles(fileName);
-              fileName = "inventrylist";
-              PlayWithRawFiles(fileName);
-              fileName = "settinglist";
-              PlayWithRawFiles(fileName);
-              fileName = "historylist";
-              PlayWithRawFiles(fileName);
-              fileName = "screentextlist";
-              PlayWithRawFiles(fileName);
-          }
+            } else {
+                fileName = "dictionary";
+                PlayWithRawFiles(fileName);
+                fileName = "sectionorder";
+                PlayWithRawFiles(fileName);
+                fileName = "currentlist";
+                PlayWithRawFiles(fileName);
+                fileName = "favoritlist";
+                PlayWithRawFiles(fileName);
+                fileName = "inventrylist";
+                PlayWithRawFiles(fileName);
+                fileName = "settinglist";
+                PlayWithRawFiles(fileName);
+                fileName = "historylist";
+                PlayWithRawFiles(fileName);
+                fileName = "screentextlist";
+                PlayWithRawFiles(fileName);
+            }
         } catch (IOException e) {
             Toast.makeText(getApplicationContext(),
                     "Problems: " + e.getMessage(), Toast.LENGTH_LONG).show();
@@ -83,22 +82,56 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
 
         drawerFragment.setUp(R.id.fragment_navigation_drawer, (DrawerLayout) findViewById(R.id.drawer_layout), mToolbar);
         drawerFragment.setDrawerListener(this);
-        displayView(4);
+        displayView(3);
+        firstDialog();
         MyFirstNoteFragment fragment = new MyFirstNoteFragment();
 
     }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
     }
 
+    public void firstDialog(){
+        //AlertDialog.Builder
+                alertDialogBuilder = new AlertDialog.Builder(this);
+        alertDialogBuilder.setMessage("Welcome to Shopnote We've started you on your " +
+                "first shopping list. Click on the + icon to add to more items or swipe " +
+                "left to delete items.");
+
+        alertDialogBuilder.setPositiveButton("Got it", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface arg0, int arg1) {
+               // Toast.makeText(MainActivity.this, "You clicked yes button", Toast.LENGTH_LONG).show();
+                secondDialog();
+            }
+        });
+        AlertDialog alertDialog = alertDialogBuilder.create();
+        alertDialog.show();
+    }
+    public void secondDialog(){
+        //AlertDialog.Builder
+        alertDialogBuilder = new AlertDialog.Builder(this);
+        alertDialogBuilder.setMessage("Once you're done creating yor list, click" +
+                "the 'Shop' button bellow. This will organize your list by the sections" +
+                "of the supermarket.");
+
+        alertDialogBuilder.setPositiveButton("Got it", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface arg0, int arg1) {
+                // Toast.makeText(MainActivity.this, "You clicked yes button", Toast.LENGTH_LONG).show();
+            }
+        });
+        AlertDialog alertDialog = alertDialogBuilder.create();
+        alertDialog.show();
+    }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         if (id == R.id.action_add) {
-            Toast.makeText(this, "Add", Toast.LENGTH_LONG).show();
-            return true;
         }
         return super.onOptionsItemSelected(item);
     }
@@ -113,23 +146,18 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
         String title = getString(R.string.app_name);
         switch (position) {
             case 0:
-                fragment = new EmailListFragment();
-                title = getString(R.string.title_email_list);
+                fragment = new ShareListFragment();
+                title = getString(R.string.title_share_list);
                 break;
             case 1:
                 fragment = new ManageSectionsFragment();
                 title = getString(R.string.title_manage_sections);
                 break;
             case 2:
-                fragment = new OrganizeShoppingFragment();
-                title = getString(R.string.title_organize_shopping);
+                fragment = new FeedbackFragment();
+                title = getString(R.string.title_send_feedback);
                 break;
-
             case 3:
-                fragment = new OrganizeFavoritesFragment();
-                title = getString(R.string.title_organize_favorites);
-                break;
-            case 4:
                 fragment = new MyFirstNoteFragment();
                 title = getString(R.string.title_first_note);
                 break;
