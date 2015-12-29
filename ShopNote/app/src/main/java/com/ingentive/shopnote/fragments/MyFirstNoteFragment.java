@@ -44,10 +44,10 @@ public class MyFirstNoteFragment extends android.support.v4.app.Fragment {
             @Override
             public void run() {
                 tabLayout.setupWithViewPager(viewPager);
-                tabLayout.getTabAt(0).setIcon(R.drawable.list_unselected).setText("LIST");
-            tabLayout.getTabAt(1).setIcon(R.drawable.shop_unselected).setText("HELLO");
-            tabLayout.getTabAt(2).setIcon(R.drawable.favorites_unselected).setText("BELLO");
-                tabLayout.getTabAt(3).setIcon(R.drawable.history_unselected).setText("BELLO");
+                tabLayout.getTabAt(0).setIcon(R.drawable.list_unselected);
+                tabLayout.getTabAt(1).setIcon(R.drawable.shop_unselected);
+                tabLayout.getTabAt(2).setIcon(R.drawable.favorites_unselected);
+                tabLayout.getTabAt(3).setIcon(R.drawable.history_unselected);
             }
         });
 
@@ -86,7 +86,7 @@ public class MyFirstNoteFragment extends android.support.v4.app.Fragment {
          */
         @Override
         public CharSequence getPageTitle(int position) {
-            switch (position) {
+           /* switch (position) {
                 case 0:
                     return "List";
                 case 1:
@@ -95,7 +95,7 @@ public class MyFirstNoteFragment extends android.support.v4.app.Fragment {
                     return "Favorits";
                 case 3:
                     return "History";
-            }
+            }*/
 
             return null;
         }

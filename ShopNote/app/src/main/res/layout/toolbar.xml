@@ -7,4 +7,11 @@
     android:background="?attr/colorPrimary"
     android:minHeight="?attr/actionBarSize"
     local:popupTheme="@style/ThemeOverlay.AppCompat.Light"
-    local:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar" />
+    local:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar" >
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/etTitleEdit"
+        android:textColor="@android:color/white"
+        android:gravity="center"/>
+    </android.support.v7.widget.Toolbar>

@@ -18,7 +18,6 @@
         android:layout_weight="3"
         android:layout_height="100dp"
         android:id="@+id/tabs"
-        android:background="#212121"
         app:tabIndicatorColor="#212121"
         app:tabSelectedTextColor="#FFFFFF"
         app:tabTextColor="@android:color/white"

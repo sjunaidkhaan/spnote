@@ -10,6 +10,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import com.ingentive.shopnote.fragments.FeedbackFragment;
@@ -38,12 +39,14 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
     String fileName = "empty file";
     AlertDialog.Builder builder1;
     AlertDialog.Builder alertDialogBuilder;
+    private EditText editTitle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         mToolbar = (Toolbar) findViewById(R.id.app_bar);
+        editTitle = (EditText)findViewById(R.id.etTitleEdit);
 
         try {
             if (fileName.equals("empty file")) {
@@ -83,6 +86,8 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
         drawerFragment.setUp(R.id.fragment_navigation_drawer, (DrawerLayout) findViewById(R.id.drawer_layout), mToolbar);
         drawerFragment.setDrawerListener(this);
         displayView(3);
+        editTitle.setText("My First Shopnote");
+        editTitle.setEnabled(false);
         firstDialog();
         MyFirstNoteFragment fragment = new MyFirstNoteFragment();
 
