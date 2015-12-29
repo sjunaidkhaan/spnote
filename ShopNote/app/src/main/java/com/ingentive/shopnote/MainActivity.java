@@ -9,11 +9,14 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.ingentive.shopnote.fragments.FeedbackFragment;
@@ -33,6 +36,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 
+import javax.microedition.khronos.egl.EGLDisplay;
+
 public class MainActivity extends AppCompatActivity implements FragmentDrawer.FragmentDrawerListener {
 
     private Toolbar mToolbar;
@@ -48,11 +53,68 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
     public static final String Phone = "phoneKey";
     public static final String Email = "emailKey";
     SharedPreferences prefs;
+    TextView tvToolbarTitle;
+    EditText edToolbarTitle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        //jk
+        edToolbarTitle = (EditText)findViewById(R.id.edittext_toolbar_title);
+        tvToolbarTitle = (TextView)findViewById(R.id.textview_title_toolbar);
+        tvToolbarTitle.setOnClickListener(new View.OnClickListener(){
+
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(MainActivity.this,"Clicked", Toast.LENGTH_SHORT).show();
+                tvToolbarTitle.setVisibility(View.GONE);
+                edToolbarTitle.setVisibility(View.VISIBLE);
+            }
+        });
+
+        edToolbarTitle.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+            /* When focus is lost check that the text field
+            * has valid values.
+            */
+                if (!hasFocus) {
+                    Toast.makeText(MainActivity.this, edToolbarTitle.getText().toString(), Toast.LENGTH_SHORT).show();
+                    tvToolbarTitle.setText(edToolbarTitle.getText().toString());
+                    tvToolbarTitle.setVisibility(View.VISIBLE);
+                    edToolbarTitle.setVisibility(View.GONE);
+                }
+            }
+        });
+
+        edToolbarTitle.setOnEditorActionListener(
+                new EditText.OnEditorActionListener() {
+                    @Override
+                    public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                        if (actionId == EditorInfo.IME_ACTION_SEARCH ||
+                                actionId == EditorInfo.IME_ACTION_DONE ||
+                                event.getAction() == KeyEvent.ACTION_DOWN &&
+                                        event.getKeyCode() == KeyEvent.KEYCODE_ENTER) {
+                            if (!event.isShiftPressed()) {
+                                // the user is done typing.
+                                Toast.makeText(MainActivity.this, edToolbarTitle.getText().toString(), Toast.LENGTH_SHORT).show();
+                                tvToolbarTitle.setText(edToolbarTitle.getText().toString());
+                                tvToolbarTitle.setVisibility(View.VISIBLE);
+                                edToolbarTitle.setVisibility(View.GONE);
+                                return true; // consume.
+                            }
+                        }
+                        return false; // pass on to other listeners.
+                    }
+                });
+
+
+        //
+
+
 
         prefs = getSharedPreferences(MyPREFERENCES, MODE_PRIVATE);
         String restoredText = prefs.getString(dbCreate, null);
@@ -192,7 +254,11 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
             fragmentTransaction.commit();
 
             // set the toolbar title
-            getSupportActionBar().setTitle(title);
+//          getSupportActionBar().setTitle(title);
+            //jk
+            tvToolbarTitle.setText(title);
+            //
+
         }
     }
 
