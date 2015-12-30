@@ -2,24 +2,38 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@drawable/row_border"
+    android:background="#00000000"
     android:clickable="true">
 
-    <TextView
-        android:id="@+id/title"
-        android:textColor="@android:color/white"
-        android:layout_width="wrap_content"
+    <RelativeLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="16dp"
-        android:paddingTop="10dp"
-        android:textSize="15dp"
-        android:textStyle="bold" />
-    <ImageView
-        android:id="@+id/image"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginRight="16dp"
-        android:paddingTop="10dp"
-        android:layout_alignParentRight="true"/>
+        android:background="#00000000"
+        android:id="@+id/rlRow"
+        android:clickable="true">
 
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:layout_marginLeft="16dp"
+            android:paddingTop="10dp"
+            android:textColor="@android:color/white"
+            android:textSize="15dp"
+            android:textStyle="bold" />
+
+        <ImageView
+            android:id="@+id/image"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="16dp"
+            android:paddingTop="10dp" />
+    </RelativeLayout>
+
+    <View
+        android:layout_below="@+id/rlRow"
+        android:layout_width="fill_parent"
+        android:layout_height="1dp"
+        android:background="@android:color/white" />
 </RelativeLayout>

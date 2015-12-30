@@ -6,14 +6,20 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ListView;
 
+import com.ingentive.shopnote.DatabaseHandler;
 import com.ingentive.shopnote.R;
+import com.ingentive.shopnote.adapters.DectionaryAdapter;
 
 
-public class SettingsFragment extends Fragment {
+public class ShareListFragment extends Fragment {
 
+    DatabaseHandler db;
+    ListView mListView;
+    DectionaryAdapter dictionaryAdapter;
 
-    public SettingsFragment() {
+    public ShareListFragment() {
         // Required empty public constructor
     }
 
@@ -25,7 +31,9 @@ public class SettingsFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_settings, container, false);
+        //View rootView = inflater.inflate(R.layout.fragment_contact, container, false);
+
+        return inflater.inflate(R.layout.fragment_sharelist, container, false);
     }
 
     @Override

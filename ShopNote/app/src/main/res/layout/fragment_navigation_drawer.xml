@@ -21,5 +21,6 @@
             android:id="@+id/drawerList"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/colorPrimary"/>
+            android:divider="@android:color/white"
+            android:background="@drawable/shopnote_menubg"/>
 </RelativeLayout>

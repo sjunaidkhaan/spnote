@@ -47,18 +47,15 @@ public class FragmentDrawer extends Fragment {
 
     public static List<NavDrawerItemModel> getData() {
         List<NavDrawerItemModel> data = new ArrayList<>();
-       /* int[] icons = {
-                R.drawable.menu_icon,
-                R.drawable.inbox,
-                R.drawable.ic_tab_call,
-                R.drawable.menu_icon,
-                R.drawable.ic_tab_favourite,
-                R.drawable.ic_tab_call
-        };for (int i = 0; i < icons.length && i < titles.length; i++)*/
+        int[] icons = {
+                R.drawable.email,
+                R.drawable.manage_sections,
+                R.drawable.feedback
+        };//for (int i = 0; i < icons.length && i < titles.length; i++)
         for (int i = 0; i < titles.length; i++) {
             NavDrawerItemModel navItem = new NavDrawerItemModel();
             navItem.setTitle(titles[i]);
-            navItem.setIconId(R.drawable.menu_icon);
+            navItem.setIconId(icons[i]);
             data.add(navItem);
         }
         return data;

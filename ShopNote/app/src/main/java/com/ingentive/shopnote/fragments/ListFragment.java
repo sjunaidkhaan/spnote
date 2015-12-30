@@ -29,14 +29,13 @@ import java.util.List;
 public class ListFragment extends Fragment implements AdapterView.OnItemClickListener {
 
     ListView mListView;
-    private TextView tvItemName;
-    private ImageView ivOption,ivFavorit,ivSection;
-
 
     public static int[] icons = {
             R.drawable.grab_grabbed,
-            R.drawable.favorite_unselected,
-            R.drawable.tomato
+            R.drawable.favorite_selected,
+            R.drawable.bakery,
+            R.drawable.dairy,
+            R.drawable.dry_goods
     };
 
     public static List<ListModel> getData() {
@@ -47,19 +46,28 @@ public class ListFragment extends Fragment implements AdapterView.OnItemClickLis
                R.drawable.tomato
         };*/
         String[] itemNames = {
-                "Onions",
-                "Peppers",
-                "8oz Chicken Broth",
-                "Mac and Cheese",
-                "Kleenex",
-                "Bananas"
+                "Bread",
+                "Milk",
+                "Careal"
         };
+
+
         for (int i = 0; i < itemNames.length; i++) {
             ListModel listModel = new ListModel();
             listModel.setIconOption(icons[0]);
             listModel.setItemName(itemNames[i]);
             listModel.setIconFavorit(icons[1]);
-            listModel.setIconSection(icons[2]);
+            switch (itemNames[i]){
+                case "Bread":
+                    listModel.setIconSection(icons[2]);
+                    break;
+                case "Milk":
+                    listModel.setIconSection(icons[3]);
+                    break;
+                case "Careal":
+                    listModel.setIconSection(icons[4]);
+                    break;
+            }
             data.add(listModel);
         }
         return data;
