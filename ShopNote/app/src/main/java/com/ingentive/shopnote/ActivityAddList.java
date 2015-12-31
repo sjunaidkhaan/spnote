@@ -67,7 +67,6 @@ public class ActivityAddList extends AppCompatActivity {
         ivFavorit = (ImageView) findViewById(R.id.iv_add_list_fav);
         ivHistory = (ImageView) findViewById(R.id.iv_add_list_history);
 
-        //mAutoComptv=(AutoCompleteTextView)findViewById(R.id.autoCompleteTV);
         setSupportActionBar(mToolbar);
         getSupportActionBar().setHomeButtonEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -90,6 +89,26 @@ public class ActivityAddList extends AppCompatActivity {
         favoritList = db.getFavItem();
         historyList = db.getHistoryItems();
         dicSearchList = db.getDicItems();
+        DictionaryModel model = new DictionaryModel();
+
+        for (int i = 0; i < dicSearchList.size(); i++) {
+            if (favoritList.contains(dicSearchList.get(i).getItemName().toString())) {
+                dicSearchList.get(i).setFavItem(1);
+            }
+            if (historyList.contains(dicSearchList.get(i).getItemName().toString())) {
+                dicSearchList.get(i).setHistoryItem(1);
+            }
+        }
+       /* for(int i= 0; i<dicSearchList.size();i++){
+            if(dicSearchList.get(i).getFavItem()==1 && dicSearchList.get(i).getHistoryItem()==1){
+                model.setItemName(dicSearchList.get(i).getItemName());
+                model.setFavIcon(dicSearchList.get(i).getFavIcon());
+                model.setHistoryIcon(dicSearchList.get(i).getHistoryIcon());
+                dicCurrentList.add(model);
+            }
+        }
+        mAdapter = new DectionaryAdapter(ActivityAddList.this, dicCurrentList, R.layout.custom_row_list_add_basic);
+        mListView.setAdapter(mAdapter);*/
         showData();
 
         //adapter = new ArrayAdapter<String>(ActivityAddList.this, android.R.layout.simple_list_item_1, favoritList);
@@ -134,14 +153,10 @@ public class ActivityAddList extends AppCompatActivity {
         DictionaryModel dictionaryModel = new DictionaryModel();
         dicCurrentList = new ArrayList<DictionaryModel>();
         for (int i = 0; i < dicSearchList.size(); i++) {
-            if (favoritList.contains(dicSearchList.get(i).getItemName())
-                    && historyList.contains(dicSearchList.get(i).getItemName())) {
-
+            if (dicSearchList.get(i).getFavItem() == 1 && dicSearchList.get(i).getHistoryItem() == 1) {
                 dictionaryModel.setItemName(dicSearchList.get(i).getItemName());
                 dictionaryModel.setFavIcon(dicSearchList.get(i).getFavIcon());
                 dictionaryModel.setHistoryIcon(dicSearchList.get(i).getHistoryIcon());
-                dictionaryModel.setFavItem(1);
-                dictionaryModel.setHistoryItem(1);
                 dicCurrentList.add(dictionaryModel);
             }
         }
@@ -152,10 +167,40 @@ public class ActivityAddList extends AppCompatActivity {
     // Filters list of contacts based on user search criteria. If no information is filled in, contact list will be blank.
     private void AlterAdapter() {
         if (etSerch.getText().toString().isEmpty()) {
-            //dicCurrentList.clear();
+            dicCurrentList.clear();
             mAdapter.notifyDataSetChanged();
             showData();
         } else {
+            DictionaryModel dictionaryModel = new DictionaryModel();
+              dicCurrentList.clear();
+                    for (int i = 0; i < dicSearchList.size(); i++) {
+                        if (dicSearchList.get(i).getItemName().toString().toLowerCase().startsWith(etSerch.getText().toString().toLowerCase())) {
+                            if (favoritList.contains(dicSearchList.get(i).getItemName())) {
+                                Toast.makeText(getApplication(), "favorit  " + dicSearchList.get(i).getItemName(), Toast.LENGTH_LONG).show();
+                                dictionaryModel.setItemName(dicSearchList.get(i).getItemName());
+                                dictionaryModel.setFavIcon(dicSearchList.get(i).getFavIcon());
+                                dicCurrentList.add(dictionaryModel);
+                            }
+                            if (historyList.contains(dicSearchList.get(i).getItemName()) && !dicCurrentList.contains(dicSearchList.get(i).getItemName())) {
+                                dictionaryModel.setItemName(dicSearchList.get(i).getItemName());
+                                dictionaryModel.setHistoryIcon(dicSearchList.get(i).getHistoryIcon());
+                                dicCurrentList.add(dictionaryModel);
+                            }
+                            if (!dicCurrentList.contains(dicSearchList.get(i).getItemName())) {
+                                dictionaryModel = new DictionaryModel();
+                                dictionaryModel.setItemName(dicSearchList.get(i).getItemName());
+                                dicCurrentList.add(dictionaryModel);
+                            }
+                            mAdapter.notifyDataSetChanged();
+                            mAdapter = new DectionaryAdapter(ActivityAddList.this, dicCurrentList, R.layout.custom_row_list_add_basic);
+                            mListView.setAdapter(mAdapter);
+                        }
+                    }
+                }
+
+
+
+        /*else {
             DictionaryModel dictionaryModel = new DictionaryModel();
             if (etSerch.getText().toString().length() == 1) {
                 Toast.makeText(getApplication(), "length " + etSerch.length(), Toast.LENGTH_LONG).show();
@@ -197,11 +242,11 @@ public class ActivityAddList extends AppCompatActivity {
                         dicCurrentList.add(dictionaryModel);
                         Toast.makeText(getApplication(), "favoritList " + dicCurrentList.get(i).getItemName(), Toast.LENGTH_LONG).show();
                     }*/
-                    //if (historyList.get(i).toString().toLowerCase().startsWith(etSerch.getText().toString().toLowerCase())) {
+        //if (historyList.get(i).toString().toLowerCase().startsWith(etSerch.getText().toString().toLowerCase())) {
 
-                }
-            }
-          /* if (etSerch.getText().toString().length() == 2) {
+        // }
+        //}
+           /* if (etSerch.getText().toString().length() == 2) {
                 Toast.makeText(getApplication(), "length " + etSerch.length(), Toast.LENGTH_LONG).show();
                 for (int i = 0; i < dicSearchList.size(); i++) {
                     if (favoritList.contains(dicSearchList.get(i).getItemName().toString().toLowerCase().startsWith(etSerch.getText().toString().toLowerCase()))) {
@@ -225,10 +270,10 @@ public class ActivityAddList extends AppCompatActivity {
                 /*if (dicSearchList.get(i).getItemName().toString().toLowerCase().startsWith(etSerch.getText().toString().toLowerCase())) {
                     dicCurrentList.add(dicSearchList.get(i));
                 }*/
-            // mAdapter.notifyDataSetChanged();
-            //mAdapter = new DectionaryAdapter(ActivityAddList.this, dicCurrentList, R.layout.custom_row_list_add_basic);
-            // mListView.setAdapter(mAdapter);
-        }
+        // mAdapter.notifyDataSetChanged();
+        //mAdapter = new DectionaryAdapter(ActivityAddList.this, dicCurrentList, R.layout.custom_row_list_add_basic);
+        // mListView.setAdapter(mAdapter);
+        //}
             /*
              tvToolbarTitle.setVisibility(View.VISIBLE);
                                 edToolbarTitle.setVisibility(View.GONE);
