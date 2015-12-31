@@ -11,6 +11,7 @@ import com.ingentive.shopnote.Contact;
 import com.ingentive.shopnote.R;
 import com.ingentive.shopnote.model.DictionaryModel;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -63,7 +64,6 @@ public class DectionaryAdapter extends BaseAdapter {
         tvId.setText(data.get(postion).getDictionaryId()+"");
         tvItemName.setText(data.get(postion).getItemName());
         tvSectionId.setText(data.get(postion).getSectionId());
-
         return vi;
     }
 }

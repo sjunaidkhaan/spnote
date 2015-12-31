@@ -1,7 +1,11 @@
 package com.ingentive.shopnote;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
@@ -15,10 +19,12 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.ingentive.shopnote.constents.Const;
 import com.ingentive.shopnote.fragments.FeedbackFragment;
 import com.ingentive.shopnote.fragments.ManageSectionsFragment;
 import com.ingentive.shopnote.fragments.MyFirstNoteFragment;
@@ -47,12 +53,11 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
     String fileName = "empty file";
     AlertDialog.Builder builder1;
     AlertDialog.Builder alertDialogBuilder;
-    SharedPreferences.Editor editor;
+    public static SharedPreferences.Editor editor;
     public static final String MyPREFERENCES = "MyPrefs" ;
-    String dbCreate ;
-    public static final String Phone = "phoneKey";
-    public static final String Email = "emailKey";
-    SharedPreferences prefs;
+    public static final String dbCreated = "dbKey";
+    public static final String first_time_dialog = "first_time";
+    public static SharedPreferences prefs;
     TextView tvToolbarTitle;
     EditText edToolbarTitle;
 
@@ -64,18 +69,16 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
         //jk
         edToolbarTitle = (EditText)findViewById(R.id.edittext_toolbar_title);
         tvToolbarTitle = (TextView)findViewById(R.id.textview_title_toolbar);
-        tvToolbarTitle.setOnClickListener(new View.OnClickListener(){
-
+        tvToolbarTitle.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(MainActivity.this,"Clicked", Toast.LENGTH_SHORT).show();
+                Toast.makeText(MainActivity.this, "Clicked", Toast.LENGTH_SHORT).show();
                 tvToolbarTitle.setVisibility(View.GONE);
                 edToolbarTitle.setVisibility(View.VISIBLE);
             }
         });
 
         edToolbarTitle.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
             /* When focus is lost check that the text field
@@ -110,28 +113,15 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
                         return false; // pass on to other listeners.
                     }
                 });
-
-
         //
-
-
-
-        prefs = getSharedPreferences(MyPREFERENCES, MODE_PRIVATE);
-        String restoredText = prefs.getString(dbCreate, null);
-        if (restoredText != null) {
-            String name = prefs.getString(dbCreate, "No name defined");
-            Toast.makeText(getApplicationContext(),name,Toast.LENGTH_LONG).show();
-        }else{
-            editor = prefs.edit();
-            editor.putString(dbCreate,"success");
-            editor.commit();
-        }
-
         try {
-            if (fileName.equals("empty file")) {
-             /* Toast.makeText(getApplicationContext(),
-                      "empty file", Toast.LENGTH_LONG).show();*/
-            } else {
+
+            prefs = getSharedPreferences(MyPREFERENCES, MODE_PRIVATE);
+            String restoredText = prefs.getString(dbCreated, null);
+            if (restoredText == null) {
+                editor = prefs.edit();
+                editor.putString(dbCreated,"success");
+                editor.commit();
                 fileName = "dictionary";
                 PlayWithRawFiles(fileName);
                 fileName = "sectionorder";
@@ -148,7 +138,6 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
                 PlayWithRawFiles(fileName);
                 fileName = "screentextlist";
                 PlayWithRawFiles(fileName);
-
             }
         } catch (IOException e) {
             Toast.makeText(getApplicationContext(),
@@ -164,10 +153,16 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
         drawerFragment.setUp(R.id.fragment_navigation_drawer, (DrawerLayout) findViewById(R.id.drawer_layout), mToolbar);
         drawerFragment.setDrawerListener(this);
         displayView(3);
-
-        firstDialog();
         MyFirstNoteFragment fragment = new MyFirstNoteFragment();
 
+        prefs = getSharedPreferences(MyPREFERENCES, MODE_PRIVATE);
+        String restoredText = prefs.getString(first_time_dialog, null);
+        if (restoredText == null) {
+            firstDialog();
+            editor = prefs.edit();
+            editor.putString(first_time_dialog,"success");
+            editor.commit();
+        }
     }
 
     @Override
@@ -213,8 +208,17 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
-        if (id == R.id.action_add) {
-        }
+        Intent mIntent = new Intent(getApplication(),ActivityAddList.class);
+        startActivity(mIntent);
+        /*prefs = getSharedPreferences(MyPREFERENCES, MODE_PRIVATE);
+        String restoredText = prefs.getString(list_add_intro_dialog, null);
+        if (restoredText == null) {
+            thirdDialog();
+            editor = prefs.edit();
+            editor.putString(list_add_intro_dialog,"success");
+            editor.commit();
+        }*/
+        //getSupportActionBar().setIcon(R.drawable.back);
         return super.onOptionsItemSelected(item);
     }
 

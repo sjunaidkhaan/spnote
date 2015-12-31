@@ -5,6 +5,14 @@ package com.ingentive.shopnote.model;
  */
 public class FavoritListModel {
 
+    public void setFavListId(int favListId) {
+        this.favListId = favListId;
+    }
+
+    public void setItemName(String itemName) {
+        this.itemName = itemName;
+    }
+
     int favListId;
     String itemName;
 

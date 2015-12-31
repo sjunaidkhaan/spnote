@@ -7,11 +7,13 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
 import com.ingentive.shopnote.constents.Const;
+import com.ingentive.shopnote.model.AddListModel;
 import com.ingentive.shopnote.model.CurrentListModel;
 import com.ingentive.shopnote.model.DictionaryModel;
 import com.ingentive.shopnote.model.FavoritListModel;
 import com.ingentive.shopnote.model.HistoryModel;
 import com.ingentive.shopnote.model.InventoryModel;
+import com.ingentive.shopnote.model.ListAddBasicModel;
 import com.ingentive.shopnote.model.ListModel;
 import com.ingentive.shopnote.model.ScreenTextModel;
 import com.ingentive.shopnote.model.SectionModel;
@@ -24,7 +26,8 @@ import java.util.List;
  * Created by PC on 12/22/2015.
  */
 public class DatabaseHandler extends SQLiteOpenHelper {
- 
+
+    List<String> mList;
     public DatabaseHandler(Context context) {
         super(context, Const.DATABASE_NAME, null, Const.DATABASE_VERSION);
         //Log.d("DbHandler", "Constructor"+TABLE_DICTIONARY);
@@ -140,22 +143,105 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         db.insert(Const.TABLE_SETTING, null, values);
     }
 
-    public List<DictionaryModel> getAllContacts() {
-        List<DictionaryModel> dictList = new ArrayList<DictionaryModel>();
-        String selectQuery = "SELECT  * FROM " + Const.TABLE_DICTIONARY;
+    public List<String> getFavItems() {
+        mList = new ArrayList<String>();
+        String selectQuery = "SELECT * FROM " + Const.TABLE_FAVORIT_LIST + " INNER JOIN "+
+                Const.TABLE_HISTORY + " ON "+ Const.TABLE_FAVORIT_LIST+"."+
+                Const.NAME_ITEM+" = "+Const.TABLE_HISTORY+"."+Const.NAME_ITEM ;
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(selectQuery, null);
+        if (cursor.moveToFirst()) {
+            do {
+                mList.add(cursor.getString(2));
+            } while (cursor.moveToNext());
+        }
+        return mList;
+    }
+
+    public List<String> getHistoryItems() {
+        mList = new ArrayList<String>();
+        String selectQuery = "SELECT * FROM " + Const.TABLE_HISTORY;
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(selectQuery, null);
+        if (cursor.moveToFirst()) {
+            do {
+                mList.add(cursor.getString(2));
+            } while (cursor.moveToNext());
+        }
+        return mList;
+    }
+
+    public List<String> getDicItems() {
+        List<String> mList = new ArrayList<String>();
+        String selectQuery = "SELECT * FROM " + Const.TABLE_DICTIONARY;
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(selectQuery, null);
+        if (cursor.moveToFirst()) {
+            do {
+                //DictionaryModel dicList = new DictionaryModel();
+                //dicList.setItemName(cursor.getString(1));
+                mList.add(cursor.getString(1));
+            } while (cursor.moveToNext());
+        }
+        return mList;
+    }
+
+    public List<DictionaryModel> getItems() {
+        List<DictionaryModel> dicList = new ArrayList<DictionaryModel>();
+        String selectQuery = "SELECT * FROM " + Const.TABLE_DICTIONARY;
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery(selectQuery, null);
         if (cursor.moveToFirst()) {
             do {
                 DictionaryModel dicModel = new DictionaryModel();
-                dicModel.setDicId(Integer.parseInt(cursor.getString(0)));
                 dicModel.setItemName(cursor.getString(1));
-                dicModel.setSectionId(Integer.parseInt(cursor.getString(2)));
-                dictList.add(dicModel);
+                dicModel.setFavItem(0);
+                dicModel.setHistoryItem(0);
+                dicList.add(dicModel);
             } while (cursor.moveToNext());
         }
-        return dictList;
+        return dicList;
     }
+    public List<ListAddBasicModel> getItemName() {
+        List<ListAddBasicModel> mList = new ArrayList<ListAddBasicModel>();
+        String selectQuery = "SELECT * FROM " + Const.TABLE_DICTIONARY;
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(selectQuery, null);
+        if (cursor.moveToFirst()) {
+            do {
+                ListAddBasicModel listModel = new ListAddBasicModel();
+                listModel.setItemName(cursor.getString(1));
+                mList.add(listModel);
+            } while (cursor.moveToNext());
+        }
+        return mList;
+    }
+    public List<String> getFavItem() {
+        List<String> mList = new ArrayList<String>();
+        String selectQuery = "SELECT * FROM " + Const.TABLE_FAVORIT_LIST + " LIMIT 3";
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(selectQuery, null);
+        if (cursor.moveToFirst()) {
+            do {
+                mList.add(cursor.getString(1));
+            } while (cursor.moveToNext());
+        }
+        return mList;
+    }
+    /*public List<AddListModel> getFavItem() {
+        List<AddListModel> mList = new ArrayList<AddListModel>();
+        String selectQuery = "SELECT * FROM " + Const.TABLE_FAVORIT_LIST + " LIMIT 3";
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(selectQuery, null);
+        if (cursor.moveToFirst()) {
+            do {
+                AddListModel listModel = new AddListModel();
+                listModel.setItemName(cursor.getString(1));
+                mList.add(listModel);
+            } while (cursor.moveToNext());
+        }
+        return mList;
+    }*/
 
    /* public List<ListModel> getAllContacts() {
         List<ListModel> mList = new ArrayList<ListModel>();
