@@ -53,16 +53,19 @@ public class DictionaryModel {
     public DictionaryModel() {
 
     }
-    public DictionaryModel(String itemName,int sectionId) {
+
+    public DictionaryModel(String itemName, int sectionId) {
         this.itemName = itemName;
         this.sectionId = sectionId;
     }
-    public DictionaryModel(String itemName,int favIcon,int historyIcon) {
+
+    public DictionaryModel(String itemName, int favIcon, int historyIcon) {
         this.itemName = itemName;
         this.favIcon = favIcon;
         this.historyIcon = historyIcon;
     }
-    public DictionaryModel(String itemName,int favItem,int historyItem,int favIcon,int historyIcon) {
+
+    public DictionaryModel(String itemName, int favItem, int historyItem, int favIcon, int historyIcon) {
         this.itemName = itemName;
         this.favItem = favItem;
         this.historyItem = historyItem;
@@ -70,7 +73,7 @@ public class DictionaryModel {
         this.historyIcon = historyIcon;
     }
 
-    public DictionaryModel(int dicId,String itemName,int favItem,int historyItem,int favIcon,int historyIcon) {
+    public DictionaryModel(int dicId, String itemName, int favItem, int historyItem, int favIcon, int historyIcon) {
         this.dicId = dicId;
         this.itemName = itemName;
         this.favItem = favItem;

@@ -75,8 +75,15 @@ public class DectionaryAdapter extends BaseAdapter {
         ivHistIcon = (ImageView)mView.findViewById(R.id.iv_add_list_history);
 
         tvItemName.setText(data.get(postion).getItemName());
-        ivFavIcon.setImageResource(data.get(postion).getFavIcon());
-        ivHistIcon.setImageResource(data.get(postion).getHistoryIcon());
+
+        if ( data.get(postion).getHistoryItem()==1 && data.get(postion).getFavItem()==1){
+            ivFavIcon.setImageResource(data.get(postion).getFavIcon());
+            ivHistIcon.setImageResource(data.get(postion).getHistoryIcon());
+        }else if ( data.get(postion).getHistoryItem()==1 ){
+            ivHistIcon.setImageResource(data.get(postion).getHistoryIcon());
+        }else if (data.get(postion).getFavItem()==1 ){
+            ivFavIcon.setImageResource(data.get(postion).getFavIcon());
+        }
 
         return mView;
     }
