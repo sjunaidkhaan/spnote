@@ -51,7 +51,7 @@ public class ActivityAddList extends AppCompatActivity{
     private ArrayList<String> favoritItems;
     private ArrayList<String> searchItems;
     List<String> dicSearchList ;
-    List<DictionaryModel> dictionaryModels;
+    List<DictionaryModel> dictionaryModel;
    // List<AddListModel> addList;
     AddListAdapter mAdapter;
     List<String> addList;
@@ -81,10 +81,9 @@ public class ActivityAddList extends AppCompatActivity{
         addList = db.getFavItem();
 
         db = new DatabaseHandler(getApplication());
-        dictionaryModels = db.getItems();
-        for(int i=0;  i < dicSearchList.size(); i++){
-            Toast.makeText(getApplication(),""+dictionaryModels.get(0).getItemName(),Toast.LENGTH_LONG).show();
-        }
+        dictionaryModel = db.getItems();
+
+        Toast.makeText(getApplication(),""+dictionaryModel.get(0).getItemName(),Toast.LENGTH_LONG).show();
         adapter = new ArrayAdapter<String>(ActivityAddList.this,android.R.layout.simple_list_item_1,addList);
         mListView.setAdapter(adapter);
 

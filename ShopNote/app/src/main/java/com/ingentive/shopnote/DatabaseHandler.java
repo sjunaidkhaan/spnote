@@ -194,6 +194,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         if (cursor.moveToFirst()) {
             do {
                 DictionaryModel dicModel = new DictionaryModel();
+                dicModel.setDicId(Integer.parseInt(cursor.getString(0)));
                 dicModel.setItemName(cursor.getString(1));
                 dicModel.setFavItem(0);
                 dicModel.setHistoryItem(0);
