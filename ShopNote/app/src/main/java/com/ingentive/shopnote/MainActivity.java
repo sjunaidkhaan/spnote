@@ -115,7 +115,10 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
                 });
         //
         try {
-
+            /*db = new DatabaseHandler(this);
+            db.addHistory(new HistoryModel("2015-12-31", "Baby Clothes",null));
+            db = new DatabaseHandler(this);
+            db.addHistory(new HistoryModel("2015-12-31", "Tshirt",null));*/
             prefs = getSharedPreferences(MyPREFERENCES, MODE_PRIVATE);
             String restoredText = prefs.getString(dbCreated, null);
             if (restoredText == null) {

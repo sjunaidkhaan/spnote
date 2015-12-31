@@ -7,7 +7,28 @@ public class DictionaryModel {
 
     int dicId;
     int sectionId;
+    int favItem;
+    int favIcon;
+    int historyIcon;
+    int historyItem;
     String itemName;
+
+    public int getFavIcon() {
+        return favIcon;
+    }
+
+    public void setFavIcon(int favIcon) {
+        this.favIcon = favIcon;
+    }
+
+    public int getHistoryIcon() {
+        return historyIcon;
+    }
+
+    public void setHistoryIcon(int historyIcon) {
+        this.historyIcon = historyIcon;
+    }
+
 
     public int getFavItem() {
         return favItem;
@@ -29,9 +50,6 @@ public class DictionaryModel {
         this.historyItem = historyItem;
     }
 
-    int favItem;
-    int historyItem;
-
     public DictionaryModel() {
 
     }
@@ -39,12 +57,28 @@ public class DictionaryModel {
         this.itemName = itemName;
         this.sectionId = sectionId;
     }
+    public DictionaryModel(String itemName,int favIcon,int historyIcon) {
+        this.itemName = itemName;
+        this.favIcon = favIcon;
+        this.historyIcon = historyIcon;
+    }
+    public DictionaryModel(String itemName,int favItem,int historyItem,int favIcon,int historyIcon) {
+        this.itemName = itemName;
+        this.favItem = favItem;
+        this.historyItem = historyItem;
+        this.favIcon = favIcon;
+        this.historyIcon = historyIcon;
+    }
 
-    public DictionaryModel(int dicId, String itemName,int sectionId) {
+    public DictionaryModel(int dicId,String itemName,int favItem,int historyItem,int favIcon,int historyIcon) {
         this.dicId = dicId;
         this.itemName = itemName;
-        this.sectionId = sectionId;
+        this.favItem = favItem;
+        this.historyItem = historyItem;
+        this.favIcon = favIcon;
+        this.historyIcon = historyIcon;
     }
+
     public void setDicId(int dicId) {
         this.dicId = dicId;
     }
@@ -59,10 +93,6 @@ public class DictionaryModel {
 
     public int getSectionId() {
         return sectionId;
-    }
-
-    public int getDictionaryId() {
-        return dicId;
     }
 
     public String getItemName() {

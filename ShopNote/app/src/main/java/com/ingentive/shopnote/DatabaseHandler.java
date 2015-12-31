@@ -171,7 +171,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         return mList;
     }
 
-    public List<String> getDicItems() {
+    /*public List<String> getDicItems() {
         List<String> mList = new ArrayList<String>();
         String selectQuery = "SELECT * FROM " + Const.TABLE_DICTIONARY;
         SQLiteDatabase db = this.getReadableDatabase();
@@ -184,9 +184,21 @@ public class DatabaseHandler extends SQLiteOpenHelper {
             } while (cursor.moveToNext());
         }
         return mList;
-    }
+    }*/
+    /*public boolean CheckIsFavItem(String itemName) {
+        String selectQuery = "SELECT * FROM " + Const.TABLE_FAVORIT_LIST +
+                " WHERE " + Const.NAME_ITEM + "='"+itemName+"'";
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(selectQuery, null);
+        if(cursor.getCount() <= 0){
+            cursor.close();
+            return false;
+        }
+        cursor.close();
+        return true;
+    }*/
 
-    public List<DictionaryModel> getItems() {
+    public List<DictionaryModel> getDicItems() {
         List<DictionaryModel> dicList = new ArrayList<DictionaryModel>();
         String selectQuery = "SELECT * FROM " + Const.TABLE_DICTIONARY;
         SQLiteDatabase db = this.getReadableDatabase();
@@ -198,6 +210,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                 dicModel.setItemName(cursor.getString(1));
                 dicModel.setFavItem(0);
                 dicModel.setHistoryItem(0);
+                dicModel.setFavIcon(R.drawable.favorite_unselected);
+                dicModel.setHistoryIcon(R.drawable.history);
                 dicList.add(dicModel);
             } while (cursor.moveToNext());
         }
@@ -219,7 +233,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     }
     public List<String> getFavItem() {
         List<String> mList = new ArrayList<String>();
-        String selectQuery = "SELECT * FROM " + Const.TABLE_FAVORIT_LIST + " LIMIT 3";
+        String selectQuery = "SELECT * FROM " + Const.TABLE_FAVORIT_LIST ;
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery(selectQuery, null);
         if (cursor.moveToFirst()) {

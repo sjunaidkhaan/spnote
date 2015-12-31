@@ -33,29 +33,30 @@ import com.ingentive.shopnote.model.ListAddBasicModel;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ActivityAddList extends AppCompatActivity{
+public class ActivityAddList extends AppCompatActivity {
 
     private Toolbar mToolbar;
-    AlertDialog.Builder builder1;
-    AlertDialog.Builder alertDialogBuilder;
-    SharedPreferences.Editor editor;
-    public static String ADD_LIST_PREF = "AddListPref" ;
-    String list_add_intro_dialog = "list_add_intro";
-    SharedPreferences mPrefs;
-    AutoCompleteTextView mAutoComptv;
-    DatabaseHandler db;
-    ImageView ivFav;
-    ListView mListView;
-    EditText etSerch;
+    private ListView mListView;
+    private EditText etSerch;
+    private ImageView ivFavorit, ivHistory;
+    private AlertDialog.Builder builder1;
+    private AlertDialog.Builder alertDialogBuilder;
+    private SharedPreferences.Editor editor;
+    private SharedPreferences mPrefs;
+    private DatabaseHandler db;
+    public static String ADD_LIST_PREF = "AddListPref";
+    private String list_add_intro_dialog = "list_add_intro";
     private ArrayList<String> historyItems;
     private ArrayList<String> favoritItems;
     private ArrayList<String> searchItems;
-    List<String> dicSearchList ;
-    List<DictionaryModel> dictionaryModel;
-   // List<AddListModel> addList;
-    AddListAdapter mAdapter;
-    List<String> addList;
-    ArrayAdapter adapter;
+    private List<String> dicSearchlist;
+    private List<DictionaryModel> dicSearchList;
+    private List<DictionaryModel> dicCurrentList;
+    // List<AddListModel> addList;
+    private List<String> favoritList;
+    private List<String> historyList;
+    private DectionaryAdapter mAdapter;
+    private List<AddListModel> addListModels;
 
 
     @Override
@@ -63,34 +64,42 @@ public class ActivityAddList extends AppCompatActivity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_list);
         mToolbar = (Toolbar) findViewById(R.id.toolbar_listadd);
-        ivFav = (ImageView) findViewById(R.id.iv_fav);
+        ivFavorit = (ImageView) findViewById(R.id.iv_add_list_fav);
+        ivHistory = (ImageView) findViewById(R.id.iv_add_list_history);
+
         //mAutoComptv=(AutoCompleteTextView)findViewById(R.id.autoCompleteTV);
         setSupportActionBar(mToolbar);
         getSupportActionBar().setHomeButtonEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         etSerch = (EditText) findViewById(R.id.etSearch);
         mListView = (ListView) findViewById(R.id.lv_add_list);
+        mPrefs = getSharedPreferences(ActivityAddList.ADD_LIST_PREF, MODE_PRIVATE);
+        String restoredText = mPrefs.getString(list_add_intro_dialog, null);
+        if (restoredText == null) {
+            thirdDialog();
+            editor = mPrefs.edit();
+            editor.putString(list_add_intro_dialog, "success");
+            editor.commit();
+        }
 
+        //db = new DatabaseHandler(getApplication());
+        //addList = db.getFavItem();
 
-        /*db = new DatabaseHandler(getApplication());
-        addList = db.getFavItem();
-        mAdapter = new AddListAdapter(ActivityAddList.this, addList, R.layout.custom_row_list_add_basic);
-        mListView.setAdapter(mAdapter);*/
 
         db = new DatabaseHandler(getApplication());
-        addList = db.getFavItem();
-
-        db = new DatabaseHandler(getApplication());
-        dictionaryModel = db.getItems();
-
-        Toast.makeText(getApplication(),""+dictionaryModel.get(0).getItemName(),Toast.LENGTH_LONG).show();
-        adapter = new ArrayAdapter<String>(ActivityAddList.this,android.R.layout.simple_list_item_1,addList);
-        mListView.setAdapter(adapter);
-
-        //get item names from dictionary table
-        db = new DatabaseHandler(getApplication());
-        dicSearchList = new ArrayList<String>();
+        favoritList = db.getFavItem();
+        historyList = db.getHistoryItems();
         dicSearchList = db.getDicItems();
+        showData();
+
+        //adapter = new ArrayAdapter<String>(ActivityAddList.this, android.R.layout.simple_list_item_1, favoritList);
+        //mListView.setAdapter(adapter);
+        //mAdapter = new AddListAdapter(ActivityAddList.this, dicCurrentList, R.layout.custom_row_list_add_basic);
+        //mListView.setAdapter(mAdapter);
+        //get item names from dictionary table
+        //db = new DatabaseHandler(getApplication());
+        //dicSearchlist = new ArrayList<String>();
+        //dicSearchList = db.getDicItems();
         //AlterAdapter();
         etSerch.addTextChangedListener(new TextWatcher() {
             // As the user types in the search field, the list is
@@ -103,7 +112,6 @@ public class ActivityAddList extends AppCompatActivity{
             @Override
             public void afterTextChanged(Editable arg0) {
                 AlterAdapter();
-
             }
 
             // Not uses for this program
@@ -120,34 +128,118 @@ public class ActivityAddList extends AppCompatActivity{
         ListAddBasicAdapter lda = new ListAddBasicAdapter(ActivityAddList.this, R.layout.custom_row_list_add_basic,basicList);
         mAutoComptv.setAdapter(lda);*/
 
-        mPrefs= getSharedPreferences(ActivityAddList.ADD_LIST_PREF, MODE_PRIVATE);
-        String restoredText = mPrefs.getString(list_add_intro_dialog, null);
-        if (restoredText == null) {
-            thirdDialog();
-           editor = mPrefs.edit();
-            editor.putString(list_add_intro_dialog,"success");
-            editor.commit();
+    }
+
+    public void showData() {
+        DictionaryModel dictionaryModel = new DictionaryModel();
+        dicCurrentList = new ArrayList<DictionaryModel>();
+        for (int i = 0; i < dicSearchList.size(); i++) {
+            if (favoritList.contains(dicSearchList.get(i).getItemName())
+                    && historyList.contains(dicSearchList.get(i).getItemName())) {
+
+                dictionaryModel.setItemName(dicSearchList.get(i).getItemName());
+                dictionaryModel.setFavIcon(dicSearchList.get(i).getFavIcon());
+                dictionaryModel.setHistoryIcon(dicSearchList.get(i).getHistoryIcon());
+                dictionaryModel.setFavItem(1);
+                dictionaryModel.setHistoryItem(1);
+                dicCurrentList.add(dictionaryModel);
+            }
         }
+        mAdapter = new DectionaryAdapter(ActivityAddList.this, dicCurrentList, R.layout.custom_row_list_add_basic);
+        mListView.setAdapter(mAdapter);
     }
 
     // Filters list of contacts based on user search criteria. If no information is filled in, contact list will be blank.
     private void AlterAdapter() {
         if (etSerch.getText().toString().isEmpty()) {
-            addList.clear();
-            adapter.notifyDataSetChanged();
-        }
-        else {
-            addList.clear();
-            for (int i = 0; i < dicSearchList.size(); i++) {
-                if (dicSearchList.get(i).toString().toLowerCase().startsWith(etSerch.getText().toString().toLowerCase())) {
-                    addList.add(dicSearchList.get(i).toString());
+            //dicCurrentList.clear();
+            mAdapter.notifyDataSetChanged();
+            showData();
+        } else {
+            DictionaryModel dictionaryModel = new DictionaryModel();
+            if (etSerch.getText().toString().length() == 1) {
+                Toast.makeText(getApplication(), "length " + etSerch.length(), Toast.LENGTH_LONG).show();
+                dicCurrentList.clear();
+                for (int i = 0; i < dicSearchList.size(); i++) {
+                    if (dicSearchList.get(i).getItemName().toString().toLowerCase().startsWith(etSerch.getText().toString().toLowerCase())) {
+                        if (favoritList.contains(dicSearchList.get(i).getItemName())&&!dicCurrentList.contains(dicSearchList.get(i).getItemName())) {
+                            Toast.makeText(getApplication(), "favoritList "+ dicSearchList.get(i).getItemName(), Toast.LENGTH_LONG).show();
+                            dictionaryModel.setFavItem(1);
+                            dictionaryModel.setHistoryItem(0);
+                            dictionaryModel.setItemName(dicSearchList.get(i).getItemName());
+                            dictionaryModel.setFavIcon(dicSearchList.get(i).getFavIcon());
+                            dicCurrentList.add(dictionaryModel);
+                            mAdapter = new DectionaryAdapter(ActivityAddList.this, dicCurrentList, R.layout.custom_row_list_add_basic);
+                            mListView.setAdapter(mAdapter);
+                        }
+                        if (historyList.contains(dicSearchList.get(i).getItemName()) && dicSearchList.get(i).getFavItem()==0) {
+                            //Toast.makeText(getApplication(), "historyList " + dicCurrentList.get(i).getItemName(), Toast.LENGTH_LONG).show();
+                            dictionaryModel.setHistoryItem(1);
+                            // new DictionaryModel(dicSearchList.get(i).getItemName(), dicSearchList.get(i).getFavIcon(), dicSearchList.get(i).getHistoryIcon());
+                            dictionaryModel.setItemName(dicSearchList.get(i).getItemName());
+                            dictionaryModel.setHistoryIcon(dicSearchList.get(i).getHistoryIcon());
+                            dicCurrentList.add(dictionaryModel);
+                            mAdapter = new DectionaryAdapter(ActivityAddList.this, dicCurrentList, R.layout.custom_row_list_add_basic);
+                            mListView.setAdapter(mAdapter);
+                            // Toast.makeText(getApplication(), "historyList " + dicCurrentList.get(i).getItemName(), Toast.LENGTH_LONG).show();
+                        }
+
+                        //Toast.makeText(getApplication(), "favoritList " + dicCurrentList.get(i).getItemName(), Toast.LENGTH_LONG).show();
+                    }
+                    /* if (dicSearchList.get(i).getItemName().toString().toLowerCase().startsWith(etSerch.getText().toString().toLowerCase())&&
+                            favoritList.get(i).toString().toLowerCase().startsWith(etSerch.getText().toString().toLowerCase())) {
+                        dictionaryModel.setFavItem(1);
+                        dictionaryModel.setHistoryItem(0);
+                        //ivHistory.setVisibility(View.GONE);
+                        //new DictionaryModel(favoritList.get(i), dicSearchList.get(i).getFavIcon(), dicSearchList.get(i).getHistoryIcon());
+                        dictionaryModel.setItemName(favoritList.get(i));
+                        dictionaryModel.setFavIcon(dicSearchList.get(i).getFavIcon());
+                        dicCurrentList.add(dictionaryModel);
+                        Toast.makeText(getApplication(), "favoritList " + dicCurrentList.get(i).getItemName(), Toast.LENGTH_LONG).show();
+                    }*/
+                    //if (historyList.get(i).toString().toLowerCase().startsWith(etSerch.getText().toString().toLowerCase())) {
+
                 }
-                adapter.notifyDataSetChanged();
             }
+          /* if (etSerch.getText().toString().length() == 2) {
+                Toast.makeText(getApplication(), "length " + etSerch.length(), Toast.LENGTH_LONG).show();
+                for (int i = 0; i < dicSearchList.size(); i++) {
+                    if (favoritList.contains(dicSearchList.get(i).getItemName().toString().toLowerCase().startsWith(etSerch.getText().toString().toLowerCase()))) {
+                        dicSearchList.get(i).setFavItem(1);
+                        ivHistory.setVisibility(View.GONE);
+                        dicCurrentList.add(dicSearchList.get(i));
+                    }
+                    if (historyList.contains(dicSearchList.get(i).getItemName().toString().toLowerCase().startsWith(etSerch.getText().toString().toLowerCase())
+                            && !dicCurrentList.contains(dicSearchList.get(i).getItemName().toString().toLowerCase().startsWith(etSerch.getText().toString().toLowerCase())))) {
+                        dicSearchList.get(i).setHistoryItem(1);
+                        ivHistory.setVisibility(View.VISIBLE);
+                        ivFavorit.setVisibility(View.GONE);
+                        dicCurrentList.add(dicSearchList.get(i));
+                    }
+                }
+                mAdapter.notifyDataSetChanged();
+                mAdapter = new DectionaryAdapter(ActivityAddList.this, dicCurrentList, R.layout.custom_row_list_add_basic);
+                mListView.setAdapter(mAdapter);
+            }*/
+
+                /*if (dicSearchList.get(i).getItemName().toString().toLowerCase().startsWith(etSerch.getText().toString().toLowerCase())) {
+                    dicCurrentList.add(dicSearchList.get(i));
+                }*/
+            // mAdapter.notifyDataSetChanged();
+            //mAdapter = new DectionaryAdapter(ActivityAddList.this, dicCurrentList, R.layout.custom_row_list_add_basic);
+            // mListView.setAdapter(mAdapter);
         }
+            /*
+             tvToolbarTitle.setVisibility(View.VISIBLE);
+                                edToolbarTitle.setVisibility(View.GONE);
+            if (historyList.contains(dicSearchList.get(i).getItemName()) && !dicCurrentList.contains(dicSearchList.get(i).getItemName())) {
+                        dicSearchList.get(i).setHistoryItem(1);
+                        dicCurrentList.add(dicSearchList.get(i));
+                    }
+             */
     }
 
-    public void thirdDialog(){
+    public void thirdDialog() {
         alertDialogBuilder = new AlertDialog.Builder(this);
         alertDialogBuilder.setMessage("Supermarket items that match your text " +
                 "will appear as you type. You can also new items which will be " +
@@ -162,6 +254,7 @@ public class ActivityAddList extends AppCompatActivity{
         AlertDialog alertDialog = alertDialogBuilder.create();
         alertDialog.show();
     }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.

@@ -8,6 +8,7 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.ingentive.shopnote.ActivityAddList;
 import com.ingentive.shopnote.R;
 import com.ingentive.shopnote.model.AddListModel;
 import com.ingentive.shopnote.model.DictionaryModel;
@@ -59,8 +60,8 @@ public class AddListAdapter extends BaseAdapter {
         ImageView ivHistIcon,ivFavIcon;
 
         tvItemName = (TextView)mView.findViewById(R.id.tv_item_name);
-        ivFavIcon = (ImageView)mView.findViewById(R.id.iv_fav);
-        ivHistIcon = (ImageView)mView.findViewById(R.id.iv_history);
+        ivFavIcon = (ImageView)mView.findViewById(R.id.iv_add_list_fav);
+        ivHistIcon = (ImageView)mView.findViewById(R.id.iv_add_list_history);
 
         tvItemName.setText(data.get(postion).getItemName());
         ivFavIcon.setImageResource(data.get(postion).getFavIcon());

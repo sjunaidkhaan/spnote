@@ -14,18 +14,19 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="16dp"/>
     <ImageView
-        android:id="@+id/iv_fav"
-        android:layout_toLeftOf="@+id/iv_history"
+        android:id="@+id/iv_add_list_fav"
+        android:layout_toLeftOf="@+id/iv_add_list_history"
         android:layout_width="20dp"
         android:layout_height="20dp"
-        android:src="@drawable/favorite_unselected_listadd"
         />
     <ImageView
-        android:id="@+id/iv_history"
+        android:id="@+id/iv_add_list_history"
         android:layout_alignParentRight="true"
+        android:paddingTop="5dp"
+        android:paddingRight="2dp"
+        android:paddingLeft="2dp"
         android:layout_width="20dp"
         android:layout_height="20dp"
-        android:src="@drawable/feedback"
         />
 
 </RelativeLayout>
