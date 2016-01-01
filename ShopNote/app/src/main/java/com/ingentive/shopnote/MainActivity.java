@@ -85,7 +85,8 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
             * has valid values.
             */
                 if (!hasFocus) {
-                    Toast.makeText(MainActivity.this, edToolbarTitle.getText().toString(), Toast.LENGTH_SHORT).show();
+                    db.changeListName(edToolbarTitle.getText().toString());
+                    Toast.makeText(MainActivity.this, "in Focus "+edToolbarTitle.getText().toString(), Toast.LENGTH_SHORT).show();
                     tvToolbarTitle.setText(edToolbarTitle.getText().toString());
                     tvToolbarTitle.setVisibility(View.VISIBLE);
                     edToolbarTitle.setVisibility(View.GONE);
@@ -103,7 +104,8 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
                                         event.getKeyCode() == KeyEvent.KEYCODE_ENTER) {
                             if (!event.isShiftPressed()) {
                                 // the user is done typing.
-                                Toast.makeText(MainActivity.this, edToolbarTitle.getText().toString(), Toast.LENGTH_SHORT).show();
+                                db.changeListName(edToolbarTitle.getText().toString());
+                                Toast.makeText(MainActivity.this, "in Editor "+edToolbarTitle.getText().toString(), Toast.LENGTH_SHORT).show();
                                 tvToolbarTitle.setText(edToolbarTitle.getText().toString());
                                 tvToolbarTitle.setVisibility(View.VISIBLE);
                                 edToolbarTitle.setVisibility(View.GONE);
@@ -295,7 +297,7 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
                 while ((str = reader.readLine()) != null) {
                     separated= str.split(",");
                     db.addSection(new SectionModel(Integer.parseInt(separated[0]),separated[1],
-                            "ic_tab_call",Integer.parseInt(separated[3])));
+                            separated[2],Integer.parseInt(separated[3])));
                 }
                 db.close();
             }
@@ -304,7 +306,7 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
                 while ((str = reader.readLine()) != null) {
                     separated = str.split(",");
                     db.addCurrentList(new CurrentListModel(Integer.parseInt(separated[0]), separated[1],
-                            Integer.parseInt(separated[2]), separated[3], Integer.parseInt(separated[4])));
+                            Integer.parseInt(separated[2]), separated[3], separated[4], Integer.parseInt(separated[5])));
                 }
                 db.close();
             }

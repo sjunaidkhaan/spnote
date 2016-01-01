@@ -1,10 +1,12 @@
 package com.ingentive.shopnote;
+
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.ingentive.shopnote.constents.Const;
 import com.ingentive.shopnote.model.AddListModel;
@@ -28,10 +30,12 @@ import java.util.List;
 public class DatabaseHandler extends SQLiteOpenHelper {
 
     List<String> mList;
+
     public DatabaseHandler(Context context) {
         super(context, Const.DATABASE_NAME, null, Const.DATABASE_VERSION);
         //Log.d("DbHandler", "Constructor"+TABLE_DICTIONARY);
     }
+
     @Override
     public void onCreate(SQLiteDatabase db) {
         //Log.d("DbHandler", "OnCreate()"+TABLE_DICTIONARY);
@@ -57,6 +61,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS " + Const.TABLE_SETTING);
         onCreate(db);
     }
+
     void addScreenText(ScreenTextModel screen) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values;
@@ -65,6 +70,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         values.put(Const.NAME_TEXT, screen.getmTxt());
         db.insert(Const.TABLE_SCREEN_TEXT, null, values);
     }
+
     void addDictionary(DictionaryModel dictionaryModel) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values;
@@ -84,6 +90,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         values.put(Const.DEFAULT_SECTION_ORDER, sectionModel.getDefaultSection());
         db.insert(Const.TABLE_SECTION_ORDER, null, values);
     }
+
     void addCurrentList(CurrentListModel curr) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values;
@@ -92,6 +99,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         values.put(Const.NAME_ITEM, curr.getItemName());
         values.put(Const.NAME_CHECKED, curr.getChecked());
         values.put(Const.NAME_QUANTITY, curr.getQuantity());
+        values.put(Const.NAME_LIST_NAME, curr.getListName());
         values.put(Const.NAME_LIST_NO, curr.getListNo());
         db.insert(Const.TABLE_CURRENT_LIST, null, values);
     }
@@ -143,11 +151,19 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         db.insert(Const.TABLE_SETTING, null, values);
     }
 
+    public void changeListName(String listName) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        db.update(Const.TABLE_CURRENT_LIST,
+                values, Const.NAME_LIST_NAME + " = ?",
+                new String[]{String.valueOf(listName)});
+    }
+
     public List<String> getFavItems() {
         mList = new ArrayList<String>();
-        String selectQuery = "SELECT * FROM " + Const.TABLE_FAVORIT_LIST + " INNER JOIN "+
-                Const.TABLE_HISTORY + " ON "+ Const.TABLE_FAVORIT_LIST+"."+
-                Const.NAME_ITEM+" = "+Const.TABLE_HISTORY+"."+Const.NAME_ITEM ;
+        String selectQuery = "SELECT * FROM " + Const.TABLE_FAVORIT_LIST + " INNER JOIN " +
+                Const.TABLE_HISTORY + " ON " + Const.TABLE_FAVORIT_LIST + "." +
+                Const.NAME_ITEM + " = " + Const.TABLE_HISTORY + "." + Const.NAME_ITEM;
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery(selectQuery, null);
         if (cursor.moveToFirst()) {
@@ -217,6 +233,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         }
         return dicList;
     }
+
     public List<ListAddBasicModel> getItemName() {
         List<ListAddBasicModel> mList = new ArrayList<ListAddBasicModel>();
         String selectQuery = "SELECT * FROM " + Const.TABLE_DICTIONARY;
@@ -231,14 +248,60 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         }
         return mList;
     }
+
     public List<String> getFavItem() {
         List<String> mList = new ArrayList<String>();
-        String selectQuery = "SELECT * FROM " + Const.TABLE_FAVORIT_LIST ;
+        String selectQuery = "SELECT * FROM " + Const.TABLE_FAVORIT_LIST;
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery(selectQuery, null);
         if (cursor.moveToFirst()) {
             do {
                 mList.add(cursor.getString(1));
+            } while (cursor.moveToNext());
+        }
+        return mList;
+    }
+
+    public String getIconSection(String itemName) {
+        String selectQuery = "SELECT * FROM " + Const.TABLE_SECTION_ORDER+ " INNER JOIN " +
+                Const.TABLE_DICTIONARY + " ON " + Const.TABLE_SECTION_ORDER + "." +
+                Const.ID_PRIMARY_KEY + " = " + Const.TABLE_DICTIONARY + "." + Const.ID_SECTION_ORDER
+                +" WHERE "+ Const.NAME_ITEM + "="+"'"+itemName+"'";
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(selectQuery, null);
+        if (cursor != null) {
+            cursor.moveToFirst();
+            return cursor.getString(3).toString();
+        }
+        return "unknown.png";
+    }
+    public boolean isFavorit(String itemName) {
+        String selectQuery = "SELECT * FROM " + Const.TABLE_FAVORIT_LIST
+                +" WHERE "+Const.NAME_ITEM + "="+"'"+itemName+"'";
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(selectQuery, null);
+        if (cursor != null) {
+            cursor.moveToFirst();
+            return true;
+        }
+        return false;
+    }
+    public List<ListModel> getList() {
+        List<ListModel> mList = new ArrayList<ListModel>();
+        String selectQuery = "SELECT  * FROM " + Const.TABLE_CURRENT_LIST;
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(selectQuery, null);
+        if (cursor.moveToFirst()) {
+            do {
+                ListModel listModel = new ListModel();
+                listModel.setCurrListId(Integer.parseInt(cursor.getString(0)));
+                listModel.setOrderNo(Integer.parseInt(cursor.getString(1)));
+                listModel.setItemName(cursor.getString(2));
+                listModel.setChecked(Integer.parseInt(cursor.getString(3)));
+                listModel.setQuantity(cursor.getString(4));
+                listModel.setListName(cursor.getString(5));
+                listModel.setListNo(Integer.parseInt(cursor.getString(6)));
+                mList.add(listModel);
             } while (cursor.moveToNext());
         }
         return mList;

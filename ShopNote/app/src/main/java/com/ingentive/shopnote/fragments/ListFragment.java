@@ -1,6 +1,7 @@
 package com.ingentive.shopnote.fragments;
 
 import android.app.ActionBar;
+import android.content.ClipData;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -19,6 +20,7 @@ import com.ingentive.shopnote.NameAdapter;
 import com.ingentive.shopnote.R;
 import com.ingentive.shopnote.adapters.ListAdapter;
 import com.ingentive.shopnote.adapters.NavigationDrawerAdapter;
+import com.ingentive.shopnote.model.CurrentListModel;
 import com.ingentive.shopnote.model.ListModel;
 import com.ingentive.shopnote.model.NavDrawerItemModel;
 
@@ -26,52 +28,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class ListFragment extends Fragment implements AdapterView.OnItemClickListener {
+public class ListFragment extends Fragment{
 
     ListView mListView;
-
-    public static int[] icons = {
-            R.drawable.grab_grabbed,
-            R.drawable.favorite_selected,
-            R.drawable.bakery,
-            R.drawable.dairy,
-            R.drawable.dry_goods
-    };
-
-    public static List<ListModel> getData() {
-        List<ListModel> data = new ArrayList<>();
-       /*int[] icons = {
-                R.drawable.grab_grabbed,
-                R.drawable.favorite_unselected,
-               R.drawable.tomato
-        };*/
-        String[] itemNames = {
-                "Bread",
-                "Milk",
-                "Careal"
-        };
-
-
-        for (int i = 0; i < itemNames.length; i++) {
-            ListModel listModel = new ListModel();
-            listModel.setIconOption(icons[0]);
-            listModel.setItemName(itemNames[i]);
-            listModel.setIconFavorit(icons[1]);
-            switch (itemNames[i]){
-                case "Bread":
-                    listModel.setIconSection(icons[2]);
-                    break;
-                case "Milk":
-                    listModel.setIconSection(icons[3]);
-                    break;
-                case "Careal":
-                    listModel.setIconSection(icons[4]);
-                    break;
-            }
-            data.add(listModel);
-        }
-        return data;
-    }
+    DatabaseHandler db;
 
     public ListFragment() {
         // Required empty public constructor
@@ -81,20 +41,22 @@ public class ListFragment extends Fragment implements AdapterView.OnItemClickLis
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
     }
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         View rootView =  inflater.inflate(R.layout.fragment_list, null);
         mListView = (ListView) rootView.findViewById(R.id.lv_list);
-        mListView.setAdapter(new ListAdapter(getActivity(), getData(), R.layout.custom_row_list));
-        mListView.setOnItemClickListener(this);
-        return rootView;
-    }
 
-    @Override
-    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        Toast.makeText(getActivity(), "Item: " + position, Toast.LENGTH_SHORT).show();
+        db = new DatabaseHandler(getActivity());
+       List<ListModel> currList = db.getList();
+        mListView.setAdapter(new ListAdapter(getActivity(), currList, R.layout.custom_row_list));
+        mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+                Toast.makeText(getActivity(), "Item: " , Toast.LENGTH_SHORT).show();
+            }
+        });
+        return rootView;
     }
 }

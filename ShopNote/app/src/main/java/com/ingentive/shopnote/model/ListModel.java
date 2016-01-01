@@ -4,61 +4,64 @@ package com.ingentive.shopnote.model;
  * Created by PC on 12/23/2015.
  */
 public class ListModel {
-    int listId;
-    int iconOption;
-    int iconFavorit;
-    int iconSection;
+    int currListId;
+    int orderNo;
+    int listNo;
+    int checked;
     String itemName;
-
+    String listName;
+    String quantity;
     public ListModel() {
 
     }
-
-    public ListModel(int listId, int iconOption, int iconFavorit, int iconSection ,String itemName) {
-        this.listId = listId;
-        this.iconOption = iconOption;
-        this.iconFavorit = iconFavorit;
-        this.iconSection = iconSection;
+    public ListModel(int currListId,int orderNo ,String itemName,int checked,String quantity,String listName, int listNo ) {
+        this.currListId = currListId;
+        this.orderNo = orderNo;
+        this.listNo = listNo;
         this.itemName = itemName;
+        this.quantity = quantity;
+        this.listName = listName;
+        this.checked = checked;
     }
-
-    public ListModel(int iconOption, int iconFavorit, int iconSection ,String itemName) {
-        this.iconOption = iconOption;
-        this.iconFavorit = iconFavorit;
-        this.iconSection = iconSection;
+    public ListModel(int orderNo ,String itemName,int checked,String quantity,String listName,int listNo) {
+        this.orderNo = orderNo;
         this.itemName = itemName;
+        this.checked = checked;
+        this.quantity = quantity;
+        this.listName = listName;
+        this.listNo = listNo;
     }
 
-    public int getIconOption() {
-        return iconOption;
+    public int getOrderNo() {
+        return orderNo;
     }
 
-    public void setIconOption(int iconOption) {
-        this.iconOption = iconOption;
+    public void setOrderNo(int orderNo) {
+        this.orderNo = orderNo;
     }
 
-    public int getListId() {
-        return listId;
+    public int getCurrListId() {
+        return currListId;
     }
 
-    public void setListId(int listId) {
-        this.listId = listId;
+    public void setCurrListId(int currListId) {
+        this.currListId = currListId;
     }
 
-    public int getIconFavorit() {
-        return iconFavorit;
+    public int getListNo() {
+        return listNo;
     }
 
-    public void setIconFavorit(int iconFavorit) {
-        this.iconFavorit = iconFavorit;
+    public void setListNo(int listNo) {
+        this.listNo = listNo;
     }
 
-    public int getIconSection() {
-        return iconSection;
+    public int getChecked() {
+        return checked;
     }
 
-    public void setIconSection(int iconSection) {
-        this.iconSection = iconSection;
+    public void setChecked(int checked) {
+        this.checked = checked;
     }
 
     public String getItemName() {
@@ -69,4 +72,19 @@ public class ListModel {
         this.itemName = itemName;
     }
 
+    public String getListName() {
+        return listName;
+    }
+
+    public void setListName(String listName) {
+        this.listName = listName;
+    }
+
+    public String getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(String quantity) {
+        this.quantity = quantity;
+    }
 }

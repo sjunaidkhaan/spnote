@@ -68,6 +68,7 @@ public class Const {
             + NAME_ITEM + " TEXT,"
             + NAME_CHECKED + " INTEGER,"
             + NAME_QUANTITY + " TEXT,"
+            + NAME_LIST_NAME + " TEXT,"
             + NAME_LIST_NO + " INTEGER" +")";
 
     // LIST INVENTORY TABLE

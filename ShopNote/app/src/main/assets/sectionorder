@@ -1,11 +1,11 @@
-1,Clothing,Clothing.png,1
-2,Household and Specialty,House.png,1
-3,Pharmacy,Pharmacy.png,1
-4,Produce,Produce.png,1
-5,Bakery,Bakery.png,1
-6,Packaged Foodstuff,Dry-Goods.png,1
-7,Beverages,Beverages.png,1
-8,Frozen Food,Freezer.png,1
-9,Dairy and Refridgerated,Dairy.png,1
-10,Meat and Seafood,Meat .png,1
-99,Unknown,Unknown.png,1
+1,Clothing,clothing.png,1
+2,Household and Specialty,house.png,1
+3,Pharmacy,pharmacy.png,1
+4,Produce,produce.png,1
+5,Bakery,bakery.png,1
+6,Packaged Foodstuff,dry_goods.png,1
+7,Beverages,beverages.png,1
+8,Frozen Food,freezer.png,1
+9,Dairy and Refridgerated,dairy.png,1
+10,Meat and Seafood,meat.png,1
+99,Unknown,unknown.png,1
