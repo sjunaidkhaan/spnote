@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.ingentive.shopnote.Contact;
@@ -77,12 +78,29 @@ public class DectionaryAdapter extends BaseAdapter {
         tvItemName.setText(data.get(postion).getItemName());
 
         if ( data.get(postion).getHistoryItem()==1 && data.get(postion).getFavItem()==1){
+            ivFavIcon.setVisibility(View.VISIBLE);
+            ivHistIcon.setVisibility(View.VISIBLE);
+
             ivFavIcon.setImageResource(data.get(postion).getFavIcon());
             ivHistIcon.setImageResource(data.get(postion).getHistoryIcon());
         }else if ( data.get(postion).getHistoryItem()==1 ){
+            ivFavIcon.setVisibility(View.GONE);
+            ivHistIcon.setVisibility(View.VISIBLE);
+
             ivHistIcon.setImageResource(data.get(postion).getHistoryIcon());
         }else if (data.get(postion).getFavItem()==1 ){
+            ivFavIcon.setVisibility(View.VISIBLE);
+            ivHistIcon.setVisibility(View.GONE);
+
+            //setting gravity
+            RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams)ivFavIcon.getLayoutParams();
+            params.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+            ivFavIcon.setLayoutParams(params);
+
             ivFavIcon.setImageResource(data.get(postion).getFavIcon());
+        }else{
+            ivFavIcon.setVisibility(View.GONE);
+            ivHistIcon.setVisibility(View.GONE);
         }
 
         return mView;

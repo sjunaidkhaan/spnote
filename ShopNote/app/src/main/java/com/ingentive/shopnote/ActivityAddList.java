@@ -30,6 +30,7 @@ import com.ingentive.shopnote.model.AddListModel;
 import com.ingentive.shopnote.model.DictionaryModel;
 import com.ingentive.shopnote.model.ListAddBasicModel;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -57,6 +58,9 @@ public class ActivityAddList extends AppCompatActivity {
     private List<String> historyList;
     private DectionaryAdapter mAdapter;
     private List<AddListModel> addListModels;
+    private ArrayList<DictionaryModel> tempFav = new ArrayList<>();
+    private ArrayList<DictionaryModel> tempHis = new ArrayList<>();
+    private ArrayList<DictionaryModel> tempDictionary = new ArrayList<>();
 
 
     @Override
@@ -109,35 +113,10 @@ public class ActivityAddList extends AppCompatActivity {
         //
 
 
-//        for (int i = 0; i < dicSearchList.size(); i++) {
-//            if (favoritList.contains(dicSearchList.get(i).getItemName().toString())) {
-//                dicSearchList.get(i).setFavItem(1);
-//            }
-//            if (historyList.contains(dicSearchList.get(i).getItemName().toString())) {
-//                dicSearchList.get(i).setHistoryItem(1);
-//            }
-//        }
-       /* for(int i= 0; i<dicSearchList.size();i++){
-            if(dicSearchList.get(i).getFavItem()==1 && dicSearchList.get(i).getHistoryItem()==1){
-                model.setItemName(dicSearchList.get(i).getItemName());
-                model.setFavIcon(dicSearchList.get(i).getFavIcon());
-                model.setHistoryIcon(dicSearchList.get(i).getHistoryIcon());
-                dicCurrentList.add(model);
-            }
-        }
-        mAdapter = new DectionaryAdapter(ActivityAddList.this, dicCurrentList, R.layout.custom_row_list_add_basic);
-        mListView.setAdapter(mAdapter);*/
+
         showData();
 
-        //adapter = new ArrayAdapter<String>(ActivityAddList.this, android.R.layout.simple_list_item_1, favoritList);
-        //mListView.setAdapter(adapter);
-        //mAdapter = new AddListAdapter(ActivityAddList.this, dicCurrentList, R.layout.custom_row_list_add_basic);
-        //mListView.setAdapter(mAdapter);
-        //get item names from dictionary table
-        //db = new DatabaseHandler(getApplication());
-        //dicSearchlist = new ArrayList<String>();
-        //dicSearchList = db.getDicItems();
-        //AlterAdapter();
+
         etSerch.addTextChangedListener(new TextWatcher() {
             // As the user types in the search field, the list is
             @Override
@@ -189,122 +168,58 @@ public class ActivityAddList extends AppCompatActivity {
             showData();
         } else {
             DictionaryModel dictionaryModel = new DictionaryModel();
-              dicCurrentList.clear();
-                    for (int i = 0; i < dicSearchList.size(); i++) {
-                        if (dicSearchList.get(i).getItemName().toString().toLowerCase().startsWith(etSerch.getText().toString().toLowerCase())) {
-//                            if (favoritList.contains(dicSearchList.get(i).getItemName())) {
-//                                Toast.makeText(getApplication(), "favorit  " + dicSearchList.get(i).getItemName(), Toast.LENGTH_LONG).show();
-//                                dictionaryModel.setItemName(dicSearchList.get(i).getItemName());
-//                                dictionaryModel.setFavIcon(dicSearchList.get(i).getFavIcon());
-//                                dicCurrentList.add(dictionaryModel);
-//                            }
-//                            if (historyList.contains(dicSearchList.get(i).getItemName()) && !dicCurrentList.contains(dicSearchList.get(i).getItemName())) {
-//                                dictionaryModel.setItemName(dicSearchList.get(i).getItemName());
-//                                dictionaryModel.setHistoryIcon(dicSearchList.get(i).getHistoryIcon());
-//                                dicCurrentList.add(dictionaryModel);
-//                            }
-//                            if (!dicCurrentList.contains(dicSearchList.get(i).getItemName())) {
-//                                dictionaryModel = new DictionaryModel();
-//                                dictionaryModel.setItemName(dicSearchList.get(i).getItemName());
-//                                dicCurrentList.add(dictionaryModel);
-//                            }
+            dicCurrentList.clear();
+            tempFav.clear();
+            tempHis.clear();
+            tempDictionary.clear();
+            for (int i = 0; i < dicSearchList.size(); i++) {
+                if (dicSearchList.get(i).getItemName().toString().toLowerCase().startsWith(etSerch.getText().toString().toLowerCase())) {
+                    //jk
 
-                            //jk
-                            dicCurrentList.add(dicSearchList.get(i));
-                            //jk
+                    if ( etSerch.getText().toString().length() == 1){
+
+                        if ( dicSearchList.get(i).getFavItem()==1 ){
+                            tempFav.add(dicSearchList.get(i));
+                            //dicCurrentList.add(dicSearchList.get(i));
+                        }
+                        if ( dicSearchList.get(i).getHistoryItem()== 1 && !(dicSearchList.get(i).getFavItem()==1)) {
+                            tempHis.add(dicSearchList.get(i));
+                            //dicCurrentList.add(dicSearchList.get(i));
+                        }
+                    }else if ( etSerch.getText().toString().length() == 2) {
+                        if ( dicSearchList.get(i).getFavItem()==1 ){
+                            tempFav.add(dicSearchList.get(i));
+                            //dicCurrentList.add(dicSearchList.get(i));
+                        }
+                        if ( dicSearchList.get(i).getHistoryItem()== 1 && !(dicSearchList.get(i).getFavItem()==1)) {
+                            tempHis.add(dicSearchList.get(i));
+                            //dicCurrentList.add(dicSearchList.get(i));
+                        }
+                        if (!(dicSearchList.get(i).getHistoryItem()== 1) && !(dicSearchList.get(i).getFavItem()==1)){
+                            tempDictionary.add(dicSearchList.get(i));
                         }
                     }
+                }
+            }
             //jk
+
+            for ( int i = 0; i < tempFav.size(); ++i ){
+                dicCurrentList.add(tempFav.get(i));
+            }
+            for ( int i = 0; i < tempHis.size(); ++i ){
+                dicCurrentList.add(tempHis.get(i));
+            }
+            for ( int i = 0; i < tempDictionary.size(); ++i ){
+                dicCurrentList.add(tempDictionary.get(i));
+            }
+
+
+
             mAdapter.notifyDataSetChanged();
             mAdapter = new DectionaryAdapter(ActivityAddList.this, dicCurrentList, R.layout.custom_row_list_add_basic);
             mListView.setAdapter(mAdapter);
             //
-                }
-
-
-
-        /*else {
-            DictionaryModel dictionaryModel = new DictionaryModel();
-            if (etSerch.getText().toString().length() == 1) {
-                Toast.makeText(getApplication(), "length " + etSerch.length(), Toast.LENGTH_LONG).show();
-                dicCurrentList.clear();
-                for (int i = 0; i < dicSearchList.size(); i++) {
-                    if (dicSearchList.get(i).getItemName().toString().toLowerCase().startsWith(etSerch.getText().toString().toLowerCase())) {
-                        if (favoritList.contains(dicSearchList.get(i).getItemName())&&!dicCurrentList.contains(dicSearchList.get(i).getItemName())) {
-                            Toast.makeText(getApplication(), "favoritList "+ dicSearchList.get(i).getItemName(), Toast.LENGTH_LONG).show();
-                            dictionaryModel.setFavItem(1);
-                            dictionaryModel.setHistoryItem(0);
-                            dictionaryModel.setItemName(dicSearchList.get(i).getItemName());
-                            dictionaryModel.setFavIcon(dicSearchList.get(i).getFavIcon());
-                            dicCurrentList.add(dictionaryModel);
-                            mAdapter = new DectionaryAdapter(ActivityAddList.this, dicCurrentList, R.layout.custom_row_list_add_basic);
-                            mListView.setAdapter(mAdapter);
-                        }
-                        if (historyList.contains(dicSearchList.get(i).getItemName()) && dicSearchList.get(i).getFavItem()==0) {
-                            //Toast.makeText(getApplication(), "historyList " + dicCurrentList.get(i).getItemName(), Toast.LENGTH_LONG).show();
-                            dictionaryModel.setHistoryItem(1);
-                            // new DictionaryModel(dicSearchList.get(i).getItemName(), dicSearchList.get(i).getFavIcon(), dicSearchList.get(i).getHistoryIcon());
-                            dictionaryModel.setItemName(dicSearchList.get(i).getItemName());
-                            dictionaryModel.setHistoryIcon(dicSearchList.get(i).getHistoryIcon());
-                            dicCurrentList.add(dictionaryModel);
-                            mAdapter = new DectionaryAdapter(ActivityAddList.this, dicCurrentList, R.layout.custom_row_list_add_basic);
-                            mListView.setAdapter(mAdapter);
-                            // Toast.makeText(getApplication(), "historyList " + dicCurrentList.get(i).getItemName(), Toast.LENGTH_LONG).show();
-                        }
-
-                        //Toast.makeText(getApplication(), "favoritList " + dicCurrentList.get(i).getItemName(), Toast.LENGTH_LONG).show();
-                    }
-                    /* if (dicSearchList.get(i).getItemName().toString().toLowerCase().startsWith(etSerch.getText().toString().toLowerCase())&&
-                            favoritList.get(i).toString().toLowerCase().startsWith(etSerch.getText().toString().toLowerCase())) {
-                        dictionaryModel.setFavItem(1);
-                        dictionaryModel.setHistoryItem(0);
-                        //ivHistory.setVisibility(View.GONE);
-                        //new DictionaryModel(favoritList.get(i), dicSearchList.get(i).getFavIcon(), dicSearchList.get(i).getHistoryIcon());
-                        dictionaryModel.setItemName(favoritList.get(i));
-                        dictionaryModel.setFavIcon(dicSearchList.get(i).getFavIcon());
-                        dicCurrentList.add(dictionaryModel);
-                        Toast.makeText(getApplication(), "favoritList " + dicCurrentList.get(i).getItemName(), Toast.LENGTH_LONG).show();
-                    }*/
-        //if (historyList.get(i).toString().toLowerCase().startsWith(etSerch.getText().toString().toLowerCase())) {
-
-        // }
-        //}
-           /* if (etSerch.getText().toString().length() == 2) {
-                Toast.makeText(getApplication(), "length " + etSerch.length(), Toast.LENGTH_LONG).show();
-                for (int i = 0; i < dicSearchList.size(); i++) {
-                    if (favoritList.contains(dicSearchList.get(i).getItemName().toString().toLowerCase().startsWith(etSerch.getText().toString().toLowerCase()))) {
-                        dicSearchList.get(i).setFavItem(1);
-                        ivHistory.setVisibility(View.GONE);
-                        dicCurrentList.add(dicSearchList.get(i));
-                    }
-                    if (historyList.contains(dicSearchList.get(i).getItemName().toString().toLowerCase().startsWith(etSerch.getText().toString().toLowerCase())
-                            && !dicCurrentList.contains(dicSearchList.get(i).getItemName().toString().toLowerCase().startsWith(etSerch.getText().toString().toLowerCase())))) {
-                        dicSearchList.get(i).setHistoryItem(1);
-                        ivHistory.setVisibility(View.VISIBLE);
-                        ivFavorit.setVisibility(View.GONE);
-                        dicCurrentList.add(dicSearchList.get(i));
-                    }
-                }
-                mAdapter.notifyDataSetChanged();
-                mAdapter = new DectionaryAdapter(ActivityAddList.this, dicCurrentList, R.layout.custom_row_list_add_basic);
-                mListView.setAdapter(mAdapter);
-            }*/
-
-                /*if (dicSearchList.get(i).getItemName().toString().toLowerCase().startsWith(etSerch.getText().toString().toLowerCase())) {
-                    dicCurrentList.add(dicSearchList.get(i));
-                }*/
-        // mAdapter.notifyDataSetChanged();
-        //mAdapter = new DectionaryAdapter(ActivityAddList.this, dicCurrentList, R.layout.custom_row_list_add_basic);
-        // mListView.setAdapter(mAdapter);
-        //}
-            /*
-             tvToolbarTitle.setVisibility(View.VISIBLE);
-                                edToolbarTitle.setVisibility(View.GONE);
-            if (historyList.contains(dicSearchList.get(i).getItemName()) && !dicCurrentList.contains(dicSearchList.get(i).getItemName())) {
-                        dicSearchList.get(i).setHistoryItem(1);
-                        dicCurrentList.add(dicSearchList.get(i));
-                    }
-             */
+        }
     }
 
     public void thirdDialog() {

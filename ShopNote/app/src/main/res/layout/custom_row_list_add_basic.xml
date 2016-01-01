@@ -18,6 +18,7 @@
         android:layout_toLeftOf="@+id/iv_add_list_history"
         android:layout_width="20dp"
         android:layout_height="20dp"
+        android:visibility="gone"
         />
     <ImageView
         android:id="@+id/iv_add_list_history"
@@ -27,6 +28,7 @@
         android:paddingLeft="2dp"
         android:layout_width="20dp"
         android:layout_height="20dp"
+        android:visibility="gone"
         />
 
 </RelativeLayout>
