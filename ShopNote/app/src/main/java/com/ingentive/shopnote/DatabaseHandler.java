@@ -142,7 +142,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     }
 
 
-    void addFavorit(FavoritListModel fav) {
+    public void addFavorit(FavoritListModel fav) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values;
         values = new ContentValues();
@@ -197,6 +197,13 @@ public class DatabaseHandler extends SQLiteOpenHelper {
             } while (cursor.moveToNext());
         }
         return mList;
+    }
+
+    public void removeFavorit(FavoritListModel fav) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        String query = "DELETE from " + Const.TABLE_FAVORIT_LIST  + " where " + Const.NAME_ITEM + "=" + "'" + fav.getItemName() + "'";
+        Log.d("QueryFavoriteDelete:" , query);
+        db.execSQL(query);
     }
 
     public List<String> getHistoryItems() {

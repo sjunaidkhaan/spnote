@@ -4,7 +4,7 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
+import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -20,18 +20,16 @@ import java.util.List;
 /**
  * Created by PC on 12/22/2015.
  */
-public class CurrentListAdapter extends BaseAdapter {
+public class CurrentListAdapter extends ArrayAdapter<CurrentListModel> {
 
     public List<CurrentListModel> data;
     public int res;
     public Context mContext;
     private static LayoutInflater inflater = null;
     public DatabaseHandler db;
-    TextView itemName;
-    int position;
-    ImageView ivOption, ivFavorit_selected,ivFavorit_unselected, ivSection;
 
     public CurrentListAdapter(Context context, List<CurrentListModel> dataC, int rowId) {
+        super(context,rowId,dataC);
 
         this.mContext = context;
         this.res = rowId;
@@ -40,95 +38,77 @@ public class CurrentListAdapter extends BaseAdapter {
     }
 
     @Override
-    public int getCount() {
-        return this.data.size();
-    }
-
-    @Override
-    public Object getItem(int i) {
-        return data.get(i);
-    }
-
-    @Override
-    public long getItemId(int i) {
-        return i;
-    }
-
-    @Override
-    public View getView(int postion, View rowView, ViewGroup parent) {
+    public View getView(final int postion, View rowView, ViewGroup parent) {
 
         View vi = rowView;
-        position = postion;
-        if (vi == null) {
-            vi = inflater.inflate(res, null);
-        }
+        LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        vi = inflater.inflate(R.layout.custom_row_list,parent, false);
 
+        final TextView itemName;
+        final ImageView ivOption, ivFavorit_selected, ivSection;
 
         itemName = (TextView) vi.findViewById(R.id.tvItemName);
         ivOption = (ImageView) vi.findViewById(R.id.ivOpt);
         ivFavorit_selected = (ImageView) vi.findViewById(R.id.ivFav_selected);
-        ivFavorit_unselected = (ImageView) vi.findViewById(R.id.ivFav_unselected);
         ivSection = (ImageView) vi.findViewById(R.id.ivSection);
-
-        vi.setOnClickListener( new View.OnClickListener() {
-            public void onClick(View v) {
-                String listValue = (String) itemName.getText();
-                Toast.makeText(mContext, ""+listValue, Toast.LENGTH_SHORT).show();
-            }
-        });
 
         itemName.setText(data.get(postion).getItemName());
         ivOption.setImageResource(R.drawable.grab_grabbed);
+        ivFavorit_selected.setImageResource(R.drawable.favorite_selected);
         db = new DatabaseHandler(mContext);
-        String iconSecton = db.getIconSection(data.get(postion).getItemName().toString());
-        db = new DatabaseHandler(mContext);
-        boolean itemIsFav = db.isFavorit(data.get(postion).getItemName().toString());
 
-        if (itemIsFav) {
-            ivFavorit_selected.setVisibility(View.GONE);
-            ivFavorit_unselected.setVisibility(View.VISIBLE);
-            ivFavorit_selected.setImageResource(data.get(position).getFavSelectedIcon());
-            ivFavorit_unselected.setImageResource(data.get(position).getFavUnselectedIcon());
-        }else {
-            ivFavorit_unselected.setVisibility(View.GONE);
-            ivFavorit_selected.setVisibility(View.VISIBLE);
-            ivFavorit_selected.setImageResource(data.get(position).getFavSelectedIcon());
-            ivFavorit_unselected.setImageResource(data.get(position).getFavUnselectedIcon());
+        boolean isFav = db.isFavorit(itemName.getText().toString());
+        if ( isFav ){
+            ivFavorit_selected.setImageResource(R.drawable.favorite_unselected);
         }
 
-
-
-        /* if ( data.get(postion).getHistoryItem()==1 && data.get(postion).getFavItem()==1){
-            ivFavIcon.setVisibility(View.VISIBLE);
-            ivHistIcon.setVisibility(View.VISIBLE);
-
-            ivFavIcon.setImageResource(data.get(postion).getFavIcon());
-            ivHistIcon.setImageResource(data.get(postion).getHistoryIcon());
-        }else if ( data.get(postion).getHistoryItem()==1 ){
-            ivFavIcon.setVisibility(View.GONE);
-            ivHistIcon.setVisibility(View.VISIBLE);
-
-            ivHistIcon.setImageResource(data.get(postion).getHistoryIcon());*/
-             ivFavorit_selected.setOnClickListener(new View.OnClickListener() {
+        ivOption.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(mContext, "fav image click"+position, Toast.LENGTH_SHORT).show();
-                ivFavorit_selected.setVisibility(View.GONE);
-                ivFavorit_unselected.setVisibility(View.VISIBLE);
-                ivFavorit_selected.setImageResource(data.get(position).getFavSelectedIcon());
-                ivFavorit_unselected.setImageResource(data.get(position).getFavUnselectedIcon());
+                Toast.makeText(mContext, "manu image click" + postion, Toast.LENGTH_SHORT).show();
             }
         });
-             ivFavorit_unselected.setOnClickListener(new View.OnClickListener() {
-                 @Override
-                 public void onClick(View v) {
-                     Toast.makeText(mContext, "fav image click"+position, Toast.LENGTH_SHORT).show();
-                     ivFavorit_selected.setVisibility(View.VISIBLE);
-                     ivFavorit_unselected.setVisibility(View.GONE);
-                     ivFavorit_selected.setImageResource(data.get(position).getFavSelectedIcon());
-                     ivFavorit_unselected.setImageResource(data.get(position).getFavUnselectedIcon());
-                 }
-             });
+        ivSection.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(mContext, "section image click" + postion, Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        ivFavorit_selected.setOnClickListener(new View.OnClickListener(
+        ) {
+            @Override
+            public void onClick(View v) {
+
+
+                Toast.makeText(mContext, "Favorite Clicked: "+ itemName.getText().toString() + ":" + postion, Toast.LENGTH_SHORT).show();
+
+                db = new DatabaseHandler(mContext);
+                boolean itemIsFav = db.isFavorit(data.get(postion).getItemName().toString());
+
+
+                if ( itemIsFav ){
+
+                    FavoritListModel remFavItem = new FavoritListModel();
+                    remFavItem.setItemName(itemName.getText().toString());
+
+                    ivFavorit_selected.setImageResource(R.drawable.favorite_selected);
+                    db.removeFavorit(remFavItem);
+
+                }else{
+
+                    FavoritListModel addFavItem = new FavoritListModel();
+                    addFavItem.setItemName(itemName.getText().toString());
+                    ivFavorit_selected.setImageResource(R.drawable.favorite_unselected);
+                    db.addFavorit(addFavItem);
+                }
+
+            }
+        });
+
+
+
+        String iconSecton = db.getIconSection(data.get(postion).getItemName().toString());
 
         switch (iconSecton) {
             case "clothing.png":
@@ -165,18 +145,7 @@ public class CurrentListAdapter extends BaseAdapter {
                 ivSection.setImageResource(R.drawable.unknown);
                 break;
         }
-        ivOption.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(mContext, "manu image click"+position, Toast.LENGTH_SHORT).show();
-            }
-        });
-        ivSection.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(mContext, "section image click"+position, Toast.LENGTH_SHORT).show();
-            }
-        });
+
 
         return vi;
     }

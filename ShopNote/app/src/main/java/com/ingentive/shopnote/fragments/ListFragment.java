@@ -51,13 +51,13 @@ public class ListFragment extends Fragment{
         db = new DatabaseHandler(getActivity());
        List<CurrentListModel> currList = db.getCurrList();
         mListView.setAdapter(new CurrentListAdapter(getActivity(), currList, R.layout.custom_row_list));
-        mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
-                Toast.makeText(getActivity(), "Item: " , Toast.LENGTH_SHORT).show();
-            }
-        });
+//        mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//            @Override
+//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+//
+//                Toast.makeText(getActivity(), "Item: " , Toast.LENGTH_SHORT).show();
+//            }
+//        });
         return rootView;
     }
 }
