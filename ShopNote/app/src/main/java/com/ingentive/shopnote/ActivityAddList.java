@@ -15,6 +15,8 @@ import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
@@ -27,6 +29,7 @@ import com.ingentive.shopnote.adapters.AddListAdapter;
 import com.ingentive.shopnote.adapters.DectionaryAdapter;
 import com.ingentive.shopnote.adapters.ListAddBasicAdapter;
 import com.ingentive.shopnote.model.AddListModel;
+import com.ingentive.shopnote.model.CurrentListModel;
 import com.ingentive.shopnote.model.DictionaryModel;
 import com.ingentive.shopnote.model.ListAddBasicModel;
 
@@ -44,7 +47,6 @@ public class ActivityAddList extends AppCompatActivity {
     private AlertDialog.Builder alertDialogBuilder;
     private SharedPreferences.Editor editor;
     private SharedPreferences mPrefs;
-    private DatabaseHandler db;
     public static String ADD_LIST_PREF = "AddListPref";
     private String list_add_intro_dialog = "list_add_intro";
     private ArrayList<String> historyItems;
@@ -61,6 +63,7 @@ public class ActivityAddList extends AppCompatActivity {
     private ArrayList<DictionaryModel> tempFav = new ArrayList<>();
     private ArrayList<DictionaryModel> tempHis = new ArrayList<>();
     private ArrayList<DictionaryModel> tempDictionary = new ArrayList<>();
+    public DatabaseHandler db;
 
 
     @Override
@@ -84,7 +87,6 @@ public class ActivityAddList extends AppCompatActivity {
             editor.putString(list_add_intro_dialog, "success");
             editor.commit();
         }
-
         //db = new DatabaseHandler(getApplication());
         //addList = db.getFavItem();
 
@@ -111,11 +113,49 @@ public class ActivityAddList extends AppCompatActivity {
             }
         }
         //
-
-
-
         showData();
 
+        mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view,int position, long id) {
+                //String item =  parent.getSelectedItem().toString();
+                String itemName =  dicCurrentList.get(position).getItemName().toString();
+                db = new DatabaseHandler(getApplication());
+                db.addCurrentList(new CurrentListModel(1,itemName,0,null,"My Firts Shopnote",1));
+                Toast.makeText(getApplicationContext(), "itemName  "+itemName, Toast.LENGTH_LONG).show();
+            }
+        });
+
+
+        etSerch.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (!hasFocus) {
+                    db = new DatabaseHandler(getApplication());
+                    db.addCurrentList(new CurrentListModel(1, etSerch.getText().toString(), 0, null, "My Firts Shopnote", 1));
+                    Toast.makeText(ActivityAddList.this, "in Focus " + etSerch.getText().toString(), Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+        etSerch.setOnEditorActionListener(
+                new EditText.OnEditorActionListener() {
+                    @Override
+                    public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                        if (actionId == EditorInfo.IME_ACTION_SEARCH ||
+                                actionId == EditorInfo.IME_ACTION_DONE ||
+                                event.getAction() == KeyEvent.ACTION_DOWN &&
+                                        event.getKeyCode() == KeyEvent.KEYCODE_ENTER) {
+                            if (!event.isShiftPressed()) {
+                                // the user is done typing.
+                                db = new DatabaseHandler(getApplication());
+                                db.addCurrentList(new CurrentListModel(1, etSerch.getText().toString(), 0, null, "My Firts Shopnote", 1));
+                                Toast.makeText(ActivityAddList.this, "in Editor " + etSerch.getText().toString(), Toast.LENGTH_SHORT).show();
+                                return true; // consume.
+                            }
+                        }
+                        return false; // pass on to other listeners.
+                    }
+                });
 
         etSerch.addTextChangedListener(new TextWatcher() {
             // As the user types in the search field, the list is
@@ -123,7 +163,6 @@ public class ActivityAddList extends AppCompatActivity {
             public void onTextChanged(CharSequence arg0, int arg1, int arg2, int arg3) {
                 //AlterAdapter();
             }
-
             // Not used for this program
             @Override
             public void afterTextChanged(Editable arg0) {
@@ -212,8 +251,6 @@ public class ActivityAddList extends AppCompatActivity {
             for ( int i = 0; i < tempDictionary.size(); ++i ){
                 dicCurrentList.add(tempDictionary.get(i));
             }
-
-
 
             mAdapter.notifyDataSetChanged();
             mAdapter = new DectionaryAdapter(ActivityAddList.this, dicCurrentList, R.layout.custom_row_list_add_basic);

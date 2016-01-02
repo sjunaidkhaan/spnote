@@ -8,13 +8,16 @@ public class CurrentListModel {
     int orderNo;
     int listNo;
     int checked;
+    int favSelectedIcon;
+    int favUnselectedIcon;
     String itemName;
     String listName;
     String quantity;
     public CurrentListModel() {
 
     }
-    public CurrentListModel(int currListId,int orderNo ,String itemName,int checked,String quantity,String listName, int listNo ) {
+    public CurrentListModel(int currListId,int orderNo ,String itemName,int checked, String quantity,
+                            String listName, int listNo,int favSelectedIcon,int favUnselectedIcon) {
         this.currListId = currListId;
         this.orderNo = orderNo;
         this.listNo = listNo;
@@ -22,14 +25,46 @@ public class CurrentListModel {
         this.quantity = quantity;
         this.listName = listName;
         this.checked = checked;
+        this.favSelectedIcon = favSelectedIcon;
+        this.favUnselectedIcon = favUnselectedIcon;
     }
-    public CurrentListModel(int orderNo ,String itemName,int checked,String quantity,String listName,int listNo) {
+    public CurrentListModel(int orderNo ,String itemName,int checked, String quantity,
+                            String listName, int listNo,int favSelectedIcon,int favUnselectedIcon) {
         this.orderNo = orderNo;
         this.itemName = itemName;
         this.checked = checked;
         this.quantity = quantity;
         this.listName = listName;
         this.listNo = listNo;
+        this.favSelectedIcon = favSelectedIcon;
+        this.favUnselectedIcon = favUnselectedIcon;
+
+    }
+    public CurrentListModel(int orderNo ,String itemName,int checked, String quantity,
+                            String listName, int listNo) {
+        this.orderNo = orderNo;
+        this.itemName = itemName;
+        this.checked = checked;
+        this.quantity = quantity;
+        this.listName = listName;
+        this.listNo = listNo;
+    }
+
+
+    public int getFavSelectedIcon() {
+        return favSelectedIcon;
+    }
+
+    public void setFavSelectedIcon(int favSelectedIcon) {
+        this.favSelectedIcon = favSelectedIcon;
+    }
+
+    public int getFavUnselectedIcon() {
+        return favUnselectedIcon;
+    }
+
+    public void setFavUnselectedIcon(int favUnselectedIcon) {
+        this.favUnselectedIcon = favUnselectedIcon;
     }
 
     public String getListName() {

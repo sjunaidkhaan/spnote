@@ -21,9 +21,16 @@
         android:textColor="@android:color/black" />
 
     <ImageView
-        android:id="@+id/ivFav"
+        android:id="@+id/ivFav_unselected"
         android:layout_width="30dp"
         android:layout_height="40dp"
+        android:visibility="gone"
+        android:layout_toLeftOf="@+id/ivSection"/>
+    <ImageView
+        android:id="@+id/ivFav_selected"
+        android:layout_width="30dp"
+        android:layout_height="40dp"
+        android:visibility="gone"
         android:layout_toLeftOf="@+id/ivSection"/>
 
     <ImageView

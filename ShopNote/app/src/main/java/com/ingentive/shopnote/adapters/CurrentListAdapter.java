@@ -1,7 +1,6 @@
 package com.ingentive.shopnote.adapters;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,7 +12,7 @@ import android.widget.Toast;
 import com.ingentive.shopnote.DatabaseHandler;
 import com.ingentive.shopnote.R;
 import com.ingentive.shopnote.model.CurrentListModel;
-import com.ingentive.shopnote.model.DictionaryModel;
+import com.ingentive.shopnote.model.FavoritListModel;
 import com.ingentive.shopnote.model.ListModel;
 
 import java.util.List;
@@ -21,17 +20,18 @@ import java.util.List;
 /**
  * Created by PC on 12/22/2015.
  */
-public class ListAdapter extends BaseAdapter {
+public class CurrentListAdapter extends BaseAdapter {
 
-    public List<ListModel> data;
+    public List<CurrentListModel> data;
     public int res;
     public Context mContext;
     private static LayoutInflater inflater = null;
     public DatabaseHandler db;
     TextView itemName;
+    int position;
     ImageView ivOption, ivFavorit_selected,ivFavorit_unselected, ivSection;
 
-    public ListAdapter(Context context, List<ListModel> dataC, int rowId) {
+    public CurrentListAdapter(Context context, List<CurrentListModel> dataC, int rowId) {
 
         this.mContext = context;
         this.res = rowId;
@@ -58,6 +58,7 @@ public class ListAdapter extends BaseAdapter {
     public View getView(int postion, View rowView, ViewGroup parent) {
 
         View vi = rowView;
+        position = postion;
         if (vi == null) {
             vi = inflater.inflate(res, null);
         }
@@ -86,9 +87,13 @@ public class ListAdapter extends BaseAdapter {
         if (itemIsFav) {
             ivFavorit_selected.setVisibility(View.GONE);
             ivFavorit_unselected.setVisibility(View.VISIBLE);
+            ivFavorit_selected.setImageResource(data.get(position).getFavSelectedIcon());
+            ivFavorit_unselected.setImageResource(data.get(position).getFavUnselectedIcon());
         }else {
-            ivFavorit_selected.setVisibility(View.VISIBLE);
             ivFavorit_unselected.setVisibility(View.GONE);
+            ivFavorit_selected.setVisibility(View.VISIBLE);
+            ivFavorit_selected.setImageResource(data.get(position).getFavSelectedIcon());
+            ivFavorit_unselected.setImageResource(data.get(position).getFavUnselectedIcon());
         }
 
 
@@ -107,17 +112,21 @@ public class ListAdapter extends BaseAdapter {
              ivFavorit_selected.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(mContext, "fav image click", Toast.LENGTH_SHORT).show();
+                Toast.makeText(mContext, "fav image click"+position, Toast.LENGTH_SHORT).show();
                 ivFavorit_selected.setVisibility(View.GONE);
                 ivFavorit_unselected.setVisibility(View.VISIBLE);
+                ivFavorit_selected.setImageResource(data.get(position).getFavSelectedIcon());
+                ivFavorit_unselected.setImageResource(data.get(position).getFavUnselectedIcon());
             }
         });
              ivFavorit_unselected.setOnClickListener(new View.OnClickListener() {
                  @Override
                  public void onClick(View v) {
-                     Toast.makeText(mContext, "fav image click", Toast.LENGTH_SHORT).show();
+                     Toast.makeText(mContext, "fav image click"+position, Toast.LENGTH_SHORT).show();
                      ivFavorit_selected.setVisibility(View.VISIBLE);
                      ivFavorit_unselected.setVisibility(View.GONE);
+                     ivFavorit_selected.setImageResource(data.get(position).getFavSelectedIcon());
+                     ivFavorit_unselected.setImageResource(data.get(position).getFavUnselectedIcon());
                  }
              });
 
@@ -159,13 +168,13 @@ public class ListAdapter extends BaseAdapter {
         ivOption.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(mContext, "manu image click", Toast.LENGTH_SHORT).show();
+                Toast.makeText(mContext, "manu image click"+position, Toast.LENGTH_SHORT).show();
             }
         });
         ivSection.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(mContext, "section image click", Toast.LENGTH_SHORT).show();
+                Toast.makeText(mContext, "section image click"+position, Toast.LENGTH_SHORT).show();
             }
         });
 

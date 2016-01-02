@@ -91,7 +91,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         db.insert(Const.TABLE_SECTION_ORDER, null, values);
     }
 
-    void addCurrentList(CurrentListModel curr) {
+    /*void addCurrentList(CurrentListModel curr) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values;
         values = new ContentValues();
@@ -102,8 +102,26 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         values.put(Const.NAME_LIST_NAME, curr.getListName());
         values.put(Const.NAME_LIST_NO, curr.getListNo());
         db.insert(Const.TABLE_CURRENT_LIST, null, values);
-    }
+    }*/
+    void addCurrentList(CurrentListModel curr) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        long rows = 0;
+        values.put(Const.NAME_SECTION_ORDER_NO, curr.getOrderNo());
+        values.put(Const.NAME_ITEM, curr.getItemName());
+        values.put(Const.NAME_CHECKED, curr.getChecked());
+        values.put(Const.NAME_QUANTITY, curr.getQuantity());
+        values.put(Const.NAME_LIST_NAME, curr.getListName());
+        values.put(Const.NAME_LIST_NO, curr.getListNo());
+        String sqlQuery = "SELECT * FROM " + Const.TABLE_CURRENT_LIST + " WHERE " +Const.NAME_ITEM
+                + " = " + "'"+ curr.getItemName() + "'";
+        Cursor c = db.rawQuery(sqlQuery, null);
+        if (c != null && c.getCount() != 0) {
 
+        } else {
+            db.insert(Const.TABLE_CURRENT_LIST, null, values);
+        }
+    }
     void addInventry(InventoryModel invent) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values;
@@ -157,6 +175,13 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         db.update(Const.TABLE_CURRENT_LIST,
                 values, Const.NAME_LIST_NAME + " = ?",
                 new String[]{String.valueOf(listName)});
+    }
+    void makeFav(String itemName) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values;
+        values = new ContentValues();
+        values.put(Const.NAME_ITEM, itemName);
+        db.insert(Const.TABLE_FAVORIT_LIST, null, values);
     }
 
     public List<String> getFavItems() {
@@ -269,14 +294,14 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                 +" WHERE "+ Const.NAME_ITEM + "="+"'"+itemName+"'";
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery(selectQuery, null);
-        if (cursor != null) {
+        if (cursor != null && cursor.getCount() != 0) {
             cursor.moveToFirst();
             return cursor.getString(3).toString();
         }
         return "unknown.png";
     }
     public boolean isFavorit(String itemName) {
-        String selectQuery = "SELECT * FROM " + Const.TABLE_FAVORIT_LIST
+        /*String selectQuery = "SELECT * FROM " + Const.TABLE_FAVORIT_LIST
                 +" WHERE "+Const.NAME_ITEM + "="+"'"+itemName+"'";
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery(selectQuery, null);
@@ -285,23 +310,37 @@ public class DatabaseHandler extends SQLiteOpenHelper {
             return true;
         }
         return false;
+        */
+
+        String sqlQuery = "SELECT * FROM " + Const.TABLE_FAVORIT_LIST + " WHERE " +Const.NAME_ITEM
+                + " = " + "'"+ itemName + "'";
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor c = db.rawQuery(sqlQuery, null);
+        if (c != null && c.getCount() != 0) {
+            return true;
+        } else {
+            return false;
+        }
+        //return false;
     }
-    public List<ListModel> getList() {
-        List<ListModel> mList = new ArrayList<ListModel>();
+    public List<CurrentListModel> getCurrList() {
+        List<CurrentListModel> mList = new ArrayList<CurrentListModel>();
         String selectQuery = "SELECT  * FROM " + Const.TABLE_CURRENT_LIST;
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery(selectQuery, null);
         if (cursor.moveToFirst()) {
             do {
-                ListModel listModel = new ListModel();
-                listModel.setCurrListId(Integer.parseInt(cursor.getString(0)));
-                listModel.setOrderNo(Integer.parseInt(cursor.getString(1)));
-                listModel.setItemName(cursor.getString(2));
-                listModel.setChecked(Integer.parseInt(cursor.getString(3)));
-                listModel.setQuantity(cursor.getString(4));
-                listModel.setListName(cursor.getString(5));
-                listModel.setListNo(Integer.parseInt(cursor.getString(6)));
-                mList.add(listModel);
+                CurrentListModel currModel = new CurrentListModel();
+                currModel.setCurrListId(Integer.parseInt(cursor.getString(0)));
+                currModel.setOrderNo(Integer.parseInt(cursor.getString(1)));
+                currModel.setItemName(cursor.getString(2));
+                currModel.setChecked(Integer.parseInt(cursor.getString(3)));
+                currModel.setQuantity(cursor.getString(4));
+                currModel.setListName(cursor.getString(5));
+                currModel.setListNo(Integer.parseInt(cursor.getString(6)));
+                currModel.setFavUnselectedIcon(R.drawable.favorite_unselected);
+                currModel.setFavSelectedIcon(R.drawable.favorite_selected);
+                mList.add(currModel);
             } while (cursor.moveToNext());
         }
         return mList;

@@ -85,7 +85,7 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
             * has valid values.
             */
                 if (!hasFocus) {
-                    db.changeListName(edToolbarTitle.getText().toString());
+                   // db.changeListName(edToolbarTitle.getText().toString());
                     Toast.makeText(MainActivity.this, "in Focus "+edToolbarTitle.getText().toString(), Toast.LENGTH_SHORT).show();
                     tvToolbarTitle.setText(edToolbarTitle.getText().toString());
                     tvToolbarTitle.setVisibility(View.VISIBLE);
@@ -104,7 +104,7 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
                                         event.getKeyCode() == KeyEvent.KEYCODE_ENTER) {
                             if (!event.isShiftPressed()) {
                                 // the user is done typing.
-                                db.changeListName(edToolbarTitle.getText().toString());
+                                //db.changeListName(edToolbarTitle.getText().toString());
                                 Toast.makeText(MainActivity.this, "in Editor "+edToolbarTitle.getText().toString(), Toast.LENGTH_SHORT).show();
                                 tvToolbarTitle.setText(edToolbarTitle.getText().toString());
                                 tvToolbarTitle.setVisibility(View.VISIBLE);
@@ -137,16 +137,16 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
                 PlayWithRawFiles(fileName);
                 fileName = "sectionorder";
                 PlayWithRawFiles(fileName);
-                fileName = "currentlist";
-                PlayWithRawFiles(fileName);
-                fileName = "favoritlist";
-                PlayWithRawFiles(fileName);
+                //fileName = "currentlist";
+                //PlayWithRawFiles(fileName);
+                //fileName = "favoritlist";
+                //PlayWithRawFiles(fileName);
                 fileName = "inventrylist";
                 PlayWithRawFiles(fileName);
                 fileName = "settinglist";
                 PlayWithRawFiles(fileName);
-                fileName = "historylist";
-                PlayWithRawFiles(fileName);
+               // fileName = "historylist";
+                //PlayWithRawFiles(fileName);
                 fileName = "screentextlist";
                 PlayWithRawFiles(fileName);
             }
