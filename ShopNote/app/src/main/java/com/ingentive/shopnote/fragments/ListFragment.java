@@ -28,7 +28,7 @@ import com.ingentive.shopnote.model.NavDrawerItemModel;
 import java.util.ArrayList;
 import java.util.List;
 
-
+//jk
 public class ListFragment extends Fragment{
 
     ListView mListView;

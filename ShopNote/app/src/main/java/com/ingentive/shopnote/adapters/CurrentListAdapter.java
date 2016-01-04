@@ -20,6 +20,7 @@ import java.util.List;
 /**
  * Created by PC on 12/22/2015.
  */
+ //jk
 public class CurrentListAdapter extends ArrayAdapter<CurrentListModel> {
 
     public List<CurrentListModel> data;

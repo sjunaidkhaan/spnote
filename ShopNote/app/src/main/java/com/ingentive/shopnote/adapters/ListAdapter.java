@@ -66,7 +66,6 @@ public class ListAdapter extends BaseAdapter {
         itemName = (TextView) vi.findViewById(R.id.tvItemName);
         ivOption = (ImageView) vi.findViewById(R.id.ivOpt);
         ivFavorit_selected = (ImageView) vi.findViewById(R.id.ivFav_selected);
-        ivFavorit_unselected = (ImageView) vi.findViewById(R.id.ivFav_unselected);
         ivSection = (ImageView) vi.findViewById(R.id.ivSection);
 
         vi.setOnClickListener( new View.OnClickListener() {

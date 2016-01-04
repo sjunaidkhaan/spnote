@@ -23,7 +23,7 @@ import com.ingentive.shopnote.model.SettingModel;
 
 import java.util.ArrayList;
 import java.util.List;
-
+//jk
 /**
  * Created by PC on 12/22/2015.
  */
