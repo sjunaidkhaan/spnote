@@ -7,8 +7,8 @@
 
     <ImageView
         android:id="@+id/ivOpt"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
         android:layout_alignParentLeft="true" />
     <EditText
         android:id="@+id/etQuantity"
@@ -41,14 +41,14 @@
 
     <ImageView
         android:id="@+id/ivFav_selected"
-        android:layout_width="32px"
-        android:layout_height="32px"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
         android:layout_toLeftOf="@+id/iv_Section"/>
 
     <ImageView
         android:id="@+id/iv_Section"
-        android:layout_width="32px"
-        android:layout_height="32px"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
         android:layout_alignParentRight="true" />
 
 </RelativeLayout>
