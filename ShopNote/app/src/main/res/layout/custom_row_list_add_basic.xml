@@ -16,8 +16,8 @@
     <ImageView
         android:id="@+id/iv_add_list_fav"
         android:layout_toLeftOf="@+id/iv_add_list_history"
-        android:layout_width="20dp"
-        android:layout_height="20dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:visibility="gone"
         />
     <ImageView
@@ -26,8 +26,8 @@
         android:paddingTop="5dp"
         android:paddingRight="2dp"
         android:paddingLeft="2dp"
-        android:layout_width="20dp"
-        android:layout_height="20dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:visibility="gone"
         />
 

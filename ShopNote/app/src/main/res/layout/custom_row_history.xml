@@ -17,14 +17,14 @@
 
     <ImageView
         android:id="@+id/iv_fav_histor"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_toLeftOf="@+id/iv_add_history"/>
 
     <ImageView
         android:id="@+id/iv_add_history"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_alignParentRight="true" />
 
 </RelativeLayout>
