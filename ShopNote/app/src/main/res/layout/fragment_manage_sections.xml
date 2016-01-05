@@ -2,14 +2,45 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context="com.ingentive.shopnote.fragments.ManageSectionsFragment">
 
-    <TextView
-        android:layout_width="wrap_content"
+    <ListView
+        android:id="@+id/lv_manage_section"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:text="Manage Sections"
-        android:textSize="40dp"
-        android:textStyle="bold" />
+        android:layout_alignParentTop="true" />
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="40dp"
+        android:layout_alignParentBottom="true"
+        android:background="@color/colorPrimary"
+        android:orientation="horizontal"
+        android:padding="10dp"
+        android:weightSum="3">
+
+        <EditText
+            android:id="@+id/et_add_manage_section"
+            android:layout_width="0dp"
+            android:layout_height="30dp"
+            android:layout_alignParentBottom="true"
+            android:layout_below="@+id/lv_manage_section"
+            android:layout_weight="2"
+            android:gravity="center_vertical"
+            android:layout_gravity="center_vertical"
+            android:background="@android:color/white" />
+
+        <Button
+            android:id="@+id/btn_add_manage_section"
+            android:layout_width="0dp"
+            android:layout_height="fill_parent"
+            android:layout_alignParentBottom="true"
+            android:layout_below="@+id/lv_manage_section"
+            android:layout_weight="1"
+            android:background="@color/colorPrimary"
+            android:text="@string/btn_manage_section"
+            android:textColor="@android:color/white" />
+    </LinearLayout>
 
 </RelativeLayout>

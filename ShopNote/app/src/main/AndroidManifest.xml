@@ -15,12 +15,15 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".ActivityAddList">
+        <activity android:name=".ActivityAddList">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.ingentive.shopnote.MainActivity" />
+        </activity>
+        <activity android:name=".ActivityFavoritesSearch">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.ingentive.shopnote.MainActivity" />
         </activity>
     </application>
-
 </manifest>

@@ -17,6 +17,7 @@ import com.ingentive.shopnote.model.HistoryModel;
 import com.ingentive.shopnote.model.InventoryModel;
 import com.ingentive.shopnote.model.ListAddBasicModel;
 import com.ingentive.shopnote.model.ListModel;
+import com.ingentive.shopnote.model.ManageSectionModel;
 import com.ingentive.shopnote.model.ScreenTextModel;
 import com.ingentive.shopnote.model.SectionModel;
 import com.ingentive.shopnote.model.SettingModel;
@@ -103,7 +104,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         values.put(Const.NAME_LIST_NO, curr.getListNo());
         db.insert(Const.TABLE_CURRENT_LIST, null, values);
     }*/
-    void addCurrentList(CurrentListModel curr) {
+    public void addCurrentList(CurrentListModel curr) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
         long rows = 0;
@@ -117,9 +118,23 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                 + " = " + "'"+ curr.getItemName() + "'";
         Cursor c = db.rawQuery(sqlQuery, null);
         if (c != null && c.getCount() != 0) {
-
+            Log.d("addCurrentList ","item already exit ");
         } else {
             db.insert(Const.TABLE_CURRENT_LIST, null, values);
+        }
+    }
+    void addDictionaryNewItem(DictionaryModel dic) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(Const.NAME_ITEM, dic.getItemName());
+        values.put(Const.ID_SECTION_ORDER, dic.getSectionId());
+        String sqlQuery = "SELECT * FROM " + Const.TABLE_DICTIONARY+ " WHERE " +Const.NAME_ITEM
+                + " = " + "'"+ dic.getItemName() + "'";
+        Cursor c = db.rawQuery(sqlQuery, null);
+        if (c != null && c.getCount() != 0) {
+
+        } else {
+            db.insert(Const.TABLE_DICTIONARY, null, values);
         }
     }
     void addInventry(InventoryModel invent) {
@@ -148,6 +163,15 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         values = new ContentValues();
         values.put(Const.NAME_ITEM, fav.getItemName());
         db.insert(Const.TABLE_FAVORIT_LIST, null, values);
+    }
+    public void addNewSection(SectionModel section) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(Const.NAME_SECTION_ORDER_NO, section.getSectionOrderNo());
+        values.put(Const.NAME_SECTION_ORDER, section.getSectionName());
+        values.put(Const.IMAGE_SECTION_ORDER, section.getSectionImage());
+        values.put(Const.DEFAULT_SECTION_ORDER, section.getDefaultSection());
+        db.insert(Const.TABLE_SECTION_ORDER, null, values);
     }
 
     void addSetting(SettingModel setting) {
@@ -294,6 +318,21 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         return mList;
     }
 
+    public List<ManageSectionModel> getSectionData() {
+        List<ManageSectionModel> secList = new ArrayList<ManageSectionModel>();
+        String selectQuery = "SELECT * FROM " + Const.TABLE_SECTION_ORDER;
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(selectQuery, null);
+        if (cursor.moveToFirst()) {
+            do {
+                ManageSectionModel secModel = new ManageSectionModel();
+                secModel.setSectionName(cursor.getString(2));
+                secModel.setOptionIcon(cursor.getString(3));
+                secList.add(secModel);
+            } while (cursor.moveToNext());
+        }
+        return secList;
+    }
     public String getIconSection(String itemName) {
         String selectQuery = "SELECT * FROM " + Const.TABLE_SECTION_ORDER+ " INNER JOIN " +
                 Const.TABLE_DICTIONARY + " ON " + Const.TABLE_SECTION_ORDER + "." +
@@ -342,7 +381,13 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                 currModel.setOrderNo(Integer.parseInt(cursor.getString(1)));
                 currModel.setItemName(cursor.getString(2));
                 currModel.setChecked(Integer.parseInt(cursor.getString(3)));
-                currModel.setQuantity(cursor.getString(4));
+
+                String str = cursor.getString(4);
+                if (str == null || str.isEmpty() || str.equalsIgnoreCase("null")){
+                    currModel.setQuantity("1");
+                }else{
+                    currModel.setQuantity(cursor.getString(4));
+                }
                 currModel.setListName(cursor.getString(5));
                 currModel.setListNo(Integer.parseInt(cursor.getString(6)));
                 currModel.setFavUnselectedIcon(R.drawable.favorite_unselected);
@@ -351,6 +396,46 @@ public class DatabaseHandler extends SQLiteOpenHelper {
             } while (cursor.moveToNext());
         }
         return mList;
+    }
+    public List<FavoritListModel> getFavList() {
+        List<FavoritListModel> favList = new ArrayList<FavoritListModel>();
+        String selectQuery = "SELECT  * FROM " + Const.TABLE_FAVORIT_LIST;
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(selectQuery, null);
+        if (cursor.moveToFirst()) {
+            do {
+                FavoritListModel favModel = new FavoritListModel();
+                favModel.setFavListId(Integer.parseInt(cursor.getString(0)));
+                favModel.setItemName(cursor.getString(1));
+                favList.add(favModel);
+            } while (cursor.moveToNext());
+        }
+        return favList;
+    }
+    public List<HistoryModel> getHistory() {
+        List<HistoryModel> histList = new ArrayList<HistoryModel>();
+        String selectQuery = "SELECT  * FROM " + Const.TABLE_HISTORY;
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(selectQuery, null);
+        if (cursor.moveToFirst()) {
+            do {
+                HistoryModel histModel = new HistoryModel();
+                histModel.setHistoryId(Integer.parseInt(cursor.getString(0)));
+                histModel.setDatePurchased(cursor.getString(1));
+                histModel.setItemName(cursor.getString(2));
+                histModel.setQuantity(cursor.getString(3));
+                histList.add(histModel);
+            } while (cursor.moveToNext());
+        }
+        return histList;
+    }
+
+    public int updateQuantity(CurrentListModel curr) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(Const.NAME_QUANTITY, curr.getQuantity());
+        return db.update(Const.TABLE_CURRENT_LIST, values, Const.ID_PRIMARY_KEY + " = ?",
+                new String[]{String.valueOf(curr.getCurrListId())});
     }
     /*public List<AddListModel> getFavItem() {
         List<AddListModel> mList = new ArrayList<AddListModel>();

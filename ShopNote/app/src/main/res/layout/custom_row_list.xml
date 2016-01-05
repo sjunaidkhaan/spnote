@@ -2,34 +2,53 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/custom_row_list"
     android:layout_width="wrap_content"
-    android:layout_height="40dp"
+    android:layout_height="30dp"
     android:background="@drawable/row_border_blue">
 
     <ImageView
         android:id="@+id/ivOpt"
         android:layout_width="30dp"
-        android:layout_height="40dp"
-        android:layout_alignParentLeft="true"  />
+        android:layout_height="30dp"
+        android:layout_alignParentLeft="true" />
+    <EditText
+        android:id="@+id/etQuantity"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:visibility="gone"
+        android:background="#ADD8E6"
+        android:layout_toRightOf="@id/ivOpt"
+        android:textColor="@android:color/black"
+        android:layout_alignParentLeft="true" />
+
 
     <TextView
-        android:id="@+id/tvItemName"
-        android:layout_width="wrap_content"
-        android:layout_height="40dp"
+        android:id="@+id/tvQuantity"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:visibility="gone"
         android:layout_gravity="center_vertical"
         android:gravity="center_vertical"
-        android:layout_toRightOf="@id/ivOpt"
+        android:layout_toRightOf="@id/etQuantity"
+        android:textColor="@android:color/black" />
+    <TextView
+        android:id="@+id/tvItem_Name"
+        android:layout_width="wrap_content"
+        android:layout_height="30dp"
+        android:layout_gravity="center_vertical"
+        android:gravity="center_vertical"
+        android:layout_toRightOf="@id/tvQuantity"
         android:textColor="@android:color/black" />
 
     <ImageView
         android:id="@+id/ivFav_selected"
         android:layout_width="30dp"
-        android:layout_height="40dp"
-        android:layout_toLeftOf="@+id/ivSection"/>
+        android:layout_height="30dp"
+        android:layout_toLeftOf="@+id/iv_Section"/>
 
     <ImageView
-        android:id="@+id/ivSection"
+        android:id="@+id/iv_Section"
         android:layout_width="30dp"
-        android:layout_height="40dp"
+        android:layout_height="30dp"
         android:layout_alignParentRight="true" />
 
 </RelativeLayout>

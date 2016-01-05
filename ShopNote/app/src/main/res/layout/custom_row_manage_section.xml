@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/custom_row_list"
+    android:layout_width="wrap_content"
+    android:layout_height="30dp"
+    android:background="@drawable/row_border_blue">
+
+    <ImageView
+        android:id="@+id/ivOpt_ms"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_alignParentLeft="true" />
+
+    <TextView
+        android:id="@+id/tvSectionName_ms"
+        android:layout_width="wrap_content"
+        android:layout_height="30dp"
+        android:layout_gravity="center_vertical"
+        android:gravity="center_vertical"
+        android:layout_toRightOf="@id/ivOpt_ms"
+        android:textColor="@android:color/black" />
+
+    <ImageView
+        android:id="@+id/ivSection_ms"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_alignParentRight="true" />
+
+</RelativeLayout>

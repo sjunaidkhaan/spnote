@@ -42,6 +42,7 @@ public class ActivityAddList extends AppCompatActivity {
     private Toolbar mToolbar;
     private ListView mListView;
     private EditText etSerch;
+    private TextView tvPopulerItems;
     private ImageView ivFavorit, ivHistory;
     private AlertDialog.Builder builder1;
     private AlertDialog.Builder alertDialogBuilder;
@@ -73,6 +74,7 @@ public class ActivityAddList extends AppCompatActivity {
         mToolbar = (Toolbar) findViewById(R.id.toolbar_listadd);
         ivFavorit = (ImageView) findViewById(R.id.iv_add_list_fav);
         ivHistory = (ImageView) findViewById(R.id.iv_add_list_history);
+        tvPopulerItems = (TextView) findViewById(R.id.tv_populer_items);
 
         setSupportActionBar(mToolbar);
         getSupportActionBar().setHomeButtonEnabled(true);
@@ -121,7 +123,7 @@ public class ActivityAddList extends AppCompatActivity {
                 //String item =  parent.getSelectedItem().toString();
                 String itemName =  dicCurrentList.get(position).getItemName().toString();
                 db = new DatabaseHandler(getApplication());
-                db.addCurrentList(new CurrentListModel(1,itemName,0,null,"My Firts Shopnote",1));
+                db.addCurrentList(new CurrentListModel(1, itemName, 0, null, "My Firts Shopnote", 1));
                 Toast.makeText(getApplicationContext(), "itemName  "+itemName, Toast.LENGTH_LONG).show();
             }
         });
@@ -133,6 +135,8 @@ public class ActivityAddList extends AppCompatActivity {
                 if (!hasFocus) {
                     db = new DatabaseHandler(getApplication());
                     db.addCurrentList(new CurrentListModel(1, etSerch.getText().toString(), 0, null, "My Firts Shopnote", 1));
+                    db = new DatabaseHandler(getApplication());
+                    db.addDictionaryNewItem(new DictionaryModel(etSerch.getText().toString(), 11));
                     Toast.makeText(ActivityAddList.this, "in Focus " + etSerch.getText().toString(), Toast.LENGTH_SHORT).show();
                 }
             }
@@ -149,6 +153,8 @@ public class ActivityAddList extends AppCompatActivity {
                                 // the user is done typing.
                                 db = new DatabaseHandler(getApplication());
                                 db.addCurrentList(new CurrentListModel(1, etSerch.getText().toString(), 0, null, "My Firts Shopnote", 1));
+                                db = new DatabaseHandler(getApplication());
+                                db.addDictionaryNewItem(new DictionaryModel(etSerch.getText().toString(), 11));
                                 Toast.makeText(ActivityAddList.this, "in Editor " + etSerch.getText().toString(), Toast.LENGTH_SHORT).show();
                                 return true; // consume.
                             }
@@ -197,6 +203,7 @@ public class ActivityAddList extends AppCompatActivity {
         }
         mAdapter = new DectionaryAdapter(ActivityAddList.this, dicCurrentList, R.layout.custom_row_list_add_basic);
         mListView.setAdapter(mAdapter);
+        //tvPopulerItems.setVisibility(View.VISIBLE);
     }
 
     // Filters list of contacts based on user search criteria. If no information is filled in, contact list will be blank.
@@ -206,6 +213,7 @@ public class ActivityAddList extends AppCompatActivity {
             mAdapter.notifyDataSetChanged();
             showData();
         } else {
+            tvPopulerItems.setVisibility(View.GONE);
             DictionaryModel dictionaryModel = new DictionaryModel();
             dicCurrentList.clear();
             tempFav.clear();
@@ -291,6 +299,9 @@ public class ActivityAddList extends AppCompatActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_add) {
+            return true;
+        }
+        if (id == R.id.action_search) {
             return true;
         }
         return super.onOptionsItemSelected(item);

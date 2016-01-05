@@ -7,6 +7,27 @@ public class SectionModel {
 
     int sectionId;
     int sectionOrderNo;
+
+    public void setSectionName(String sectionName) {
+        this.sectionName = sectionName;
+    }
+
+    public void setSectionId(int sectionId) {
+        this.sectionId = sectionId;
+    }
+
+    public void setSectionOrderNo(int sectionOrderNo) {
+        this.sectionOrderNo = sectionOrderNo;
+    }
+
+    public void setSectionImage(String sectionImage) {
+        this.sectionImage = sectionImage;
+    }
+
+    public void setDefaultSection(int defaultSection) {
+        this.defaultSection = defaultSection;
+    }
+
     String sectionName;
     String sectionImage;
 

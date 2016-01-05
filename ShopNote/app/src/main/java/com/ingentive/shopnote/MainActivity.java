@@ -25,6 +25,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.ingentive.shopnote.constents.Const;
+import com.ingentive.shopnote.fragments.FavoritsFragment;
 import com.ingentive.shopnote.fragments.FeedbackFragment;
 import com.ingentive.shopnote.fragments.ManageSectionsFragment;
 import com.ingentive.shopnote.fragments.MyFirstNoteFragment;
@@ -117,8 +118,15 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
                 });
         //
         try {
-            db = new DatabaseHandler(this);
-//            db.addHistory(new HistoryModel("2015-12-31", "Baby Clothes",null));
+            /*db = new DatabaseHandler(this);
+            db.addHistory(new HistoryModel("Sun,Nov 22", "Bananas",null));
+            db.addHistory(new HistoryModel("Sun,Nov 22", "Kleenex",null));
+            db.addHistory(new HistoryModel("Sun,Nov 22", "Onions",null));
+            db.addHistory(new HistoryModel("Sun,Nov 22", "Papers",null));
+            db.addHistory(new HistoryModel("Fri,Oct 23", "Kleenex",null));
+            db.addHistory(new HistoryModel("Fri,Oct 23", "Onions",null));
+            db.addHistory(new HistoryModel("Fri,Oct 23", "Jello",null));*/
+
 //            db = new DatabaseHandler(this);
 //            db.addHistory(new HistoryModel("2015-12-31", "Tshirt",null));
 //            db.addFavorit(new FavoritListModel("Jacket"));
@@ -163,8 +171,17 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
 
         drawerFragment.setUp(R.id.fragment_navigation_drawer, (DrawerLayout) findViewById(R.id.drawer_layout), mToolbar);
         drawerFragment.setDrawerListener(this);
-        displayView(3);
-        MyFirstNoteFragment fragment = new MyFirstNoteFragment();
+
+        if ( !ActivityFavoritesSearch.fromFavoriteBackHit ){
+            displayView(3);
+            MyFirstNoteFragment fragment = new MyFirstNoteFragment();
+
+        }else{
+            MyFirstNoteFragment fragment = new MyFirstNoteFragment();
+            fragment.setTargetFragment(new FavoritsFragment(),2);
+        }
+
+
 
         prefs = getSharedPreferences(MyPREFERENCES, MODE_PRIVATE);
         String restoredText = prefs.getString(first_time_dialog, null);
@@ -219,8 +236,17 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
-        Intent mIntent = new Intent(getApplication(),ActivityAddList.class);
-        startActivity(mIntent);
+        Intent mIntent;
+        switch (id){
+            case R.id.action_add:
+                mIntent = new Intent(getApplication(),ActivityAddList.class);
+                startActivity(mIntent);
+                break;
+            case R.id.action_search:
+                mIntent = new Intent(getApplication(),ActivityFavoritesSearch.class);
+                startActivity(mIntent);
+                break;
+        }
         /*prefs = getSharedPreferences(MyPREFERENCES, MODE_PRIVATE);
         String restoredText = prefs.getString(list_add_intro_dialog, null);
         if (restoredText == null) {

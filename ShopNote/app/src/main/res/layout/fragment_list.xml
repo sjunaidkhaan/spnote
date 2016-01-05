@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     tools:context="com.ingentive.shopnote.fragments.ListFragment">
 
-    <ListView
+    <com.baoyz.swipemenulistview.SwipeMenuListView
         android:id="@+id/lv_list"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"/>

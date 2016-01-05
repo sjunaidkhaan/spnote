@@ -19,7 +19,7 @@ public class MyFirstNoteFragment extends android.support.v4.app.Fragment {
     public int[] tabIcons = {
             R.drawable.list_unselected,
             R.drawable.shop_unselected,
-            R.drawable.favoritess_unselected,
+            R.drawable.favorites_unselected,
             R.drawable.history_unselected
     };
 
@@ -99,5 +99,6 @@ public class MyFirstNoteFragment extends android.support.v4.app.Fragment {
 
             return null;
         }
+
     }
 }

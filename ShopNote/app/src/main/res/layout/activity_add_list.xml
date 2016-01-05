@@ -9,6 +9,16 @@
         android:id="@+id/toolbar_listadd"
         layout="@layout/toolbar_list_add"
         />
+    <TextView
+        android:id="@+id/tv_populer_items"
+        android:textColor="@android:color/black"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/toolbar_listadd"
+        android:visibility="gone"
+        android:gravity="center_vertical"
+        android:text="Popular Items"
+        android:layout_marginLeft="16dp"/>
     <ListView
         android:id="@+id/lv_add_list"
         android:layout_below="@+id/toolbar_listadd"

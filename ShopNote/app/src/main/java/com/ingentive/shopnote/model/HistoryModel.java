@@ -40,6 +40,20 @@ public class HistoryModel {
     public String getQuantity() {
         return quantity;
     }
+    public void setHistoryId(int historyId) {
+        this.historyId = historyId;
+    }
 
+    public void setDatePurchased(String datePurchased) {
+        this.datePurchased = datePurchased;
+    }
+
+    public void setItemName(String itemName) {
+        this.itemName = itemName;
+    }
+
+    public void setQuantity(String quantity) {
+        this.quantity = quantity;
+    }
 
 }

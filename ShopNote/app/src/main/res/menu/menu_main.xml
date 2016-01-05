@@ -9,4 +9,11 @@
         android:icon="@drawable/add_menu"
         android:orderInCategory="100"
         app:showAsAction="always" />
+    <item
+        android:id="@+id/action_search"
+        android:title="Search"
+        android:visible="false"
+        android:icon="@drawable/search"
+        android:orderInCategory="100"
+        app:showAsAction="always" />
 </menu>
