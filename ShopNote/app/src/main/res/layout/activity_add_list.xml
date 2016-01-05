@@ -16,7 +16,6 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/toolbar_listadd"
         android:visibility="gone"
-        android:gravity="center_vertical"
         android:text="Popular Items"
         android:layout_marginLeft="16dp"/>
     <ListView
