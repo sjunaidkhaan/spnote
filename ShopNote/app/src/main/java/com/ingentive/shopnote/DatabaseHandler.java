@@ -6,17 +6,16 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.ingentive.shopnote.constents.Const;
-import com.ingentive.shopnote.model.AddListModel;
 import com.ingentive.shopnote.model.CurrentListModel;
 import com.ingentive.shopnote.model.DictionaryModel;
 import com.ingentive.shopnote.model.FavoritListModel;
+import com.ingentive.shopnote.model.HistoryChildModel;
 import com.ingentive.shopnote.model.HistoryModel;
+import com.ingentive.shopnote.model.HistoryParentModel;
 import com.ingentive.shopnote.model.InventoryModel;
 import com.ingentive.shopnote.model.ListAddBasicModel;
-import com.ingentive.shopnote.model.ListModel;
 import com.ingentive.shopnote.model.ManageSectionModel;
 import com.ingentive.shopnote.model.ScreenTextModel;
 import com.ingentive.shopnote.model.SectionModel;
@@ -428,6 +427,79 @@ public class DatabaseHandler extends SQLiteOpenHelper {
             } while (cursor.moveToNext());
         }
         return histList;
+    }
+    public List<HistoryParentModel>getHisPar(){
+        List<HistoryParentModel> histParList = new ArrayList<HistoryParentModel>();
+        String selectQuery = "SELECT  * FROM " + Const.TABLE_HISTORY;
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(selectQuery, null);
+        if (cursor.moveToFirst()) {
+            do {
+                HistoryParentModel histPaModel = new HistoryParentModel();
+                //HistoryChildModel histChilModel = new HistoryChildModel();
+                //List<HistoryChildModel> histChilList = new ArrayList<HistoryChildModel>();
+
+               histPaModel.setHisPaId(Integer.parseInt(cursor.getString(0)));
+                histPaModel.setHisPaDatePurchased(cursor.getString(1));
+                //history child list
+                /*histChilModel.setHisChId(Integer.parseInt(cursor.getString(0)));
+                histChilModel.setHisChItemName(cursor.getString(2));
+                histChilList.add(histChilModel);
+                histPaModel.setArrayChildren(histChilList);*/
+
+                histParList.add(histPaModel);
+            } while (cursor.moveToNext());
+        }
+        return histParList;
+    }
+    /*public List<HistoryChildModel>getHisChil(){
+        List<HistoryChildModel> histChilList = new ArrayList<HistoryChildModel>();
+        String selectQuery = "SELECT  * FROM " + Const.TABLE_HISTORY;
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(selectQuery, null);
+        if (cursor.moveToFirst()) {
+            do {
+                HistoryChildModel histChilModel = new HistoryChildModel();
+                histChilModel.setHisChId(Integer.parseInt(cursor.getString(0)));
+                histChilModel.setHisChDatePurchased(cursor.getString(1));
+                histChilModel.setHisChItemName(cursor.getString(2));
+                histChilList.add(histChilModel);
+            } while (cursor.moveToNext());
+        }
+        return histChilList;
+    }*/
+    public List<HistoryChildModel>getHisChil(String datePur){
+        List<HistoryChildModel> histChilList = new ArrayList<HistoryChildModel>();
+       /* String selectQuery = "SELECT  * FROM " + Const.TABLE_HISTORY;
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(selectQuery, null);
+        if (cursor.moveToFirst()) {
+            do {
+                HistoryChildModel histChilModel = new HistoryChildModel();
+                histChilModel.setHisChId(Integer.parseInt(cursor.getString(0)));
+                histChilModel.setHisChDatePurchased(cursor.getString(1));
+                histChilModel.setHisChItemName(cursor.getString(2));
+                histChilList.add(histChilModel);
+            } while (cursor.moveToNext());
+        }*/
+
+
+        String selectQuery = "SELECT  * FROM " + Const.TABLE_HISTORY
+                +" WHERE "+ Const.NAME_DATE_PURCHASED + "="+"'"+datePur+"'";
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(selectQuery, null);
+        if (cursor != null && cursor.getCount() != 0) {
+            HistoryChildModel histChilModel = new HistoryChildModel();
+            if (cursor.moveToFirst()) {
+                do {
+                    histChilModel = new HistoryChildModel();
+                    histChilModel.setHisChId(Integer.parseInt(cursor.getString(0)));
+                    histChilModel.setHisChItemName(cursor.getString(2));
+                    histChilList.add(histChilModel);
+                } while (cursor.moveToNext());
+            }
+        }
+        return histChilList;
     }
 
     public int updateQuantity(CurrentListModel curr) {

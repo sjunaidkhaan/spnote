@@ -11,15 +11,16 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ListView;
+import android.widget.ExpandableListView;
+import android.widget.Toast;
 
 import com.ingentive.shopnote.DatabaseHandler;
 import com.ingentive.shopnote.R;
-import com.ingentive.shopnote.adapters.FavoritesListAdapter;
-import com.ingentive.shopnote.adapters.HistoryListAdapter;
-import com.ingentive.shopnote.model.FavoritListModel;
-import com.ingentive.shopnote.model.HistoryModel;
+import com.ingentive.shopnote.adapters.HistoryCustomAdapter;
+import com.ingentive.shopnote.model.HistoryChildModel;
+import com.ingentive.shopnote.model.HistoryParentModel;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -30,9 +31,15 @@ public class HistoryFragment extends Fragment {
     public static final String dbCreated = "dbKey";
     public static final String first_time_dialog = "first_time";
     public static SharedPreferences prefs;
-    private ListView mListView;
+    // private ListView mListView;
+    private ExpandableListView mExpHistoryList;
     DatabaseHandler db;
-    HistoryListAdapter mAdapter;
+    HistoryCustomAdapter mAdapter;
+    ArrayList<String> arrayPar = new ArrayList<String>();
+    HistoryParentModel parentModel = new HistoryParentModel();
+    List<HistoryParentModel> historyList = new ArrayList<HistoryParentModel>();
+    List<HistoryChildModel> hisChiList;
+    List<HistoryParentModel> hisParList;
 
     public HistoryFragment() {
         // Required empty public constructor
@@ -42,15 +49,6 @@ public class HistoryFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
-    }
-
-    @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        // TODO Add your menu entries here
-        //inflater.inflate(R.menu.menu_main, menu);
-        menu.findItem(R.id.action_add).setVisible(false);
-        menu.findItem(R.id.action_search).setVisible(true);
-        super.onCreateOptionsMenu(menu, inflater);
     }
 
     @Override
@@ -65,12 +63,27 @@ public class HistoryFragment extends Fragment {
             editor.putString(first_time_dialog, "success");
             editor.commit();
         }
-
-        mListView = (ListView) rootView.findViewById(R.id.lv_history);
+        mExpHistoryList = (ExpandableListView) rootView.findViewById(R.id.expandable_history_list);
         db = new DatabaseHandler(getActivity());
-        List<HistoryModel> favList = db.getHistory();
-        mAdapter = new HistoryListAdapter(getActivity(), favList, R.layout.custom_row_history);
-        mListView.setAdapter(mAdapter);
+        hisParList = db.getHisPar();
+
+        for (int i = 0; i < hisParList.size(); i++) {
+            if (!arrayPar.contains(hisParList.get(i).getHisPaDatePurchased().toString())) {
+                arrayPar.add(hisParList.get(i).getHisPaDatePurchased().toString());
+                Toast.makeText(getActivity(), "" + hisParList.get(i).getHisPaDatePurchased().toString(), Toast.LENGTH_LONG).show();
+                db = new DatabaseHandler(getActivity());
+                hisChiList = db.getHisChil(hisParList.get(i).getHisPaDatePurchased().toString());
+                parentModel = new HistoryParentModel();
+                parentModel.setHisPaDatePurchased(hisParList.get(i).getHisPaDatePurchased().toString());
+                parentModel.setArrayChildren(hisChiList);
+                historyList.add(parentModel);
+            }
+        }
+        Toast.makeText(getActivity(), "hisChiList" + historyList.get(0).getHisPaDatePurchased().toString(), Toast.LENGTH_LONG).show();
+
+        mAdapter = new HistoryCustomAdapter(getActivity(), historyList);
+        mExpHistoryList.setAdapter(mAdapter);
+
         return rootView;
     }
 
@@ -87,6 +100,15 @@ public class HistoryFragment extends Fragment {
                 });
         AlertDialog alertDialog = alertDialogBuilder.create();
         alertDialog.show();
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        // TODO Add your menu entries here
+        //inflater.inflate(R.menu.menu_main, menu);
+        menu.findItem(R.id.action_add).setVisible(false);
+        menu.findItem(R.id.action_search).setVisible(true);
+        super.onCreateOptionsMenu(menu, inflater);
     }
 
 }
