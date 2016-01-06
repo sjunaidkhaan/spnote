@@ -174,11 +174,11 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
 
         if ( !ActivityFavoritesSearch.fromFavoriteBackHit ){
             displayView(3);
-            MyFirstNoteFragment fragment = new MyFirstNoteFragment();
+            //MyFirstNoteFragment fragment = new MyFirstNoteFragment();
 
         }else{
-            MyFirstNoteFragment fragment = new MyFirstNoteFragment();
-            fragment.setTargetFragment(new FavoritsFragment(),2);
+            //MyFirstNoteFragment fragment = new MyFirstNoteFragment();
+            //fragment.setTargetFragment(new FavoritsFragment(),2);
         }
 
 

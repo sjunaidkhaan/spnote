@@ -108,7 +108,7 @@ public class CurrentListAdapter extends ArrayAdapter<CurrentListModel> {
         ivSection.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(mContext, "section image click" + postion, Toast.LENGTH_SHORT).show();
+//                Toast.makeText(mContext, "section image click" + postion, Toast.LENGTH_SHORT).show();
             }
         });
 
