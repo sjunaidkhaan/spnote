@@ -9,8 +9,12 @@ import android.widget.BaseExpandableListAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.ingentive.shopnote.DatabaseHandler;
 import com.ingentive.shopnote.R;
+import com.ingentive.shopnote.model.CurrentListModel;
+import com.ingentive.shopnote.model.FavoritListModel;
 import com.ingentive.shopnote.model.HistoryParentModel;
 
 import java.util.List;
@@ -24,6 +28,7 @@ public class HistoryCustomAdapter extends BaseExpandableListAdapter {
     private List<HistoryParentModel> histParent;
     public Context mContext;
     private static LayoutInflater inflater = null;
+    public DatabaseHandler db;
 
     public HistoryCustomAdapter(Context context, List<HistoryParentModel> parent){
         this.histParent = parent;
@@ -71,7 +76,7 @@ public class HistoryCustomAdapter extends BaseExpandableListAdapter {
 
     @Override
     //in this method you must set the text to see the parent/group on the list
-    public View getGroupView(int groupPosition, boolean b, View rowView, ViewGroup viewGroup) {
+    public View getGroupView(final int groupPosition, boolean b, View rowView, ViewGroup viewGroup) {
 
         View vi = rowView;
         ViewHolder holder = new ViewHolder();
@@ -81,41 +86,98 @@ public class HistoryCustomAdapter extends BaseExpandableListAdapter {
             vi = inflater.inflate(R.layout.custom_row_history_parent, viewGroup,false);
         }
 
-        //itemName.setText(data.get(postion).getItemName());
         final TextView tvHistParDp = (TextView) vi.findViewById(R.id.tv_dp_his_par);
         tvHistParDp.setText(histParent.get(groupPosition).getHisPaDatePurchased().toString());
 
         final ImageView ivHistParAdd = (ImageView) vi.findViewById(R.id.iv_add_his_par);
         ivHistParAdd.setImageResource(R.drawable.add_large_unselected);
-
         vi.setTag(holder);
 
-        //return the entire view
+        ivHistParAdd.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ivHistParAdd.setImageResource(R.drawable.add_large_selected);
+                db = new DatabaseHandler(mContext);
+                for(int i=0; i<histParent.get(groupPosition).getArrayChildren().size();i++){
+                    Toast.makeText(mContext,"ChildrenName "+histParent.get(groupPosition).getArrayChildren().get(i).getHisChItemName(),Toast.LENGTH_LONG).show();
+                    db.addCurrentList(new CurrentListModel(1, histParent.get(groupPosition).getArrayChildren().get(i).getHisChItemName(), 0, null, "My Firts Shopnote", 1));
+                }
+            }
+        });
         return vi;
     }
 
     @Override
     //in this method you must set the text to see the children on the list
-    public View getChildView(int groupPosition, int childPosition, boolean isLastChild, View view, ViewGroup viewGroup) {
+    public View getChildView(final int groupPosition, final int childPosition, boolean isLastChild, View view, ViewGroup viewGroup) {
 
         View childView = view;
         ViewHolder holder = new ViewHolder();
         holder.childPosition = childPosition;
         holder.groupPosition = groupPosition;
-
         if (childView == null) {
             childView = inflater.inflate(R.layout.custom_row_history_child, viewGroup,false);
         }
 
         final TextView textView = (TextView) childView.findViewById(R.id.tv_item_name_his_ch);
-        textView.setText(histParent.get(groupPosition).getArrayChildren().get(childPosition).getHisChItemName().toString());
-
         final ImageView ivFavChil = (ImageView) childView.findViewById(R.id.iv_fav_his_ch);
-        ivFavChil.setImageResource(R.drawable.favorite_selected);
-
         final ImageView ivAddChil = (ImageView) childView.findViewById(R.id.iv_add_his_ch);
-        ivAddChil.setImageResource(R.drawable.add_unselected);
+
+        final String childName = histParent.get(groupPosition).getArrayChildren().get(childPosition).getHisChItemName().toString();
+        textView.setText(childName);
+        //ivFavChil.setImageResource(R.drawable.favorite_selected);
+        db = new DatabaseHandler(mContext);
+        final boolean itemIsInList = db.isInList(childName);
+        //Toast.makeText(mContext,"itemIsFav "+itemIsFav,Toast.LENGTH_LONG).show();
+        if (itemIsInList) {
+            ivAddChil.setImageResource(R.drawable.add_selected);
+            ivAddChil.setOnClickListener(null);
+        } else {
+            ivAddChil.setImageResource(R.drawable.add_unselected);
+        }
+        db = new DatabaseHandler(mContext);
+        final boolean itemIsFav = db.isFavorit(childName);
+        //Toast.makeText(mContext,"itemIsFav "+itemIsFav,Toast.LENGTH_LONG).show();
+        if (itemIsFav) {
+            ivFavChil.setImageResource(R.drawable.favorite_unselected);
+        } else {
+            ivFavChil.setImageResource(R.drawable.favorite_selected);
+        }
         childView.setTag(holder);
+
+        ivFavChil.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //Toast.makeText(mContext, "Favorite Clicked: " + itemName.getText().toString() + ":" + postion, Toast.LENGTH_SHORT).show();
+                db = new DatabaseHandler(mContext);
+                final String childName = histParent.get(groupPosition).getArrayChildren().get(childPosition).getHisChItemName().toString();
+                final boolean itemIsFav = db.isFavorit(childName);
+                if (itemIsFav) {
+                    FavoritListModel remFavItem = new FavoritListModel();
+                    remFavItem.setItemName(childName);
+                    ivFavChil.setImageResource(R.drawable.favorite_selected);
+                    db.removeFavorit(remFavItem);
+                } else {
+                    FavoritListModel addFavItem = new FavoritListModel();
+                    addFavItem.setItemName(childName);
+                    ivFavChil.setImageResource(R.drawable.favorite_unselected);
+                    db.addFavorit(addFavItem);
+                }
+            }
+        });
+        ivAddChil.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                db = new DatabaseHandler(mContext);
+                final boolean itemIsInList = db.isInList(childName);
+                if(!itemIsInList){
+                    ivAddChil.setImageResource(R.drawable.add_selected);
+                    Toast.makeText(mContext, "get child "+childName, Toast.LENGTH_SHORT).show();
+                    db = new DatabaseHandler(mContext);
+                    db.addCurrentList(new CurrentListModel(1, childName, 0, null, "My Firts Shopnote", 1));
+                }
+            }
+        });
 
         return childView;
     }

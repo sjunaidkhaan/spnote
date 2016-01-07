@@ -10,6 +10,16 @@ public class HistoryParentModel {
     int his_par_id;
     int his_par_add_icon;
     String his_pa_dpur;
+
+    public boolean isClick() {
+        return isClick;
+    }
+
+    public void setIsClick(boolean isClick) {
+        this.isClick = isClick;
+    }
+
+    boolean isClick;
     private List<HistoryChildModel> mHisChildrenList;
 
     public HistoryParentModel() {
@@ -18,6 +28,7 @@ public class HistoryParentModel {
     public HistoryParentModel(int historyId,int addIcon) {
         this.his_par_id = historyId;
         this.his_par_add_icon = addIcon;
+        this.isClick = false;
     }
     public HistoryParentModel(int addIcon) {
         this.his_par_add_icon = addIcon;

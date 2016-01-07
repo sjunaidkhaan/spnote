@@ -1,43 +1,18 @@
 package com.ingentive.shopnote.fragments;
 
-import android.app.ActionBar;
-import android.content.ClipData;
-import android.content.ComponentName;
-import android.content.Intent;
 import android.content.pm.ApplicationInfo;
-import android.content.pm.ResolveInfo;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ImageView;
-import android.widget.ListView;
-import android.widget.TextView;
-import android.widget.Toast;
 
-import com.baoyz.swipemenulistview.SwipeMenu;
-import com.baoyz.swipemenulistview.SwipeMenuCreator;
-import com.baoyz.swipemenulistview.SwipeMenuItem;
 import com.baoyz.swipemenulistview.SwipeMenuListView;
 import com.ingentive.shopnote.DatabaseHandler;
-import com.ingentive.shopnote.NameAdapter;
 import com.ingentive.shopnote.R;
 import com.ingentive.shopnote.adapters.CurrentListAdapter;
-import com.ingentive.shopnote.adapters.ListAdapter;
-import com.ingentive.shopnote.adapters.NavigationDrawerAdapter;
 import com.ingentive.shopnote.model.CurrentListModel;
-import com.ingentive.shopnote.model.ListModel;
-import com.ingentive.shopnote.model.NavDrawerItemModel;
 
-import java.util.ArrayList;
 import java.util.List;
 
 //jk

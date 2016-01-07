@@ -26,6 +26,9 @@ public class MyFirstNoteFragment extends android.support.v4.app.Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+
+
     }
 
     @Override
@@ -34,6 +37,8 @@ public class MyFirstNoteFragment extends android.support.v4.app.Fragment {
         tabLayout = (TabLayout) x.findViewById(R.id.tabs);
         viewPager = (ViewPager) x.findViewById(R.id.viewpager);
         viewPager.setAdapter(new MyAdapter(getChildFragmentManager()));
+
+
         /**
          * Now , this is a workaround ,
          * The setupWithViewPager dose't works without the runnable .
@@ -44,18 +49,59 @@ public class MyFirstNoteFragment extends android.support.v4.app.Fragment {
             @Override
             public void run() {
                 tabLayout.setupWithViewPager(viewPager);
+
                 tabLayout.getTabAt(0).setCustomView(R.layout.custom_tab_item_list);
                 tabLayout.getTabAt(1).setCustomView(R.layout.custom_tab_item_shop);
                 tabLayout.getTabAt(2).setCustomView(R.layout.custom_tab_item_fav);
                 tabLayout.getTabAt(3).setCustomView(R.layout.custom_tab_item_his);
 
-                for (int i = 0; i < tabLayout.getChildCount(); i++) {
-                    tabLayout.getChildAt(i).setPadding(0,0,0,0);
-                }
+                tabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+                    @Override
+                    public void onTabSelected(TabLayout.Tab tab) {
+                        int pos = tab.getPosition();
+
+                        if (pos == 0) {
+                            tab.getCustomView().setBackgroundResource(R.drawable.list_selected);
+                            viewPager.setCurrentItem(0);
+                        } else if (pos == 1) {
+                            tab.getCustomView().setBackgroundResource(R.drawable.list_selected);
+                            viewPager.setCurrentItem(1);
+                        } else if (pos == 2) {
+                            tab.getCustomView().setBackgroundResource(R.drawable.list_selected);
+                            viewPager.setCurrentItem(2);
+                        } else {
+                            tab.getCustomView().setBackgroundResource(R.drawable.list_selected);
+                            viewPager.setCurrentItem(3);
+                        }
+
+                    }
+
+                    @Override
+                    public void onTabUnselected(TabLayout.Tab tab) {
+                        int pos = tab.getPosition();
+                        if (pos == 0) {
+                            tab.getCustomView().setBackgroundResource(R.drawable.list_unselected);
+                        } else if (pos == 1) {
+                            tab.getCustomView().setBackgroundResource(R.drawable.shop_unselected);
+                        } else if (pos == 2) {
+                            tab.getCustomView().setBackgroundResource(R.drawable.favorite_unselected);
+                        } else {
+                            tab.getCustomView().setBackgroundResource(R.drawable.history_unselected);
+                        }
+
+                    }
+
+                    @Override
+                    public void onTabReselected(TabLayout.Tab tab) {
+
+                    }
+                });
+
 
             }
         });
 
+//                    tab.getCustomView().setBackgroundResource(R.drawable.list_selected);
         return x;
     }
 
@@ -106,4 +152,5 @@ public class MyFirstNoteFragment extends android.support.v4.app.Fragment {
         }
 
     }
+
 }

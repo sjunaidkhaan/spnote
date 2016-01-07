@@ -4,16 +4,12 @@
     android:layout_height="match_parent"
     tools:context="com.ingentive.shopnote.fragments.HistoryFragment">
 
-    <!--<ListView
-        android:id="@+id/lv_history"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:layout_centerInParent="true"/>-->
     <ExpandableListView android:id="@+id/expandable_history_list"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:transcriptMode="alwaysScroll"
         android:cacheColorHint="#00000000"
+        android:groupIndicator="@drawable/group_indicator"
         android:listSelector="@android:color/transparent"/>
 
 </RelativeLayout>

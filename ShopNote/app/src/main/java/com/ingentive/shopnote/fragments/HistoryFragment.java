@@ -12,7 +12,6 @@ import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ExpandableListView;
-import android.widget.Toast;
 
 import com.ingentive.shopnote.DatabaseHandler;
 import com.ingentive.shopnote.R;
@@ -44,13 +43,11 @@ public class HistoryFragment extends Fragment {
     public HistoryFragment() {
         // Required empty public constructor
     }
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
     }
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -70,7 +67,7 @@ public class HistoryFragment extends Fragment {
         for (int i = 0; i < hisParList.size(); i++) {
             if (!arrayPar.contains(hisParList.get(i).getHisPaDatePurchased().toString())) {
                 arrayPar.add(hisParList.get(i).getHisPaDatePurchased().toString());
-                Toast.makeText(getActivity(), "" + hisParList.get(i).getHisPaDatePurchased().toString(), Toast.LENGTH_LONG).show();
+               // Toast.makeText(getActivity(), "" + hisParList.get(i).getHisPaDatePurchased().toString(), Toast.LENGTH_LONG).show();
                 db = new DatabaseHandler(getActivity());
                 hisChiList = db.getHisChil(hisParList.get(i).getHisPaDatePurchased().toString());
                 parentModel = new HistoryParentModel();
@@ -79,8 +76,6 @@ public class HistoryFragment extends Fragment {
                 historyList.add(parentModel);
             }
         }
-        Toast.makeText(getActivity(), "hisChiList" + historyList.get(0).getHisPaDatePurchased().toString(), Toast.LENGTH_LONG).show();
-
         mAdapter = new HistoryCustomAdapter(getActivity(), historyList);
         mExpHistoryList.setAdapter(mAdapter);
 

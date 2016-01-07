@@ -20,6 +20,8 @@ import com.ingentive.shopnote.model.ManageSectionModel;
 import com.ingentive.shopnote.model.ScreenTextModel;
 import com.ingentive.shopnote.model.SectionModel;
 import com.ingentive.shopnote.model.SettingModel;
+import com.ingentive.shopnote.model.ShopChildModel;
+import com.ingentive.shopnote.model.ShopParentModel;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -346,27 +348,24 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         return "unknown.png";
     }
     public boolean isFavorit(String itemName) {
-        /*String selectQuery = "SELECT * FROM " + Const.TABLE_FAVORIT_LIST
-                +" WHERE "+Const.NAME_ITEM + "="+"'"+itemName+"'";
-        SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.rawQuery(selectQuery, null);
-        if (cursor != null) {
-            cursor.moveToFirst();
-            return true;
-        }
-        return false;
-        */
-
         String sqlQuery = "SELECT * FROM " + Const.TABLE_FAVORIT_LIST + " WHERE " +Const.NAME_ITEM
                 + " = " + "'"+ itemName + "'";
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor c = db.rawQuery(sqlQuery, null);
         if (c != null && c.getCount() != 0) {
             return true;
-        } else {
-            return false;
         }
-        //return false;
+        return false;
+    }
+    public boolean isInList(String itemName) {
+        String sqlQuery = "SELECT * FROM " + Const.TABLE_CURRENT_LIST+ " WHERE " +Const.NAME_ITEM
+                + " = " + "'"+ itemName + "'";
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor c = db.rawQuery(sqlQuery, null);
+        if (c != null && c.getCount() != 0) {
+            return true;
+        }
+        return false;
     }
     public List<CurrentListModel> getCurrList() {
         List<CurrentListModel> mList = new ArrayList<CurrentListModel>();
@@ -436,21 +435,65 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         if (cursor.moveToFirst()) {
             do {
                 HistoryParentModel histPaModel = new HistoryParentModel();
-                //HistoryChildModel histChilModel = new HistoryChildModel();
-                //List<HistoryChildModel> histChilList = new ArrayList<HistoryChildModel>();
-
                histPaModel.setHisPaId(Integer.parseInt(cursor.getString(0)));
                 histPaModel.setHisPaDatePurchased(cursor.getString(1));
-                //history child list
-                /*histChilModel.setHisChId(Integer.parseInt(cursor.getString(0)));
-                histChilModel.setHisChItemName(cursor.getString(2));
-                histChilList.add(histChilModel);
-                histPaModel.setArrayChildren(histChilList);*/
-
                 histParList.add(histPaModel);
             } while (cursor.moveToNext());
         }
         return histParList;
+    }
+    public List<ShopParentModel>getShopParSection(){
+        List<ShopParentModel> shopParList = new ArrayList<ShopParentModel>();
+        String selectQuery = "SELECT  * FROM " + Const.TABLE_SECTION_ORDER;
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(selectQuery, null);
+        if (cursor.moveToFirst()) {
+            do {
+                ShopParentModel shopPaModel = new ShopParentModel();
+                shopPaModel.setShopPaId(Integer.parseInt(cursor.getString(0)));
+                shopPaModel.setShopPaSectionName(cursor.getString(2));
+                shopPaModel.setShopPaSectionIcon(cursor.getString(3));
+                shopParList.add(shopPaModel);
+            } while (cursor.moveToNext());
+        }
+        return shopParList;
+    }
+    public List<ShopChildModel>getShopChil(){
+        List<ShopChildModel> shopChilList = new ArrayList<ShopChildModel>();
+        String selectQuery = "SELECT  * FROM " + Const.TABLE_CURRENT_LIST;
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(selectQuery, null);
+        if (cursor.moveToFirst()) {
+            do {
+                ShopChildModel shopChilModel = new ShopChildModel();
+                shopChilModel.setShopChId(Integer.parseInt(cursor.getString(0)));
+                shopChilModel.setShopChItemName(cursor.getString(2));
+                shopChilModel.setShopChQuantity(cursor.getString(4));
+                shopChilList.add(shopChilModel);
+            } while (cursor.moveToNext());
+        }
+        return shopChilList;
+    }
+    public List<ShopChildModel>getShopChilData(int secId){
+        List<ShopChildModel> shopChilList = new ArrayList<ShopChildModel>();
+        String selectQuery = "SELECT  * FROM " + Const.TABLE_CURRENT_LIST + " INNER JOIN " +
+                Const.TABLE_DICTIONARY + " ON " + Const.TABLE_CURRENT_LIST + "." +
+                Const.NAME_ITEM + " = " + Const.TABLE_DICTIONARY + "." + Const.NAME_ITEM +
+                " WHERE "+Const.ID_SECTION_ORDER +" = "+secId;
+        Log.d("getShopChilData "," query "+selectQuery);
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(selectQuery, null);
+
+        if (cursor.moveToFirst()&& cursor != null && cursor.getCount() != 0) {
+            do {
+                ShopChildModel shopChilModel = new ShopChildModel();
+                shopChilModel.setShopChId(Integer.parseInt(cursor.getString(0)));
+                shopChilModel.setShopChItemName(cursor.getString(2));
+                shopChilModel.setShopChQuantity(cursor.getString(4));
+                shopChilList.add(shopChilModel);
+            } while (cursor.moveToNext());
+        }
+        return shopChilList;
     }
     /*public List<HistoryChildModel>getHisChil(){
         List<HistoryChildModel> histChilList = new ArrayList<HistoryChildModel>();

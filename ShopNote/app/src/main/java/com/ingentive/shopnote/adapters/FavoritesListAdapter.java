@@ -13,7 +13,6 @@ import com.ingentive.shopnote.DatabaseHandler;
 import com.ingentive.shopnote.R;
 import com.ingentive.shopnote.model.CurrentListModel;
 import com.ingentive.shopnote.model.FavoritListModel;
-import com.ingentive.shopnote.model.ListModel;
 
 import java.util.List;
 
@@ -78,7 +77,6 @@ public class FavoritesListAdapter extends BaseAdapter {
                 if (itemIsFav) {
                     FavoritListModel remFavItem = new FavoritListModel();
                     remFavItem.setItemName(itemName.getText().toString());
-
                     ivFavorit.setImageResource(R.drawable.favorite_selected);
                     db.removeFavorit(remFavItem);
 
