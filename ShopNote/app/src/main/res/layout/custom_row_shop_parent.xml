@@ -9,9 +9,11 @@
         android:id="@+id/iv_grab_shop_par"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:background="@drawable/maximize"
         android:layout_marginLeft="32dp"
         android:layout_alignParentLeft="true" />
     <TextView
+        android:layout_centerVertical="true"
         android:id="@+id/tv_section_name_par"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

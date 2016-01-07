@@ -89,7 +89,7 @@ public class ShopCustomAdapter extends BaseExpandableListAdapter {
         tvShopSecNamePar.setText(shopParent.get(groupPosition).getShopPaSectionName().toString());
         final ImageView ivShopSecIcon = (ImageView) vi.findViewById(R.id.iv_section_shop_par);
        final ImageView ivArrow= (ImageView) vi.findViewById(R.id.iv_grab_shop_par);
-        ivArrow.setImageResource(R.drawable.maximize);
+        //ivArrow.setBackgroundResource(R.drawable.maximize);
 
         switch (shopParent.get(groupPosition).getShopPaSectionIcon().toString()) {
             case "clothing.png":
@@ -140,12 +140,12 @@ public class ShopCustomAdapter extends BaseExpandableListAdapter {
                    shopParent.get(groupPosition).setIsClick(true);
                    ExpandableListView mExpandableListView = (ExpandableListView) viewGroup;
                    mExpandableListView.expandGroup(groupPosition);
-                   ivArrow.setImageResource(R.drawable.minimize);
+                   ivArrow.setBackgroundResource(R.drawable.minimize);
                } else {
                    shopParent.get(groupPosition).setIsClick(false);
                    ExpandableListView mExpandableListView = (ExpandableListView) viewGroup;
                    mExpandableListView.collapseGroup(groupPosition);
-                   ivArrow.setImageResource(R.drawable.maximize);
+                   ivArrow.setBackgroundResource(R.drawable.maximize);
                }
 
            }

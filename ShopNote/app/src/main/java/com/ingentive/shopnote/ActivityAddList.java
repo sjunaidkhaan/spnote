@@ -245,6 +245,8 @@ public class ActivityAddList extends AppCompatActivity {
                         if (!(dicSearchList.get(i).getHistoryItem()== 1) && !(dicSearchList.get(i).getFavItem()==1)){
                             tempDictionary.add(dicSearchList.get(i));
                         }
+                    }else if ( etSerch.getText().toString().length()>2){
+                        tempDictionary.add(dicSearchList.get(i));
                     }
                 }
             }

@@ -55,6 +55,8 @@ public class MyFirstNoteFragment extends android.support.v4.app.Fragment {
                 tabLayout.getTabAt(2).setCustomView(R.layout.custom_tab_item_fav);
                 tabLayout.getTabAt(3).setCustomView(R.layout.custom_tab_item_his);
 
+                tabLayout.getTabAt(0).getCustomView().setBackgroundResource(R.drawable.list_selected);
+
                 tabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
                     @Override
                     public void onTabSelected(TabLayout.Tab tab) {
@@ -64,13 +66,13 @@ public class MyFirstNoteFragment extends android.support.v4.app.Fragment {
                             tab.getCustomView().setBackgroundResource(R.drawable.list_selected);
                             viewPager.setCurrentItem(0);
                         } else if (pos == 1) {
-                            tab.getCustomView().setBackgroundResource(R.drawable.list_selected);
+                            tab.getCustomView().setBackgroundResource(R.drawable.shop_selected_tab_icon);
                             viewPager.setCurrentItem(1);
                         } else if (pos == 2) {
-                            tab.getCustomView().setBackgroundResource(R.drawable.list_selected);
+                            tab.getCustomView().setBackgroundResource(R.drawable.favorite_select_tab_icon);
                             viewPager.setCurrentItem(2);
                         } else {
-                            tab.getCustomView().setBackgroundResource(R.drawable.list_selected);
+                            tab.getCustomView().setBackgroundResource(R.drawable.history_selectd_tab_icon);
                             viewPager.setCurrentItem(3);
                         }
 
@@ -84,7 +86,7 @@ public class MyFirstNoteFragment extends android.support.v4.app.Fragment {
                         } else if (pos == 1) {
                             tab.getCustomView().setBackgroundResource(R.drawable.shop_unselected);
                         } else if (pos == 2) {
-                            tab.getCustomView().setBackgroundResource(R.drawable.favorite_unselected);
+                            tab.getCustomView().setBackgroundResource(R.drawable.favorites_unselected);
                         } else {
                             tab.getCustomView().setBackgroundResource(R.drawable.history_unselected);
                         }

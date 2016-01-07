@@ -17,6 +17,7 @@
         android:id="@+id/tabs"
         android:layout_height="wrap_content"
         android:layout_width="match_parent"
+        app:tabIndicatorColor="@null"
         app:tabMaxWidth="0dp"
         app:tabGravity="center"
         app:tabMode="fixed"
