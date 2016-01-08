@@ -10,20 +10,31 @@ public class ShopChildModel {
     String shop_chil_item_name;
     String shop_chil_quantity;
 
+    public int getCheckBox() {
+        return checkBox;
+    }
+
+    int checkBox;
+
+    public void setCheckBox(int isCheck) {
+        this.checkBox = isCheck;
+    }
     public ShopChildModel() {
 
     }
 
-    public ShopChildModel(int shop_chil_id,int shop_selec_icon, String itemName,String quantity) {
+    public ShopChildModel(int shop_chil_id,int shop_selec_icon, String itemName,String quantity,int checkBox) {
         this.shop_chil_id = shop_chil_id;
         this.shop_selec_icon = shop_selec_icon;
         this.shop_chil_item_name = itemName;
         this.shop_chil_quantity = quantity;
+        this.checkBox = checkBox;
     }
-    public ShopChildModel(int shop_selec_icon, String itemName,String quantity) {
+    public ShopChildModel(int shop_selec_icon, String itemName,String quantity,int checkBox) {
         this.shop_selec_icon = shop_selec_icon;
         this.shop_chil_item_name = itemName;
         this.shop_chil_quantity = quantity;
+        this.checkBox = checkBox;
     }
     public int getShopChId() {
         return shop_chil_id;

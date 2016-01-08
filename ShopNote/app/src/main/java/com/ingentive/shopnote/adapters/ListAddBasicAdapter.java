@@ -6,11 +6,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.BaseAdapter;
 import android.widget.Filter;
 import android.widget.TextView;
 
-import com.ingentive.shopnote.Contact;
 import com.ingentive.shopnote.R;
 import com.ingentive.shopnote.model.ListAddBasicModel;
 

@@ -230,7 +230,17 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         Log.d("QueryFavoriteDelete:" , query);
         db.execSQL(query);
     }
-
+    public void updateCheckItem(CurrentListModel curr)
+    {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(Const.NAME_CHECKED, curr.getChecked());
+        db.update(Const.TABLE_CURRENT_LIST, values, Const.ID_PRIMARY_KEY + " = ?",
+                new String[]{String.valueOf(curr.getCurrListId())});
+        Log.d("updateCheckItem ", "id " + curr.getCurrListId());
+        Log.d("updateCheckItem ","itemname "+curr.getItemName());
+        Log.d("updateCheckItem ","check  "+curr.getChecked());
+    }
     public List<String> getHistoryItems() {
         mList = new ArrayList<String>();
         String selectQuery = "SELECT * FROM " + Const.TABLE_HISTORY;
@@ -356,6 +366,17 @@ public class DatabaseHandler extends SQLiteOpenHelper {
             return true;
         }
         return false;
+    }
+    public int isChecked(String itemName) {
+        String sqlQuery = "SELECT * FROM " + Const.TABLE_CURRENT_LIST + " WHERE " +Const.NAME_ITEM
+                + " = " + "'"+ itemName + "'";
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor  cursor= db.rawQuery(sqlQuery, null);
+        if (cursor != null && cursor.getCount() != 0) {
+            cursor.moveToFirst();
+            return Integer.parseInt(cursor.getString(3));
+        }
+        return 0;
     }
     public boolean isInList(String itemName) {
         String sqlQuery = "SELECT * FROM " + Const.TABLE_CURRENT_LIST+ " WHERE " +Const.NAME_ITEM
@@ -489,6 +510,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                 ShopChildModel shopChilModel = new ShopChildModel();
                 shopChilModel.setShopChId(Integer.parseInt(cursor.getString(0)));
                 shopChilModel.setShopChItemName(cursor.getString(2));
+                shopChilModel.setCheckBox(Integer.parseInt(cursor.getString(3)));
                 shopChilModel.setShopChQuantity(cursor.getString(4));
                 shopChilList.add(shopChilModel);
             } while (cursor.moveToNext());

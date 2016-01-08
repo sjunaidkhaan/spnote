@@ -11,7 +11,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ExpandableListView;
-import android.widget.Toast;
 
 import com.ingentive.shopnote.DatabaseHandler;
 import com.ingentive.shopnote.R;
@@ -80,7 +79,7 @@ public class ShopFragment extends Fragment {
                 parentModel.setShopPaSectionIcon(shopParList.get(i).getShopPaSectionIcon().toString());
                 parentModel.setArrayChildren(shopChiList);
                 shopList.add(parentModel);
-                Toast.makeText(getActivity(), " " + shopChiList.size(), Toast.LENGTH_LONG).show();
+                //Toast.makeText(getActivity(), " " + shopChiList.size(), Toast.LENGTH_LONG).show();
             }
         }
         mAdapter = new ShopCustomAdapter(getActivity(), shopList);
