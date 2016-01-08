@@ -1,22 +1,16 @@
 package com.ingentive.shopnote.adapters;
 
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Color;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.ingentive.shopnote.DatabaseHandler;
-import com.ingentive.shopnote.MainActivity;
 import com.ingentive.shopnote.R;
-import com.ingentive.shopnote.model.CurrentListModel;
 import com.ingentive.shopnote.model.ManageSectionModel;
 
 import java.util.List;
@@ -75,7 +69,7 @@ public class ManageSectionAdapter extends BaseAdapter {
         sectionName = (TextView) vi.findViewById(R.id.tvSectionName_ms);
         ivOption = (ImageView) vi.findViewById(R.id.ivOpt_ms);
         ivSection = (ImageView) vi.findViewById(R.id.ivSection_ms);
-        ivOption.setImageResource(R.drawable.grab_grabbed);
+        ivOption.setImageResource(R.drawable.grab_notgrabbed);
         sectionName.setText(data.get(postion).getSectionName());
                //ivSection.setImageResource(data.get(postion).getSectionIcon());
 

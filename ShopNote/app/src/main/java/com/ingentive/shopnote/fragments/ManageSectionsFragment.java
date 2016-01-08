@@ -5,16 +5,13 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
-import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
@@ -23,10 +20,7 @@ import android.widget.Toast;
 
 import com.ingentive.shopnote.DatabaseHandler;
 import com.ingentive.shopnote.R;
-import com.ingentive.shopnote.adapters.CurrentListAdapter;
 import com.ingentive.shopnote.adapters.ManageSectionAdapter;
-import com.ingentive.shopnote.model.CurrentListModel;
-import com.ingentive.shopnote.model.FavoritListModel;
 import com.ingentive.shopnote.model.ManageSectionModel;
 import com.ingentive.shopnote.model.SectionModel;
 
@@ -170,7 +164,7 @@ public class ManageSectionsFragment extends Fragment {
     public void warningDialog(){
         //AlertDialog.Builder
        alertDialogBuilder = new AlertDialog.Builder(getActivity())
-               .setTitle("Alert")
+               .setTitle("Section Already Exist!")
                .setMessage("New Section must have a unique name.")
                .setIcon(R.drawable.error)
                .setPositiveButton("Got it", new DialogInterface.OnClickListener() {

@@ -10,7 +10,6 @@ import android.widget.BaseExpandableListAdapter;
 import android.widget.ExpandableListView;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.ingentive.shopnote.DatabaseHandler;
 import com.ingentive.shopnote.R;
@@ -28,6 +27,7 @@ public class ShopCustomAdapter extends BaseExpandableListAdapter {
     public Context mContext;
     private static LayoutInflater inflater = null;
     public DatabaseHandler db;
+    public ViewGroup globe;
 
     public ShopCustomAdapter(Context context, List<ShopParentModel> parent) {
         this.shopParent = parent;
@@ -67,7 +67,6 @@ public class ShopCustomAdapter extends BaseExpandableListAdapter {
     public long getChildId(int i, int i1) {
         return i1;
     }
-
     @Override
     public boolean hasStableIds() {
         return true;
@@ -76,19 +75,21 @@ public class ShopCustomAdapter extends BaseExpandableListAdapter {
     @Override
     //in this method you must set the text to see the parent/group on the list
     public View getGroupView(final int groupPosition, boolean b, View rowView, final ViewGroup viewGroup) {
+
+        globe = viewGroup;
+
         View vi = rowView;
-        ViewHolder holder = new ViewHolder();
-        holder.groupPosition = groupPosition;
         if (vi == null) {
             vi = inflater.inflate(R.layout.custom_row_shop_parent, viewGroup, false);
         }
+
         final TextView tvShopSecNamePar = (TextView) vi.findViewById(R.id.tv_section_name_par);
         tvShopSecNamePar.setText(shopParent.get(groupPosition).getShopPaSectionName().toString());
         final ImageView ivShopSecIcon = (ImageView) vi.findViewById(R.id.iv_section_shop_par);
         final ImageView ivArrow = (ImageView) vi.findViewById(R.id.iv_grab_shop_par);
         switch (shopParent.get(groupPosition).getShopPaSectionIcon().toString()) {
             case "clothing.png":
-                ivShopSecIcon.setImageResource(R.drawable.clothing);
+                ivShopSecIcon.setBackgroundResource(R.drawable.clothing);
                 break;
             case "house.png":
                 ivShopSecIcon.setImageResource(R.drawable.house);
@@ -121,7 +122,6 @@ public class ShopCustomAdapter extends BaseExpandableListAdapter {
                 ivShopSecIcon.setImageResource(R.drawable.unknown);
                 break;
         }
-        vi.setTag(holder);
         ivArrow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -139,29 +139,31 @@ public class ShopCustomAdapter extends BaseExpandableListAdapter {
                 }
             }
         });
+
+        //jk
+        int counter = 0;
+        for ( int i = 0; i < shopParent.get(groupPosition).getArrayChildren().size(); ++i ){
+            if (shopParent.get(groupPosition).getArrayChildren().get(i).getCheckBox()==1 ){
+                counter++;
+            }
+        }
+
+        if ( counter == shopParent.get(groupPosition).getArrayChildren().size() ){
+            tvShopSecNamePar.setTextColor(Color.GRAY);
+        }
+        //
+
+        shopParent.get(groupPosition).setView(vi);
         return vi;
     }
     @Override
     //in this method you must set the text to see the children on the list
-    public View getChildView(final int groupPosition, final int childPosition, boolean isLastChild, View view, ViewGroup viewGroup) {
+    public View getChildView(final int groupPosition, final int childPosition, boolean isLastChild, View view, final ViewGroup viewGroup) {
 
         View childView = view;
-        ViewHolder holder = new ViewHolder();
-        holder.childPosition = childPosition;
-        holder.groupPosition = groupPosition;
         if (childView == null) {
-            childView = inflater.inflate(R.layout.custom_row_shop_child, viewGroup, false);
+            childView = inflater.inflate(R.layout.custom_row_shop_child, null);
         }
-
-        ///////////////////////////////////////Parent View ///////////////////////////////////////////
-
-       final TextView tvSectionName = (TextView) viewGroup.findViewById(R.id.tv_section_name_par);
-        shopParent.get(groupPosition).getShopPaSectionName().toString();
-        tvSectionName.getText().toString();
-        tvSectionName.setTextColor(Color.GRAY);
-        Toast.makeText(mContext, "parentName " + tvSectionName.getText().toString(), Toast.LENGTH_LONG).show();
-        Toast.makeText(mContext, "groupPosition " +groupPosition , Toast.LENGTH_LONG).show();
-        /////////////////////////////////////////////////////////////////////////////////////
 
         final TextView tvShopChilItemName = (TextView) childView.findViewById(R.id.tv_item_name_shop_child);
 //        final String quantity = shopParent.get(groupPosition).getArrayChildren().get(childPosition).getShopChQuantity().toString();
@@ -174,11 +176,11 @@ public class ShopCustomAdapter extends BaseExpandableListAdapter {
         db = new DatabaseHandler(mContext);
         int isChecked = db.isChecked(name);
         if (isChecked == 1) {
-            ivShopChilCheckBox.setImageResource(R.drawable.checkbox_checked);
             tvShopChilItemName.setTextColor(Color.GRAY);
+            ivShopChilCheckBox.setBackgroundResource(R.drawable.checkbox_checked);
             //Toast.makeText(mContext, "if "+shopParent.get(groupPosition).getArrayChildren().get(childPosition).CheckBox(), Toast.LENGTH_SHORT).show();
         } else {
-            ivShopChilCheckBox.setImageResource(R.drawable.checkbox_unchecked);
+            ivShopChilCheckBox.setBackgroundResource(R.drawable.checkbox_unchecked);
             tvShopChilItemName.setTextColor(Color.BLACK);
             //Toast.makeText(mContext, "else "+shopParent.get(groupPosition).getArrayChildren().get(childPosition).CheckBox(), Toast.LENGTH_SHORT).show();
         }
@@ -193,21 +195,42 @@ public class ShopCustomAdapter extends BaseExpandableListAdapter {
                     unCheck.setChecked(0);
                     unCheck.setItemName(name);
                     db.updateCheckItem(unCheck);
-                    ivShopChilCheckBox.setImageResource(R.drawable.checkbox_unchecked);
+                    ivShopChilCheckBox.setBackgroundResource(R.drawable.checkbox_unchecked);
                     tvShopChilItemName.setTextColor(Color.BLACK);
+
 
                 } else {
                     CurrentListModel currCheck = new CurrentListModel();
                     currCheck.setChecked(1);
                     currCheck.setItemName(name);
                     currCheck.setCurrListId(shopParent.get(groupPosition).getArrayChildren().get(childPosition).getShopChId());
-                    ivShopChilCheckBox.setImageResource(R.drawable.checkbox_checked);
+                    ivShopChilCheckBox.setBackgroundResource(R.drawable.checkbox_checked);
                     tvShopChilItemName.setTextColor(Color.GRAY);
                     db.updateCheckItem(currCheck);
                 }
+
+                if (shopParent.get(groupPosition).getArrayChildren().get(childPosition).getCheckBox() == 0) {
+                    shopParent.get(groupPosition).getArrayChildren().get(childPosition).setCheckBox(1);
+                } else {
+                    shopParent.get(groupPosition).getArrayChildren().get(childPosition).setCheckBox(0);
+                }
+                ////
+                ///jk
+                int counter = 0;
+                for (int i = 0; i < shopParent.get(groupPosition).getArrayChildren().size(); ++i) {
+                    if (shopParent.get(groupPosition).getArrayChildren().get(i).getCheckBox() == 1) {
+                        counter++;
+                    }
+                }
+                View pp = ((ExpandableListView)globe).getChildAt(groupPosition);
+                if (counter == shopParent.get(groupPosition).getArrayChildren().size()) {
+                    ((TextView) (shopParent.get(groupPosition).getView().findViewById(R.id.tv_section_name_par))).setTextColor(Color.GRAY);
+                } else {
+                    ((TextView) (shopParent.get(groupPosition).getView().findViewById(R.id.tv_section_name_par))).setTextColor(Color.BLACK);
+                }
+                ///
             }
         });
-        childView.setTag(holder);
         return childView;
     }
 
@@ -220,21 +243,5 @@ public class ShopCustomAdapter extends BaseExpandableListAdapter {
     public void registerDataSetObserver(DataSetObserver observer) {
         /* used to make the notifyDataSetChanged() method work */
         super.registerDataSetObserver(observer);
-    }
-
-// Intentionally put on comment, if you need on click deactivate it
-/*  @Override
-    public void onClick(View view) {
-        ViewHolder holder = (ViewHolder)view.getTag();
-        if (view.getId() == holder.button.getId()){
-
-           // DO YOUR ACTION
-        }
-    }*/
-
-
-    protected class ViewHolder {
-        protected int childPosition;
-        protected int groupPosition;
     }
 }

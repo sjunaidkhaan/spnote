@@ -1,0 +1,14 @@
+[
+    {
+        "merged": "D:\\gitrepo\\NavigationDrawer1\\app\\build\\intermediates\\res\\merged\\debug\\layout\\drawer_list_item.xml",
+        "source": "D:\\gitrepo\\NavigationDrawer1\\app\\src\\main\\res\\layout\\drawer_list_item.xml"
+    },
+    {
+        "merged": "D:\\gitrepo\\NavigationDrawer1\\app\\build\\intermediates\\res\\merged\\debug\\layout\\activity_main.xml",
+        "source": "D:\\gitrepo\\NavigationDrawer1\\app\\src\\main\\res\\layout\\activity_main.xml"
+    },
+    {
+        "merged": "D:\\gitrepo\\NavigationDrawer1\\app\\build\\intermediates\\res\\merged\\debug\\layout\\fragment_planet.xml",
+        "source": "D:\\gitrepo\\NavigationDrawer1\\app\\src\\main\\res\\layout\\fragment_planet.xml"
+    }
+]

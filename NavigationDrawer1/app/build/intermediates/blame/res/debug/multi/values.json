@@ -1,0 +1,137 @@
+[
+    {
+        "outputFile": "D:\\gitrepo\\NavigationDrawer1\\app\\build\\intermediates\\res\\merged\\debug\\values\\values.xml",
+        "map": [
+            {
+                "to": {
+                    "startLine": 2,
+                    "startColumn": 4,
+                    "startOffset": 55,
+                    "endLine": 11,
+                    "endColumn": 19,
+                    "endOffset": 333
+                },
+                "from": {
+                    "file": "D:\\gitrepo\\NavigationDrawer1\\app\\src\\main\\res\\values\\strings.xml"
+                }
+            },
+            {
+                "to": {
+                    "startLine": 12,
+                    "startColumn": 4,
+                    "startOffset": 338,
+                    "endColumn": 55,
+                    "endOffset": 389
+                },
+                "from": {
+                    "file": "D:\\gitrepo\\NavigationDrawer1\\app\\src\\main\\res\\values\\strings.xml"
+                }
+            },
+            {
+                "to": {
+                    "startLine": 13,
+                    "startColumn": 4,
+                    "startOffset": 394,
+                    "endColumn": 62,
+                    "endOffset": 452
+                },
+                "from": {
+                    "file": "D:\\gitrepo\\NavigationDrawer1\\app\\src\\main\\res\\values\\strings.xml"
+                }
+            },
+            {
+                "to": {
+                    "startLine": 14,
+                    "startColumn": 4,
+                    "startOffset": 457,
+                    "endColumn": 86,
+                    "endOffset": 539
+                },
+                "from": {
+                    "file": "D:\\gitrepo\\NavigationDrawer1\\app\\src\\main\\res\\values\\strings.xml"
+                }
+            },
+            {
+                "to": {
+                    "startLine": 15,
+                    "startColumn": 4,
+                    "startOffset": 544,
+                    "endColumn": 64,
+                    "endOffset": 604
+                },
+                "from": {
+                    "file": "D:\\gitrepo\\NavigationDrawer1\\app\\src\\main\\res\\values\\strings.xml"
+                }
+            },
+            {
+                "to": {
+                    "startLine": 16,
+                    "startColumn": 4,
+                    "startOffset": 609,
+                    "endColumn": 62,
+                    "endOffset": 667
+                },
+                "from": {
+                    "file": "D:\\gitrepo\\NavigationDrawer1\\app\\src\\main\\res\\values\\strings.xml"
+                }
+            },
+            {
+                "to": {
+                    "startLine": 17,
+                    "startColumn": 4,
+                    "startOffset": 672,
+                    "endColumn": 47,
+                    "endOffset": 715
+                },
+                "from": {
+                    "file": "D:\\gitrepo\\NavigationDrawer1\\app\\src\\main\\res\\values\\strings.xml",
+                    "position": {
+                        "startLine": 34,
+                        "startColumn": 4,
+                        "startOffset": 1239,
+                        "endColumn": 47,
+                        "endOffset": 1282
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 18,
+                    "startColumn": 4,
+                    "startOffset": 720,
+                    "endColumn": 51,
+                    "endOffset": 767
+                },
+                "from": {
+                    "file": "D:\\gitrepo\\NavigationDrawer1\\app\\src\\main\\res\\values\\strings.xml",
+                    "position": {
+                        "startLine": 35,
+                        "startColumn": 4,
+                        "startOffset": 1287,
+                        "endColumn": 51,
+                        "endOffset": 1334
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 19,
+                    "startColumn": 4,
+                    "startOffset": 772,
+                    "endColumn": 48,
+                    "endOffset": 816
+                },
+                "from": {
+                    "file": "D:\\gitrepo\\NavigationDrawer1\\app\\src\\main\\res\\values\\strings.xml",
+                    "position": {
+                        "startLine": 36,
+                        "startColumn": 4,
+                        "startOffset": 1339,
+                        "endColumn": 48,
+                        "endOffset": 1383
+                    }
+                }
+            }
+        ]
+    }
+]

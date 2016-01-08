@@ -1,31 +1,23 @@
 package com.ingentive.shopnote;
 import android.app.AlertDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
+import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.inputmethod.EditorInfo;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.ingentive.shopnote.constents.Const;
-import com.ingentive.shopnote.fragments.FavoritsFragment;
 import com.ingentive.shopnote.fragments.FeedbackFragment;
 import com.ingentive.shopnote.fragments.ManageSectionsFragment;
 import com.ingentive.shopnote.fragments.MyFirstNoteFragment;
@@ -38,12 +30,11 @@ import com.ingentive.shopnote.model.InventoryModel;
 import com.ingentive.shopnote.model.ScreenTextModel;
 import com.ingentive.shopnote.model.SectionModel;
 import com.ingentive.shopnote.model.SettingModel;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-
-import javax.microedition.khronos.egl.EGLDisplay;
 
 public class MainActivity extends AppCompatActivity implements FragmentDrawer.FragmentDrawerListener {
 
@@ -61,6 +52,7 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
     public static SharedPreferences prefs;
     TextView tvToolbarTitle;
     EditText edToolbarTitle;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -284,6 +276,11 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
                 fragment = new MyFirstNoteFragment();
                 title = getString(R.string.title_first_note);
                 break;
+            /*case 4:
+                Intent intent = new Intent(MainActivity.this,MainTestNavigation.class);
+                startActivity(intent);
+                title = getString(R.string.title_activity_nav);
+                break;*/
             default:
                 break;
         }

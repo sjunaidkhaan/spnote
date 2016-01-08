@@ -25,7 +25,7 @@ import java.util.List;
 public class ShopFragment extends Fragment {
 
     public static SharedPreferences.Editor editor;
-    public static final String MYPREFERENCES = "MyPrefs";
+    public static final String MYPREF = "MyPref";
     public static final String dbCreated = "dbKey";
     public static final String first_time_dialog = "first_time";
     public static SharedPreferences prefs;
@@ -54,7 +54,8 @@ public class ShopFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_shop, null);
-        prefs = this.getActivity().getSharedPreferences(MYPREFERENCES, Context.MODE_PRIVATE);
+
+        prefs = this.getActivity().getSharedPreferences(MYPREF, Context.MODE_PRIVATE);
         String restoredText = prefs.getString(first_time_dialog, null);
         if (restoredText == null) {
             showDialog();
@@ -66,11 +67,11 @@ public class ShopFragment extends Fragment {
 
         db = new DatabaseHandler(getActivity());
         shopParList = db.getShopParSection();
-       // db = new DatabaseHandler(getActivity());
+        // db = new DatabaseHandler(getActivity());
         //shopChiList = db.getShopChil();
         shopList = new ArrayList<ShopParentModel>();
         for (int i = 0; i < shopParList.size(); i++) {
-           db = new DatabaseHandler(getActivity());
+            db = new DatabaseHandler(getActivity());
             shopChiList = new ArrayList<ShopChildModel>();
             shopChiList = db.getShopChilData(shopParList.get(i).getShopPaId());
             ShopParentModel parentModel = new ShopParentModel();
