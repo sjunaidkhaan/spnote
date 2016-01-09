@@ -1,7 +1,6 @@
 package com.ingentive.shopnote.fragments;
 
 import android.app.AlertDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -52,7 +51,7 @@ public class HistoryFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_history, null);
-        prefs = this.getActivity().getSharedPreferences(MYPREFERENCES, Context.MODE_PRIVATE);
+       /* prefs = this.getActivity().getSharedPreferences(MYPREFERENCES, Context.MODE_PRIVATE);
         String restoredText = prefs.getString(first_time_dialog, null);
         if (restoredText == null) {
             showDialog();
@@ -78,7 +77,7 @@ public class HistoryFragment extends Fragment {
         }
         mAdapter = new HistoryCustomAdapter(getActivity(), historyList);
         mExpHistoryList.setAdapter(mAdapter);
-
+*/
         return rootView;
     }
 

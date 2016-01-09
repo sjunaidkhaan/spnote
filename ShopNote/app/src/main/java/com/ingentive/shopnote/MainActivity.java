@@ -1,4 +1,5 @@
 package com.ingentive.shopnote;
+
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -18,10 +19,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.ingentive.shopnote.fragments.FeedbackFragment;
-import com.ingentive.shopnote.fragments.ManageSectionsFragment;
 import com.ingentive.shopnote.fragments.MyFirstNoteFragment;
-import com.ingentive.shopnote.fragments.ShareListFragment;
 import com.ingentive.shopnote.model.CurrentListModel;
 import com.ingentive.shopnote.model.DictionaryModel;
 import com.ingentive.shopnote.model.FavoritListModel;
@@ -257,24 +255,32 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
     }
 
     private void displayView(int position) {
+        Intent intent;
         android.support.v4.app.Fragment fragment = null;
         String title = getString(R.string.app_name);
         switch (position) {
             case 0:
-                fragment = new ShareListFragment();
-                title = getString(R.string.title_share_list);
+                //fragment = new ShareListFragment();
+               // title = getString(R.string.title_share_list);
+                //tvToolbarTitle.setText(title);
+                //intent = new Intent(getApplication(),ActivityAddList.class);
+                //startActivity(intent);
                 break;
             case 1:
-                fragment = new ManageSectionsFragment();
-                title = getString(R.string.title_manage_sections);
+                //fragment = new ManageSectionsFragment();
+                //title = getString(R.string.title_manage_sections);
+                //tvToolbarTitle.setText(title);
+                intent = new Intent(getApplication(),ActivityManageSections.class);
+                startActivity(intent);
                 break;
             case 2:
-                fragment = new FeedbackFragment();
-                title = getString(R.string.title_send_feedback);
+                //fragment = new FeedbackFragment();
+                //title = getString(R.string.title_send_feedback);
+                //tvToolbarTitle.setText(title);
                 break;
             case 3:
                 fragment = new MyFirstNoteFragment();
-                title = getString(R.string.title_first_note);
+               title = getString(R.string.title_first_note);
                 break;
             /*case 4:
                 Intent intent = new Intent(MainActivity.this,MainTestNavigation.class);

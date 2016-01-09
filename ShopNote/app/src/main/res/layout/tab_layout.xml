@@ -23,6 +23,7 @@
         app:tabMode="fixed"
         app:tabPaddingStart="0dp"
         app:tabPaddingEnd="0dp"
+        android:background="@drawable/button_shadow"
         android:layout_alignParentBottom="true">
     </android.support.design.widget.TabLayout>
 </RelativeLayout>

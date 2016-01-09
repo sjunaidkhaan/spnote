@@ -14,9 +14,10 @@
     <TextView
         android:id="@+id/tvSectionName_ms"
         android:layout_width="wrap_content"
-        android:layout_height="30dp"
-        android:layout_gravity="center_vertical"
-        android:gravity="center_vertical"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:textStyle="bold"
+        android:textSize="18px"
         android:layout_toRightOf="@id/ivOpt_ms"
         android:textColor="@android:color/black" />
 
@@ -24,6 +25,7 @@
         android:id="@+id/ivSection_ms"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginRight="12px"
         android:layout_alignParentRight="true" />
 
 </RelativeLayout>

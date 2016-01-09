@@ -3,6 +3,7 @@
     android:id="@+id/custom_row_list"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
+    android:layout_centerVertical="true"
     android:background="@drawable/row_border_blue">
 
     <ImageView
@@ -33,7 +34,8 @@
     <TextView
         android:id="@+id/tvItem_Name"
         android:layout_width="wrap_content"
-        android:layout_height="30dp"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
         android:layout_gravity="center_vertical"
         android:gravity="center_vertical"
         android:layout_toRightOf="@id/tvQuantity"
@@ -49,6 +51,7 @@
         android:id="@+id/iv_Section"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginRight="12px"
         android:layout_alignParentRight="true" />
 
 </RelativeLayout>

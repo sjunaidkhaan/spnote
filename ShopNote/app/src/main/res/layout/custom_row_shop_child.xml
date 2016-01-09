@@ -19,6 +19,7 @@
         android:id="@+id/iv_checkbox_shop_child"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginRight="12px"
         android:layout_alignParentRight="true" />
 
 </RelativeLayout>
