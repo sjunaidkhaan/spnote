@@ -81,13 +81,13 @@ public class DectionaryAdapter extends BaseAdapter {
             ivFavIcon.setVisibility(View.VISIBLE);
             ivHistIcon.setVisibility(View.VISIBLE);
 
-            ivFavIcon.setImageResource(data.get(postion).getFavIcon());
-            ivHistIcon.setImageResource(data.get(postion).getHistoryIcon());
+            ivFavIcon.setBackgroundResource(data.get(postion).getFavIcon());
+            ivHistIcon.setBackgroundResource(data.get(postion).getHistoryIcon());
         }else if ( data.get(postion).getHistoryItem()==1 ){
             ivFavIcon.setVisibility(View.GONE);
             ivHistIcon.setVisibility(View.VISIBLE);
 
-            ivHistIcon.setImageResource(data.get(postion).getHistoryIcon());
+            ivHistIcon.setBackgroundResource(data.get(postion).getHistoryIcon());
         }else if (data.get(postion).getFavItem()==1 ){
             ivFavIcon.setVisibility(View.VISIBLE);
             ivHistIcon.setVisibility(View.GONE);
@@ -97,7 +97,7 @@ public class DectionaryAdapter extends BaseAdapter {
             params.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
             ivFavIcon.setLayoutParams(params);
 
-            ivFavIcon.setImageResource(data.get(postion).getFavIcon());
+            ivFavIcon.setBackgroundResource(data.get(postion).getFavIcon());
         }else{
             ivFavIcon.setVisibility(View.GONE);
             ivHistIcon.setVisibility(View.GONE);

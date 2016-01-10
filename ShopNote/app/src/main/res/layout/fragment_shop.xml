@@ -7,8 +7,9 @@
     <ExpandableListView android:id="@+id/expandable_shop_list"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
+        style="@style/MyListActivityDividerHeight"
         android:transcriptMode="alwaysScroll"
         android:cacheColorHint="#00000000"
-        android:groupIndicator="@drawable/grab_notgrabbed"
+        android:groupIndicator="@null"
         android:listSelector="@android:color/transparent"/>
 </RelativeLayout>

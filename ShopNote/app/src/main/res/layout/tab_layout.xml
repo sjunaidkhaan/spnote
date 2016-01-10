@@ -7,23 +7,24 @@
     android:weightSum="10">
 
     <android.support.v4.view.ViewPager
-        android:layout_weight="8"
         android:id="@+id/viewpager"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
     </android.support.v4.view.ViewPager>
     <android.support.design.widget.TabLayout
+        style="@style/MyCustomTabLayout"
         android:id="@+id/tabs"
-        android:layout_height="wrap_content"
-        android:layout_width="match_parent"
         app:tabIndicatorColor="@null"
         app:tabMaxWidth="0dp"
-        app:tabGravity="center"
-        app:tabMode="fixed"
         app:tabPaddingStart="0dp"
         app:tabPaddingEnd="0dp"
-        android:background="@drawable/button_shadow"
         android:layout_alignParentBottom="true">
     </android.support.design.widget.TabLayout>
+
+    <ImageView
+        android:layout_above="@id/tabs"
+        android:background="@drawable/button_shadow"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
 </RelativeLayout>

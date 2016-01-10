@@ -10,7 +10,8 @@
         <item name="colorAccent">@color/colorAccent</item>
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
-
+        <item name="android:actionButtonStyle">@style/MyToolbarButtonPadding</item>
+        <!--<item name="navigationIcon">@drawable/meat</item>-->
 
     </style>
 
@@ -18,8 +19,31 @@
         <item name="tabIndicatorColor">#000000</item>
         <item name="paddingEnd">0dp</item>
         <item name="paddingStart">0dp</item>
-        <item name="android:maxWidth">280px</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">143px</item>
 
     </style>
+
+
+    <style name="MyListActivityRowLayout" parent="AppTheme">
+        <item name="android:paddingLeft">12px</item>
+        <item name="android:paddingRight">12px</item>
+    </style>
+
+    <style name="MyListActivityRowLayoutIcons">
+        <item name="android:paddingRight">8px</item>
+    </style>
+    <style name="MyListActivityDividerHeight">
+        <item name="android:dividerHeight">2px</item>
+        <item name="android:divider">#82B1FF</item>
+    </style>
+
+    <style name="MyToolbarButtonPadding">
+        <item name="android:minWidth">0dp</item>
+        <item name="android:paddingLeft">12px</item>
+        <item name="android:paddingRight">12px</item>
+    </style>
+
+    <style name="MyShopListRowRightIcon"></style>
 
 </resources>

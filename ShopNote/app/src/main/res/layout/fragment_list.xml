@@ -6,6 +6,7 @@
 
     <com.baoyz.swipemenulistview.SwipeMenuListView
         android:id="@+id/lv_list"
+        style="@style/MyListActivityDividerHeight"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"/>
 

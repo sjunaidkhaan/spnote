@@ -76,9 +76,16 @@ public class ActivityAddList extends AppCompatActivity {
         ivHistory = (ImageView) findViewById(R.id.iv_add_list_history);
         tvPopulerItems = (TextView) findViewById(R.id.tv_populer_items);
 
-        setSupportActionBar(mToolbar);
-        getSupportActionBar().setHomeButtonEnabled(true);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        //jk
+        mToolbar.setNavigationIcon(R.drawable.back);
+        mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+        //
+
         etSerch = (EditText) findViewById(R.id.etSearch);
         mListView = (ListView) findViewById(R.id.lv_add_list);
         mPrefs = getSharedPreferences(ActivityAddList.ADD_LIST_PREF, MODE_PRIVATE);

@@ -3,17 +3,16 @@
     android:id="@+id/custom_row_list"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:background="@drawable/row_border_blue">
+    style="@style/MyListActivityRowLayout"
+    >
 
     <TextView
         android:id="@+id/tv_favorite"
+        android:paddingLeft="25px"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_vertical"
-        android:gravity="center_vertical"
-        android:layout_marginLeft="16dp"
+        android:textSize="18sp"
         android:layout_centerVertical="true"
-        android:layout_alignParentLeft="true"
         android:textColor="@android:color/black" />
 
     <ImageView
@@ -26,7 +25,6 @@
         android:id="@+id/iv_add"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginRight="12px"
         android:layout_alignParentRight="true" />
 
 </RelativeLayout>

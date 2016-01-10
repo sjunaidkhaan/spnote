@@ -4,15 +4,16 @@
     android:layout_height="wrap_content"
     android:orientation="horizontal"
     android:background="@android:color/white"
+    style="@style/MyListActivityRowLayout"
     android:id="@+id/custom_row">
     <TextView
         android:textColor="@android:color/black"
         android:paddingTop="5dip"
         android:paddingBottom="5dip"
+        android:textSize="18sp"
         android:id="@+id/tv_item_name"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="16dp"/>
+        android:layout_height="wrap_content" />
     <ImageView
         android:id="@+id/iv_add_list_fav"
         android:layout_toLeftOf="@+id/iv_add_list_history"
@@ -23,8 +24,6 @@
     <ImageView
         android:id="@+id/iv_add_list_history"
         android:layout_alignParentRight="true"
-        android:paddingTop="5dp"
-        android:paddingRight="2dp"
         android:paddingLeft="2dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

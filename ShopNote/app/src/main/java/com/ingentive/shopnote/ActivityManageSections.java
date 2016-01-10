@@ -48,18 +48,26 @@ public class ActivityManageSections extends AppCompatActivity {
 
         mToolbar = (Toolbar) findViewById(R.id.toolbar_manage_section);
         setSupportActionBar(mToolbar);
-        getSupportActionBar().setDisplayShowHomeEnabled(true);
-        ivBack = (ImageView) findViewById(R.id.iv_back);
+        mToolbar.setNavigationIcon(R.drawable.back);
+
+        mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+
+        //ivBack = (ImageView) findViewById(R.id.back);
         etAddSection = (EditText) findViewById(R.id.et_add_manage_section);
         btnAddSection = (Button) findViewById(R.id.btn_add_manage_section);
         mListView = (ListView) findViewById(R.id.lv_manage_section);
-       ivBack.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-               Intent mIntent = new Intent(getApplication(),MainActivity.class);
-                startActivity(mIntent);
-            }
-        });
+//       ivBack.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//               Intent mIntent = new Intent(getApplication(),MainActivity.class);
+//                startActivity(mIntent);
+//            }
+//        });
 
 
 

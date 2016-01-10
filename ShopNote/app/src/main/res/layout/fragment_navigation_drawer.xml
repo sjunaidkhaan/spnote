@@ -1,7 +1,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#187187">
+    android:background="#1f4e79">
 
 
     <!-- <RelativeLayout
@@ -22,11 +22,11 @@
         android:id="@+id/tvmanu"
         android:layout_width="fill_parent"
         android:layout_height="40dp"
-        android:background="#187187"
-        android:text="Manu"
+        android:background="#1f4e79"
+        android:text="Menu"
         android:layout_marginLeft="16dp"
         android:textColor="@android:color/white"
-        android:textSize="18px"
+        android:textSize="18sp"
         android:layout_gravity="center_vertical"
         android:gravity="center_vertical"
         android:textStyle="bold" />

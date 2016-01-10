@@ -20,6 +20,7 @@
         android:text="Popular Items"
         android:layout_marginLeft="16dp"/>
     <ListView
+        style="@style/MyListActivityDividerHeight"
         android:id="@+id/lv_add_list"
         android:layout_below="@+id/tv_populer_items"
         android:layout_width="fill_parent"

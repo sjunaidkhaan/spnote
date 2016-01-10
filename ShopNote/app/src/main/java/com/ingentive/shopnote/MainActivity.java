@@ -66,6 +66,8 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
                 Toast.makeText(MainActivity.this, "Clicked", Toast.LENGTH_SHORT).show();
                 tvToolbarTitle.setVisibility(View.GONE);
                 edToolbarTitle.setVisibility(View.VISIBLE);
+                edToolbarTitle.requestFocus();
+                edToolbarTitle.setSelection(edToolbarTitle.getText().toString().length());
             }
         });
 
@@ -160,7 +162,11 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
                 getSupportFragmentManager().findFragmentById(R.id.fragment_navigation_drawer);
 
         drawerFragment.setUp(R.id.fragment_navigation_drawer, (DrawerLayout) findViewById(R.id.drawer_layout), mToolbar);
+//        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeButtonEnabled(true);
+//        getSupportActionBar().setHomeAsUpIndicator(R.drawable.meat);
         drawerFragment.setDrawerListener(this);
+        //getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         if ( !ActivityFavoritesSearch.fromFavoriteBackHit ){
             displayView(3);

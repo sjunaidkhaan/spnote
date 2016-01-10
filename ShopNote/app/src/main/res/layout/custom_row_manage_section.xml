@@ -3,7 +3,8 @@
     android:id="@+id/custom_row_list"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:background="@drawable/row_border_blue">
+    style="@style/MyListActivityRowLayout"
+    >
 
     <ImageView
         android:id="@+id/ivOpt_ms"
@@ -16,8 +17,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
-        android:textStyle="bold"
-        android:textSize="18px"
+        android:textSize="18sp"
         android:layout_toRightOf="@id/ivOpt_ms"
         android:textColor="@android:color/black" />
 
@@ -25,7 +25,6 @@
         android:id="@+id/ivSection_ms"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginRight="12px"
         android:layout_alignParentRight="true" />
 
 </RelativeLayout>

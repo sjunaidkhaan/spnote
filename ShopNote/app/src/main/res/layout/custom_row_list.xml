@@ -4,7 +4,7 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_centerVertical="true"
-    android:background="@drawable/row_border_blue">
+    style="@style/MyListActivityRowLayout">
 
     <ImageView
         android:id="@+id/ivOpt"
@@ -33,11 +33,10 @@
         android:textColor="@android:color/black" />
     <TextView
         android:id="@+id/tvItem_Name"
+        android:textSize="18sp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
-        android:layout_gravity="center_vertical"
-        android:gravity="center_vertical"
         android:layout_toRightOf="@id/tvQuantity"
         android:textColor="@android:color/black" />
 
@@ -45,13 +44,13 @@
         android:id="@+id/ivFav_selected"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        style="@style/MyListActivityRowLayoutIcons"
         android:layout_toLeftOf="@+id/iv_Section"/>
 
     <ImageView
         android:id="@+id/iv_Section"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginRight="12px"
         android:layout_alignParentRight="true" />
 
 </RelativeLayout>

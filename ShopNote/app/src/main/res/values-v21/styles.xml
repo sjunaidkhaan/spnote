@@ -5,6 +5,9 @@
         <item name="android:colorPrimary">@color/colorPrimary</item>
         <item name="android:colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="android:colorAccent">@color/colorAccent</item>
+        <item name="actionButtonStyle">@style/MyToolbarButtonPadding</item>
+        <item name="toolbarNavigationButtonStyle">@style/MyToolbarButtonPadding</item>
+        <!--<item name="navigationIcon">@drawable/meat</item>-->
     </style>
 
     <style name="MyCustomToolbarTheme" parent="ThemeOverlay.AppCompat.Light">
@@ -14,10 +17,29 @@
 
     <style name="MyCustomTabLayout" parent="Widget.Design.TabLayout">
         <item name="tabIndicatorColor">#000000</item>
-        <item name="android:paddingEnd">0dp</item>
-        <item name="android:paddingStart">0dp</item>
-        <item name="android:maxWidth">280px</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">180px</item>
 
     </style>
 
+    <style name="MyListActivityRowLayout" parent="AppTheme">
+        <item name="android:paddingLeft">18px</item>
+        <item name="android:paddingRight">18px</item>
+    </style>
+
+    <style name="MyListActivityRowLayoutIcons">
+        <item name="android:paddingRight">12px</item>
+        <item name="android:divider">#82B1FF</item>
+    </style>
+    <style name="MyListActivityDividerHeight">
+        <item name="android:dividerHeight">3px</item>
+    </style>
+
+    <style name="MyToolbarButtonPadding">
+        <item name="android:minWidth">0dp</item>
+        <item name="android:paddingLeft">18px</item>
+        <item name="android:paddingRight">18px</item>
+    </style>
+
+    <style name="MyShopListRowRightIcon"></style>
 </resources>
