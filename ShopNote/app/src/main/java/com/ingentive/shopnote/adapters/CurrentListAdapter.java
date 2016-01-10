@@ -267,4 +267,5 @@ public class CurrentListAdapter extends ArrayAdapter<CurrentListModel> {
          EditText etQuantity;
 
     }
+
 }

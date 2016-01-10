@@ -1,6 +1,8 @@
 package com.ingentive.shopnote.adapters;
 
+import android.annotation.TargetApi;
 import android.content.Context;
+import android.os.Build;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -28,8 +30,7 @@ public class ListAdapter extends BaseAdapter {
     public Context mContext;
     private static LayoutInflater inflater = null;
     public DatabaseHandler db;
-    TextView itemName;
-    ImageView ivOption, ivFavorit_selected,ivFavorit_unselected, ivSection;
+
 
     public ListAdapter(Context context, List<ListModel> dataC, int rowId) {
 
@@ -54,120 +55,110 @@ public class ListAdapter extends BaseAdapter {
         return i;
     }
 
+    @TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
     @Override
     public View getView(int postion, View rowView, ViewGroup parent) {
 
-        View vi = rowView;
-        if (vi == null) {
-            vi = inflater.inflate(res, null);
+
+        //jk
+        ViewHolder vh = new ViewHolder();
+        //
+
+        if (rowView == null) {
+            rowView = inflater.inflate(R.layout.custom_row_list, parent,false);
+            vh.itemName = (TextView) rowView.findViewById(R.id.tvItemName);
+            vh.ivOption = (ImageView) rowView.findViewById(R.id.ivOpt);
+            vh.ivFavorit_selected = (ImageView) rowView.findViewById(R.id.ivFav_selected);
+            vh.ivSection = (ImageView) rowView.findViewById(R.id.iv_Section);
+            int id = rowView.generateViewId();
+            rowView.setId(id);
+            rowView.setTag(vh);
+        }else{
+            vh = (ViewHolder)rowView.getTag();
         }
-
-
-        itemName = (TextView) vi.findViewById(R.id.tvItemName);
-        ivOption = (ImageView) vi.findViewById(R.id.ivOpt);
-        ivFavorit_selected = (ImageView) vi.findViewById(R.id.ivFav_selected);
-        ivSection = (ImageView) vi.findViewById(R.id.iv_Section);
-
-        vi.setOnClickListener( new View.OnClickListener() {
-            public void onClick(View v) {
-                String listValue = (String) itemName.getText();
-                Toast.makeText(mContext, ""+listValue, Toast.LENGTH_SHORT).show();
-            }
-        });
-
-        itemName.setText(data.get(postion).getItemName());
-        ivOption.setImageResource(R.drawable.grab_grabbed);
-        db = new DatabaseHandler(mContext);
-        String iconSecton = db.getIconSection(data.get(postion).getItemName().toString());
         db = new DatabaseHandler(mContext);
         boolean itemIsFav = db.isFavorit(data.get(postion).getItemName().toString());
 
         if (itemIsFav) {
-            ivFavorit_selected.setVisibility(View.GONE);
-            ivFavorit_unselected.setVisibility(View.VISIBLE);
+            vh.ivFavorit_selected.setVisibility(View.GONE);
         }else {
-            ivFavorit_selected.setVisibility(View.VISIBLE);
-            ivFavorit_unselected.setVisibility(View.GONE);
+            vh.ivFavorit_selected.setVisibility(View.VISIBLE);
+
         }
 
 
+        vh.itemName.setText(data.get(postion).getItemName());
+        vh.ivOption.setBackgroundResource(R.drawable.grab_grabbed);
+        db = new DatabaseHandler(mContext);
+        String iconSecton = db.getIconSection(data.get(postion).getItemName().toString());
 
-        /* if ( data.get(postion).getHistoryItem()==1 && data.get(postion).getFavItem()==1){
-            ivFavIcon.setVisibility(View.VISIBLE);
-            ivHistIcon.setVisibility(View.VISIBLE);
 
-            ivFavIcon.setImageResource(data.get(postion).getFavIcon());
-            ivHistIcon.setImageResource(data.get(postion).getHistoryIcon());
-        }else if ( data.get(postion).getHistoryItem()==1 ){
-            ivFavIcon.setVisibility(View.GONE);
-            ivHistIcon.setVisibility(View.VISIBLE);
-
-            ivHistIcon.setImageResource(data.get(postion).getHistoryIcon());*/
-             ivFavorit_selected.setOnClickListener(new View.OnClickListener() {
+        vh.ivFavorit_selected.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Toast.makeText(mContext, "fav image click", Toast.LENGTH_SHORT).show();
-                ivFavorit_selected.setVisibility(View.GONE);
-                ivFavorit_unselected.setVisibility(View.VISIBLE);
+                notifyDataSetInvalidated();
             }
         });
-             ivFavorit_unselected.setOnClickListener(new View.OnClickListener() {
-                 @Override
-                 public void onClick(View v) {
-                     Toast.makeText(mContext, "fav image click", Toast.LENGTH_SHORT).show();
-                     ivFavorit_selected.setVisibility(View.VISIBLE);
-                     ivFavorit_unselected.setVisibility(View.GONE);
-                 }
-             });
 
-        switch (iconSecton) {
-            case "clothing.png":
-                ivSection.setImageResource(R.drawable.clothing);
-                break;
-            case "house.png":
-                ivSection.setImageResource(R.drawable.house);
-                break;
-            case "pharmacy.png":
-                ivSection.setImageResource(R.drawable.pharmacy);
-                break;
-            case "produce.png":
-                ivSection.setImageResource(R.drawable.produce);
-                break;
-            case "bakery.png":
-                ivSection.setImageResource(R.drawable.bakery);
-                break;
-            case "dry_goods.png":
-                ivSection.setImageResource(R.drawable.dry_goods);
-                break;
-            case "beverages.png":
-                ivSection.setImageResource(R.drawable.beverages);
-                break;
-            case "freezer.png":
-                ivSection.setImageResource(R.drawable.freezer);
-                break;
-            case "dairy.png":
-                ivSection.setImageResource(R.drawable.dairy);
-                break;
-            case "meat.png":
-                ivSection.setImageResource(R.drawable.meat);
-                break;
-            default:
-                ivSection.setImageResource(R.drawable.unknown);
-                break;
-        }
-        ivOption.setOnClickListener(new View.OnClickListener() {
+        vh.ivOption.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Toast.makeText(mContext, "manu image click", Toast.LENGTH_SHORT).show();
             }
         });
-        ivSection.setOnClickListener(new View.OnClickListener() {
+        vh.ivSection.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Toast.makeText(mContext, "section image click", Toast.LENGTH_SHORT).show();
             }
         });
 
-        return vi;
+
+        switch (iconSecton) {
+            case "clothing.png":
+                vh.ivSection.setBackgroundResource(R.drawable.clothing);
+                break;
+            case "house.png":
+                vh.ivSection.setBackgroundResource(R.drawable.house);
+                break;
+            case "pharmacy.png":
+                vh.ivSection.setBackgroundResource(R.drawable.pharmacy);
+                break;
+            case "produce.png":
+                vh.ivSection.setBackgroundResource(R.drawable.produce);
+                break;
+            case "bakery.png":
+                vh.ivSection.setBackgroundResource(R.drawable.bakery);
+                break;
+            case "dry_goods.png":
+                vh.ivSection.setBackgroundResource(R.drawable.dry_goods);
+                break;
+            case "beverages.png":
+                vh.ivSection.setBackgroundResource(R.drawable.beverages);
+                break;
+            case "freezer.png":
+                vh.ivSection.setBackgroundResource(R.drawable.freezer);
+                break;
+            case "dairy.png":
+                vh.ivSection.setBackgroundResource(R.drawable.dairy);
+                break;
+            case "meat.png":
+                vh.ivSection.setBackgroundResource(R.drawable.meat);
+                break;
+            default:
+                vh.ivSection.setBackgroundResource(R.drawable.unknown);
+                break;
+        }
+
+
+        return rowView;
     }
+
+    public class ViewHolder
+    {
+        TextView itemName;
+        ImageView ivOption, ivFavorit_selected,ivFavorit_unselected, ivSection;
+    }
+
 }

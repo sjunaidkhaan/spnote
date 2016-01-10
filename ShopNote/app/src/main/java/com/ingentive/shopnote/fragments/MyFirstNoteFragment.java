@@ -6,15 +6,17 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.ingentive.shopnote.R;
+import com.ingentive.shopnote.model.CustomViewPager;
 
 public class MyFirstNoteFragment extends android.support.v4.app.Fragment {
 
     public static TabLayout tabLayout;
-    public static ViewPager viewPager;
+    public static CustomViewPager viewPager;
     public static int int_items = 4 ;
     public int[] tabIcons = {
             R.drawable.list_unselected,
@@ -35,9 +37,17 @@ public class MyFirstNoteFragment extends android.support.v4.app.Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View x =  inflater.inflate(R.layout.tab_layout,container,false);
         tabLayout = (TabLayout) x.findViewById(R.id.tabs);
-        viewPager = (ViewPager) x.findViewById(R.id.viewpager);
+        viewPager = (CustomViewPager) x.findViewById(R.id.viewpager);
         viewPager.setAdapter(new MyAdapter(getChildFragmentManager()));
 
+        viewPager.setPagingEnabled(false);
+
+//        viewPager.setOnTouchListener(new View.OnTouchListener() {
+//            @Override
+//            public boolean onTouch(View v, MotionEvent event) {
+//                return true;
+//            }
+//        });
 
         /**
          * Now , this is a workaround ,

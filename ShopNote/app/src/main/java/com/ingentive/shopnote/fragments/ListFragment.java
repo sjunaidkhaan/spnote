@@ -1,12 +1,25 @@
 package com.ingentive.shopnote.fragments;
 
+import android.content.ComponentName;
+import android.content.Intent;
 import android.content.pm.ApplicationInfo;
+import android.content.pm.ResolveInfo;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.Toast;
 
+import com.baoyz.swipemenulistview.SwipeMenu;
+import com.baoyz.swipemenulistview.SwipeMenuCreator;
+import com.baoyz.swipemenulistview.SwipeMenuItem;
 import com.baoyz.swipemenulistview.SwipeMenuListView;
 import com.ingentive.shopnote.DatabaseHandler;
 import com.ingentive.shopnote.R;
@@ -37,13 +50,168 @@ public class ListFragment extends Fragment {
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_list, null);
         mListView = (SwipeMenuListView) rootView.findViewById(R.id.lv_list);
-        //mAppList = getPackageManager().getInstalledApplications(0);
-
         db = new DatabaseHandler(getActivity());
-        List<CurrentListModel> currList = db.getCurrList();
+        final List<CurrentListModel> currList = db.getCurrList();
         mAdapter = new CurrentListAdapter(getActivity(), currList, R.layout.custom_row_list);
         mListView.setAdapter(mAdapter);
+
+
+
+        ///jk
+
+        // step 1. create a MenuCreator
+        SwipeMenuCreator creator = new SwipeMenuCreator() {
+
+            @Override
+            public void create(SwipeMenu menu) {
+//                // create "open" item
+//                SwipeMenuItem openItem = new SwipeMenuItem(
+//                        getActivity());
+//                // set item background
+//                openItem.setBackground(new ColorDrawable(Color.rgb(0xC9, 0xC9,
+//                        0xCE)));
+//                // set item width
+//                openItem.setWidth(dp2px(90));
+//                // set item title
+//                openItem.setTitle("Open");
+//                // set item title fontsize
+//                openItem.setTitleSize(18);
+//                // set item title font color
+//                openItem.setTitleColor(Color.WHITE);
+//                // add to menu
+//                menu.addMenuItem(openItem);
+
+                // create "delete" item
+                SwipeMenuItem deleteItem = new SwipeMenuItem(
+                        getActivity());
+                // set item background
+                deleteItem.setBackground(new ColorDrawable(Color.rgb(0xF9,
+                        0x3F, 0x25)));
+                // set item width
+                deleteItem.setWidth(dp2px(90));
+                // set a icon
+                deleteItem.setIcon(R.drawable.meat);
+                // add to menu
+                menu.addMenuItem(deleteItem);
+            }
+        };
+        // set creator
+        mListView.setMenuCreator(creator);
+
+        mListView.setOnMenuItemClickListener(new SwipeMenuListView.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(int position, SwipeMenu menu, int index) {
+
+                switch (index) {
+
+                    case 0:
+                        // delete
+//					delete(item);
+                        currList.remove(position);
+                        mAdapter.notifyDataSetChanged();
+                        break;
+                }
+                return false;
+            }
+        });
+
+        // set SwipeListener
+        mListView.setOnSwipeListener(new SwipeMenuListView.OnSwipeListener() {
+
+            @Override
+            public void onSwipeStart(int position) {
+                // swipe start
+                Toast.makeText(getActivity(), position + " START", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onSwipeEnd(int position) {
+                // swipe end
+                Toast.makeText(getActivity(), position + " CLOSE", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        // set MenuStateChangeListener
+        mListView.setOnMenuStateChangeListener(new SwipeMenuListView.OnMenuStateChangeListener() {
+            @Override
+            public void onMenuOpen(int position) {
+                Toast.makeText(getActivity(), position + " OPEN", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onMenuClose(int position) {
+                Toast.makeText(getActivity(), position + " CLOSE", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        mListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view,
+                                           int position, long id) {
+                Toast.makeText(getActivity(), position + " long click", Toast.LENGTH_SHORT).show();
+                return false;
+            }
+        });
+
+
+
+        ///
+
+
+
+        mListView.setSwipeDirection(SwipeMenuListView.DIRECTION_LEFT);
+
         //Toast.makeText(getActivity(),"size "+currList.size(), Toast.LENGTH_SHORT).show();
         return rootView;
     }
+    private int dp2px(int dp) {
+        return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp,
+                getResources().getDisplayMetrics());
+    }
+
+    private void open(ApplicationInfo item) {
+        // open app
+        Intent resolveIntent = new Intent(Intent.ACTION_MAIN, null);
+        resolveIntent.addCategory(Intent.CATEGORY_LAUNCHER);
+        resolveIntent.setPackage(item.packageName);
+        List<ResolveInfo> resolveInfoList = getActivity().getPackageManager()
+                .queryIntentActivities(resolveIntent, 0);
+        if (resolveInfoList != null && resolveInfoList.size() > 0) {
+            ResolveInfo resolveInfo = resolveInfoList.get(0);
+            String activityPackageName = resolveInfo.activityInfo.packageName;
+            String className = resolveInfo.activityInfo.name;
+
+            Intent intent = new Intent(Intent.ACTION_MAIN);
+            intent.addCategory(Intent.CATEGORY_LAUNCHER);
+            ComponentName componentName = new ComponentName(
+                    activityPackageName, className);
+
+            intent.setComponent(componentName);
+            startActivity(intent);
+        }
+    }
+
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getActivity().getMenuInflater().inflate(R.menu.menu_main, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+
+        Toast.makeText(getActivity(), "id" + id, Toast.LENGTH_LONG).show();
+        if (id == 1) {
+            mListView.setSwipeDirection(SwipeMenuListView.DIRECTION_LEFT);
+            return true;
+        }
+        if (id == 2) {
+            mListView.setSwipeDirection(SwipeMenuListView.DIRECTION_RIGHT);
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
 }
