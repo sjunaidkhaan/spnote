@@ -1,15 +1,19 @@
 package com.ingentive.shopnote.adapters;
 
+import android.annotation.TargetApi;
 import android.content.Context;
 import android.database.DataSetObserver;
 import android.graphics.Color;
+import android.os.Build;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
+import android.widget.EditText;
 import android.widget.ExpandableListView;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.ingentive.shopnote.DatabaseHandler;
 import com.ingentive.shopnote.R;
@@ -27,7 +31,6 @@ public class ShopCustomAdapter extends BaseExpandableListAdapter {
     public Context mContext;
     private static LayoutInflater inflater = null;
     public DatabaseHandler db;
-    public ViewGroup globe;
 
     public ShopCustomAdapter(Context context, List<ShopParentModel> parent) {
         this.shopParent = parent;
@@ -72,74 +75,78 @@ public class ShopCustomAdapter extends BaseExpandableListAdapter {
         return true;
     }
 
+    @TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
     @Override
     //in this method you must set the text to see the parent/group on the list
     public View getGroupView(final int groupPosition, boolean b, View rowView, final ViewGroup viewGroup) {
 
-        globe = viewGroup;
+
+        final TextView tvShopSecNamePar;
+        final ImageView ivShopSecIcon;
+        final ImageView ivArrow;
+
 
         View vi = rowView;
+        ViewHolderParent vhp = new ViewHolderParent();
+
         if (vi == null) {
             vi = inflater.inflate(R.layout.custom_row_shop_parent, viewGroup, false);
+
+            vhp.tvShopSecNamePar = (TextView) vi.findViewById(R.id.tv_section_name_par);
+            vhp.ivShopSecIcon = (ImageView) vi.findViewById(R.id.iv_section_shop_par);
+            vhp.ivArrow = (ImageView) vi.findViewById(R.id.iv_grab_shop_par);
+            int id = vi.generateViewId();
+            vi.setId(id);
+            vi.setTag(vhp);
+
+        }else{
+            vhp = (ViewHolderParent)vi.getTag();
         }
 
-        final TextView tvShopSecNamePar = (TextView) vi.findViewById(R.id.tv_section_name_par);
-        tvShopSecNamePar.setText(shopParent.get(groupPosition).getShopPaSectionName().toString());
-        final ImageView ivShopSecIcon = (ImageView) vi.findViewById(R.id.iv_section_shop_par);
-        final ImageView ivArrow = (ImageView) vi.findViewById(R.id.iv_grab_shop_par);
+        if ( b ){
+            vhp.ivArrow.setBackgroundResource(R.drawable.minimize);
+        }else{
+            vhp.ivArrow.setBackgroundResource(R.drawable.maximize);
+        }
+
+        shopParent.get(groupPosition).setView(vhp);
+        vhp.tvShopSecNamePar.setText(shopParent.get(groupPosition).getShopPaSectionName().toString());
+
         switch (shopParent.get(groupPosition).getShopPaSectionIcon().toString()) {
             case "clothing.png":
-                ivShopSecIcon.setBackgroundResource(R.drawable.clothing);
+                vhp.ivShopSecIcon.setBackgroundResource(R.drawable.clothing);
                 break;
             case "house.png":
-                ivShopSecIcon.setImageResource(R.drawable.house);
+                vhp.ivShopSecIcon.setBackgroundResource(R.drawable.house);
                 break;
             case "pharmacy.png":
-                ivShopSecIcon.setImageResource(R.drawable.pharmacy);
+                vhp.ivShopSecIcon.setBackgroundResource(R.drawable.pharmacy);
                 break;
             case "produce.png":
-                ivShopSecIcon.setImageResource(R.drawable.produce);
+                vhp.ivShopSecIcon.setBackgroundResource(R.drawable.produce);
                 break;
             case "bakery.png":
-                ivShopSecIcon.setImageResource(R.drawable.bakery);
+                vhp.ivShopSecIcon.setBackgroundResource(R.drawable.bakery);
                 break;
             case "dry_goods.png":
-                ivShopSecIcon.setImageResource(R.drawable.dry_goods);
+                vhp.ivShopSecIcon.setBackgroundResource(R.drawable.dry_goods);
                 break;
             case "beverages.png":
-                ivShopSecIcon.setImageResource(R.drawable.beverages);
+                vhp.ivShopSecIcon.setBackgroundResource(R.drawable.beverages);
                 break;
             case "freezer.png":
-                ivShopSecIcon.setImageResource(R.drawable.freezer);
+                vhp.ivShopSecIcon.setBackgroundResource(R.drawable.freezer);
                 break;
             case "dairy.png":
-                ivShopSecIcon.setImageResource(R.drawable.dairy);
+                vhp.ivShopSecIcon.setBackgroundResource(R.drawable.dairy);
                 break;
             case "meat.png":
-                ivShopSecIcon.setImageResource(R.drawable.meat);
+                vhp.ivShopSecIcon.setBackgroundResource(R.drawable.meat);
                 break;
             default:
-                ivShopSecIcon.setImageResource(R.drawable.unknown);
+                vhp.ivShopSecIcon.setBackgroundResource(R.drawable.unknown);
                 break;
         }
-        ivArrow.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //tvShopSecNamePar.setTextColor(Color.GRAY);
-                if (!shopParent.get(groupPosition).isClick()) {
-                    shopParent.get(groupPosition).setIsClick(true);
-                    ExpandableListView mExpandableListView = (ExpandableListView) viewGroup;
-                    mExpandableListView.expandGroup(groupPosition);
-                    ivArrow.setBackgroundResource(R.drawable.minimize);
-                } else {
-                    shopParent.get(groupPosition).setIsClick(false);
-                    ExpandableListView mExpandableListView = (ExpandableListView) viewGroup;
-                    mExpandableListView.collapseGroup(groupPosition);
-                    ivArrow.setBackgroundResource(R.drawable.maximize);
-                }
-            }
-        });
-
         //jk
         int counter = 0;
         for ( int i = 0; i < shopParent.get(groupPosition).getArrayChildren().size(); ++i ){
@@ -149,42 +156,79 @@ public class ShopCustomAdapter extends BaseExpandableListAdapter {
         }
 
         if ( counter == shopParent.get(groupPosition).getArrayChildren().size() ){
-            tvShopSecNamePar.setTextColor(Color.GRAY);
+            vhp.tvShopSecNamePar.setTextColor(Color.GRAY);
+        }else{
+            vhp.tvShopSecNamePar.setTextColor(Color.BLACK);
         }
         //
 
-        shopParent.get(groupPosition).setView(vi);
+
+        ivArrow = vhp.ivArrow;
+        vhp.ivArrow.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //tvShopSecNamePar.setTextColor(Color.GRAY);
+                if (!shopParent.get(groupPosition).isClick()) {
+                    shopParent.get(groupPosition).setIsClick(true);
+                    ExpandableListView mExpandableListView = (ExpandableListView) viewGroup;
+                    mExpandableListView.expandGroup(groupPosition);
+                    //shopParent.get(groupPosition).getView().ivArrow.setBackgroundResource(R.drawable.minimize);
+                } else {
+                    shopParent.get(groupPosition).setIsClick(false);
+                    ExpandableListView mExpandableListView = (ExpandableListView) viewGroup;
+                    mExpandableListView.collapseGroup(groupPosition);
+                    //shopParent.get(groupPosition).getView().ivArrow.setBackgroundResource(R.drawable.maximize);
+                }
+            }
+        });
+
         return vi;
     }
+    @TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
     @Override
     //in this method you must set the text to see the children on the list
     public View getChildView(final int groupPosition, final int childPosition, boolean isLastChild, View view, final ViewGroup viewGroup) {
 
         View childView = view;
+
+        ViewHolderChild vhc = new ViewHolderChild();
+
+
         if (childView == null) {
             childView = inflater.inflate(R.layout.custom_row_shop_child, null);
+            vhc.tvShopChilItemName = (TextView) childView.findViewById(R.id.tv_item_name_shop_child);
+            vhc.ivShopChilCheckBox = (ImageView) childView.findViewById(R.id.iv_checkbox_shop_child);
+            int id = childView.generateViewId();
+            childView.setId(id);
+            childView.setTag(vhc);
+
+        }else{
+            vhc = (ViewHolderChild)childView.getTag();
         }
 
-        final TextView tvShopChilItemName = (TextView) childView.findViewById(R.id.tv_item_name_shop_child);
+
 //        final String quantity = shopParent.get(groupPosition).getArrayChildren().get(childPosition).getShopChQuantity().toString();
         final String name = shopParent.get(groupPosition).getArrayChildren().get(childPosition).getShopChItemName().toString();
         /*if(!quantity.equals(null)&&!quantity.equals("1"))
             tvShopChilItemName.setText(quantity+" "+name);
         else*/
-        tvShopChilItemName.setText(name);
-        final ImageView ivShopChilCheckBox = (ImageView) childView.findViewById(R.id.iv_checkbox_shop_child);
+        vhc.tvShopChilItemName.setText(name);
+
         db = new DatabaseHandler(mContext);
         int isChecked = db.isChecked(name);
         if (isChecked == 1) {
-            tvShopChilItemName.setTextColor(Color.GRAY);
-            ivShopChilCheckBox.setBackgroundResource(R.drawable.checkbox_checked);
+            vhc.tvShopChilItemName.setTextColor(Color.GRAY);
+            vhc.ivShopChilCheckBox.setBackgroundResource(R.drawable.checkbox_checked);
             //Toast.makeText(mContext, "if "+shopParent.get(groupPosition).getArrayChildren().get(childPosition).CheckBox(), Toast.LENGTH_SHORT).show();
         } else {
-            ivShopChilCheckBox.setBackgroundResource(R.drawable.checkbox_unchecked);
-            tvShopChilItemName.setTextColor(Color.BLACK);
+            vhc.ivShopChilCheckBox.setBackgroundResource(R.drawable.checkbox_unchecked);
+            vhc.tvShopChilItemName.setTextColor(Color.BLACK);
             //Toast.makeText(mContext, "else "+shopParent.get(groupPosition).getArrayChildren().get(childPosition).CheckBox(), Toast.LENGTH_SHORT).show();
         }
-        ivShopChilCheckBox.setOnClickListener(new View.OnClickListener() {
+
+        final ImageView ivShopChilCheckBox = vhc.ivShopChilCheckBox;
+        final TextView tvShopChilItemName = vhc.tvShopChilItemName;
+        vhc.ivShopChilCheckBox.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 db = new DatabaseHandler(mContext);
@@ -197,6 +241,7 @@ public class ShopCustomAdapter extends BaseExpandableListAdapter {
                     db.updateCheckItem(unCheck);
                     ivShopChilCheckBox.setBackgroundResource(R.drawable.checkbox_unchecked);
                     tvShopChilItemName.setTextColor(Color.BLACK);
+                    shopParent.get(groupPosition).getArrayChildren().get(childPosition).setCheckBox(0);
 
 
                 } else {
@@ -207,13 +252,14 @@ public class ShopCustomAdapter extends BaseExpandableListAdapter {
                     ivShopChilCheckBox.setBackgroundResource(R.drawable.checkbox_checked);
                     tvShopChilItemName.setTextColor(Color.GRAY);
                     db.updateCheckItem(currCheck);
+                    shopParent.get(groupPosition).getArrayChildren().get(childPosition).setCheckBox(1);
                 }
 
-                if (shopParent.get(groupPosition).getArrayChildren().get(childPosition).getCheckBox() == 0) {
-                    shopParent.get(groupPosition).getArrayChildren().get(childPosition).setCheckBox(1);
-                } else {
-                    shopParent.get(groupPosition).getArrayChildren().get(childPosition).setCheckBox(0);
-                }
+//                if (shopParent.get(groupPosition).getArrayChildren().get(childPosition).getCheckBox() == 0) {
+//                    shopParent.get(groupPosition).getArrayChildren().get(childPosition).setCheckBox(1);
+//                } else {
+//                    shopParent.get(groupPosition).getArrayChildren().get(childPosition).setCheckBox(0);
+//                }
                 ////
                 ///jk
                 int counter = 0;
@@ -222,11 +268,11 @@ public class ShopCustomAdapter extends BaseExpandableListAdapter {
                         counter++;
                     }
                 }
-                View pp = ((ExpandableListView)globe).getChildAt(groupPosition);
                 if (counter == shopParent.get(groupPosition).getArrayChildren().size()) {
-                    ((TextView) (shopParent.get(groupPosition).getView().findViewById(R.id.tv_section_name_par))).setTextColor(Color.GRAY);
+                    Toast.makeText(mContext, "due to child", Toast.LENGTH_LONG).show();
+                    (shopParent.get(groupPosition).getView().tvShopSecNamePar).setTextColor(Color.GRAY);
                 } else {
-                    ((TextView) (shopParent.get(groupPosition).getView().findViewById(R.id.tv_section_name_par))).setTextColor(Color.BLACK);
+                    (shopParent.get(groupPosition).getView().tvShopSecNamePar).setTextColor(Color.BLACK);
                 }
                 ///
             }
@@ -243,5 +289,20 @@ public class ShopCustomAdapter extends BaseExpandableListAdapter {
     public void registerDataSetObserver(DataSetObserver observer) {
         /* used to make the notifyDataSetChanged() method work */
         super.registerDataSetObserver(observer);
+    }
+
+
+    public class ViewHolderParent
+    {
+
+        TextView tvShopSecNamePar;
+        ImageView ivShopSecIcon;
+        ImageView ivArrow;
+
+    }
+    public class ViewHolderChild
+    {
+        TextView tvShopChilItemName;
+        ImageView ivShopChilCheckBox;
     }
 }

@@ -1,9 +1,11 @@
 package com.ingentive.shopnote.adapters;
 
+import android.annotation.TargetApi;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -50,38 +52,99 @@ public class CurrentListAdapter extends ArrayAdapter<CurrentListModel> {
         inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
 
+    @TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
     @Override
     public View getView(final int postion, View rowView, ViewGroup parent) {
 
         View vi = rowView;
-        LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        vi = inflater.inflate(R.layout.custom_row_list, parent, false);
+
+        ViewHolder vh = new ViewHolder();
+        if ( vi == null ){
+            LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            vi = inflater.inflate(R.layout.custom_row_list, parent, false);
+
+            vh.itemName = (TextView) vi.findViewById(R.id.tvItem_Name);
+            vh.ivOption = (ImageView) vi.findViewById(R.id.ivOpt);
+            vh.ivFavorit_selected = (ImageView) vi.findViewById(R.id.ivFav_selected);
+            vh.ivSection = (ImageView) vi.findViewById(R.id.iv_Section);
+            vh.etQuantity = (EditText) vi.findViewById(R.id.etQuantity);
+            vh.tvQuantity =(TextView) vi.findViewById(R.id.tvQuantity);
+            int id = vi.generateViewId();
+            vi.setId(id);
+            vi.setTag(vh);
+        }else{
+            vh = (ViewHolder)vi.getTag();
+        }
+
 
         final TextView itemName,tvQuantity;
         final ImageView ivOption, ivFavorit_selected, ivSection;
         final EditText etQuantity;
 
-        itemName = (TextView) vi.findViewById(R.id.tvItem_Name);
-        ivOption = (ImageView) vi.findViewById(R.id.ivOpt);
-        ivFavorit_selected = (ImageView) vi.findViewById(R.id.ivFav_selected);
-        ivSection = (ImageView) vi.findViewById(R.id.iv_Section);
-        etQuantity = (EditText) vi.findViewById(R.id.etQuantity);
-        tvQuantity =(TextView) vi.findViewById(R.id.tvQuantity);
 
-        itemName.setText(data.get(postion).getItemName());
-        ivOption.setImageResource(R.drawable.grab_notgrabbed);
-        ivFavorit_selected.setImageResource(R.drawable.favorite_selected);
-        etQuantity.setText(data.get(postion).getQuantity());
+        vh.itemName.setText(data.get(postion).getItemName());
+        vh.ivOption.setBackgroundResource(R.drawable.grab_notgrabbed);
+        vh.ivFavorit_selected.setBackgroundResource(R.drawable.favorite_selected);
+        vh.etQuantity.setText(data.get(postion).getQuantity());
         if(!data.get(postion).getQuantity().equals("1")){
-            tvQuantity.setVisibility(View.VISIBLE);
-            tvQuantity.setText(data.get(postion).getQuantity());
+            vh.tvQuantity.setVisibility(View.VISIBLE);
+            vh.tvQuantity.setText(data.get(postion).getQuantity());
+        }else{
+            vh.tvQuantity.setVisibility(View.GONE);
         }
         db = new DatabaseHandler(mContext);
-        boolean isFav = db.isFavorit(itemName.getText().toString());
+        boolean isFav = db.isFavorit(vh.itemName.getText().toString());
         if (isFav) {
-            ivFavorit_selected.setImageResource(R.drawable.favorite_unselected);
+            vh.ivFavorit_selected.setBackgroundResource(R.drawable.favorite_unselected);
         }
-        ivOption.setOnClickListener(new View.OnClickListener() {
+        String iconSecton = db.getIconSection(data.get(postion).getItemName().toString());
+
+        switch (iconSecton) {
+            case "clothing.png":
+                vh.ivSection.setBackgroundResource(R.drawable.clothing);
+                break;
+            case "house.png":
+                vh.ivSection.setBackgroundResource(R.drawable.house);
+                break;
+            case "pharmacy.png":
+                vh.ivSection.setBackgroundResource(R.drawable.pharmacy);
+                break;
+            case "produce.png":
+                vh.ivSection.setBackgroundResource(R.drawable.produce);
+                break;
+            case "bakery.png":
+                vh.ivSection.setBackgroundResource(R.drawable.bakery);
+                break;
+            case "dry_goods.png":
+                vh.ivSection.setBackgroundResource(R.drawable.dry_goods);
+                break;
+            case "beverages.png":
+                vh.ivSection.setBackgroundResource(R.drawable.beverages);
+                break;
+            case "freezer.png":
+                vh.ivSection.setBackgroundResource(R.drawable.freezer);
+                break;
+            case "dairy.png":
+                vh.ivSection.setBackgroundResource(R.drawable.dairy);
+                break;
+            case "meat.png":
+                vh.ivSection.setBackgroundResource(R.drawable.meat);
+                break;
+            default:
+                vh.ivSection.setBackgroundResource(R.drawable.unknown);
+                break;
+        }
+
+
+        tvQuantity = vh.tvQuantity;
+        itemName = vh.itemName;
+        ivFavorit_selected = vh.ivFavorit_selected;
+        ivOption = vh.ivOption;
+        etQuantity = vh.etQuantity;
+        ivSection = vh.ivSection;
+
+
+        vh.ivOption.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //if(data.get(postion).getQuantity())
@@ -98,7 +161,7 @@ public class CurrentListAdapter extends ArrayAdapter<CurrentListModel> {
                 //Toast.makeText(mContext, "getQuantity" + data.get(postion).getQuantity().toString(), Toast.LENGTH_SHORT).show();
             }
         });
-        ivSection.setOnClickListener(new View.OnClickListener() {
+        vh.ivSection.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 //                Toast.makeText(mContext, "section image click" + postion, Toast.LENGTH_SHORT).show();
@@ -123,7 +186,7 @@ public class CurrentListAdapter extends ArrayAdapter<CurrentListModel> {
             }
         });*/
 
-        etQuantity.setOnEditorActionListener(
+        vh.etQuantity.setOnEditorActionListener(
                 new EditText.OnEditorActionListener() {
                     @Override
                     public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
@@ -152,7 +215,7 @@ public class CurrentListAdapter extends ArrayAdapter<CurrentListModel> {
                 });
 
 
-        ivFavorit_selected.setOnClickListener(new View.OnClickListener() {
+        vh.ivFavorit_selected.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Toast.makeText(mContext, "Favorite Clicked: " + itemName.getText().toString() + ":" + postion, Toast.LENGTH_SHORT).show();
@@ -165,57 +228,20 @@ public class CurrentListAdapter extends ArrayAdapter<CurrentListModel> {
                     FavoritListModel remFavItem = new FavoritListModel();
                     remFavItem.setItemName(itemName.getText().toString());
 
-                    ivFavorit_selected.setImageResource(R.drawable.favorite_selected);
+                    ivFavorit_selected.setBackgroundResource(R.drawable.favorite_selected);
                     db.removeFavorit(remFavItem);
 
                 } else {
 
                     FavoritListModel addFavItem = new FavoritListModel();
                     addFavItem.setItemName(itemName.getText().toString());
-                    ivFavorit_selected.setImageResource(R.drawable.favorite_unselected);
+                    ivFavorit_selected.setBackgroundResource(R.drawable.favorite_unselected);
                     db.addFavorit(addFavItem);
                 }
 
             }
         });
 
-        String iconSecton = db.getIconSection(data.get(postion).getItemName().toString());
-
-        switch (iconSecton) {
-            case "clothing.png":
-                ivSection.setImageResource(R.drawable.clothing);
-                break;
-            case "house.png":
-                ivSection.setImageResource(R.drawable.house);
-                break;
-            case "pharmacy.png":
-                ivSection.setImageResource(R.drawable.pharmacy);
-                break;
-            case "produce.png":
-                ivSection.setImageResource(R.drawable.produce);
-                break;
-            case "bakery.png":
-                ivSection.setImageResource(R.drawable.bakery);
-                break;
-            case "dry_goods.png":
-                ivSection.setImageResource(R.drawable.dry_goods);
-                break;
-            case "beverages.png":
-                ivSection.setImageResource(R.drawable.beverages);
-                break;
-            case "freezer.png":
-                ivSection.setImageResource(R.drawable.freezer);
-                break;
-            case "dairy.png":
-                ivSection.setImageResource(R.drawable.dairy);
-                break;
-            case "meat.png":
-                ivSection.setImageResource(R.drawable.meat);
-                break;
-            default:
-                ivSection.setImageResource(R.drawable.unknown);
-                break;
-        }
         return vi;
     }
     public void showDialog(){
@@ -231,5 +257,14 @@ public class CurrentListAdapter extends ArrayAdapter<CurrentListModel> {
                 });
         AlertDialog alertDialog = alertDialogBuilder.create();
         alertDialog.show();
+    }
+
+
+    public class ViewHolder
+    {
+         TextView itemName,tvQuantity;
+         ImageView ivOption, ivFavorit_selected, ivSection;
+         EditText etQuantity;
+
     }
 }

@@ -79,6 +79,7 @@ public class ShopFragment extends Fragment {
                 parentModel.setShopPaSectionName(shopParList.get(i).getShopPaSectionName().toString());
                 parentModel.setShopPaSectionIcon(shopParList.get(i).getShopPaSectionIcon().toString());
                 parentModel.setArrayChildren(shopChiList);
+                parentModel.setIsClick(false);
                 shopList.add(parentModel);
                 //Toast.makeText(getActivity(), " " + shopChiList.size(), Toast.LENGTH_LONG).show();
             }

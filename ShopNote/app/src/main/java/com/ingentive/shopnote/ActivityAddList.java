@@ -1,8 +1,10 @@
 package com.ingentive.shopnote;
 
 import android.app.ActionBar;
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
@@ -81,6 +83,9 @@ public class ActivityAddList extends AppCompatActivity {
         mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                Intent i = new Intent(ActivityAddList.this, MainActivity.class);
+                startActivity(i);
                 finish();
             }
         });

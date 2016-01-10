@@ -17,7 +17,6 @@
         android:id="@+id/iv_grab_shop_par"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@drawable/maximize"
         android:layout_toRightOf="@id/iv_grab_shop_ex" />
     <TextView
         android:layout_centerVertical="true"

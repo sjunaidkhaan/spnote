@@ -2,6 +2,8 @@ package com.ingentive.shopnote.model;
 
 import android.view.View;
 
+import com.ingentive.shopnote.adapters.ShopCustomAdapter;
+
 import java.util.List;
 
 /**
@@ -13,17 +15,17 @@ public class ShopParentModel {
     String shop_par_section_icon_name;
     String shop_pa_section_name;
     private List<ShopChildModel> mShopChildrenList;
-    boolean isClick = false;
+    boolean isClick;
 
-    public View getView() {
+    public ShopCustomAdapter.ViewHolderParent getView() {
         return view;
     }
 
-    public void setView(View view) {
+    public void setView(ShopCustomAdapter.ViewHolderParent view) {
         this.view = view;
     }
 
-    View view;
+    ShopCustomAdapter.ViewHolderParent view;
 
     public ShopParentModel() {
 
