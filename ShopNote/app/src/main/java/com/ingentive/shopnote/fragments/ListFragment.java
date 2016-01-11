@@ -90,8 +90,10 @@ public class ListFragment extends Fragment {
                 // set item width
                 deleteItem.setWidth(dp2px(90));
                 // set a icon
-                deleteItem.setIcon(R.drawable.meat);
+                deleteItem.setTitle("Delete");
                 // add to menu
+                deleteItem.setTitleColor(Color.WHITE);
+                deleteItem.setTitleSize(18);
                 menu.addMenuItem(deleteItem);
             }
         };
@@ -107,8 +109,15 @@ public class ListFragment extends Fragment {
                     case 0:
                         // delete
 //					delete(item);
+                        db = new DatabaseHandler(getActivity());
+                        //deleteItem();
+
+                        CurrentListModel model = new CurrentListModel();
+                       // model.setCurrListId();
+                       // db.deleteItem(model);
                         currList.remove(position);
                         mAdapter.notifyDataSetChanged();
+
                         break;
                 }
                 return false;
@@ -154,11 +163,7 @@ public class ListFragment extends Fragment {
             }
         });
 
-
-
         ///
-
-
 
         mListView.setSwipeDirection(SwipeMenuListView.DIRECTION_LEFT);
 

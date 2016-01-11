@@ -20,20 +20,22 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.ingentive.shopnote.MainActivity" />
         </activity>
-
         <activity android:name=".ActivityManageSections">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.ingentive.shopnote.MainActivity" />
         </activity>
-
+        <activity android:name=".ActivityHistorySearch">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.ingentive.shopnote.MainActivity" />
+        </activity>
         <activity android:name=".ActivityFavoritesSearch">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.ingentive.shopnote.MainActivity" />
         </activity>
-        <activity android:name=".MainTestNavigation"></activity>
-
+        <activity android:name=".MainTestNavigation" />
     </application>
 
 </manifest>

@@ -54,7 +54,7 @@ public class CurrentListAdapter extends ArrayAdapter<CurrentListModel> {
 
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
     @Override
-    public View getView(final int postion, View rowView, ViewGroup parent) {
+    public View getView(final int postion, View rowView, final ViewGroup parent) {
 
         View vi = rowView;
 
@@ -149,6 +149,7 @@ public class CurrentListAdapter extends ArrayAdapter<CurrentListModel> {
             public void onClick(View v) {
                 //if(data.get(postion).getQuantity())
                 etQuantity.setVisibility(View.VISIBLE);
+                etQuantity.requestFocus();
                 ivOption.setVisibility(View.GONE);
                 prefs = mContext.getSharedPreferences(MYPREFERENCES, Context.MODE_PRIVATE);
                 String restoredText = prefs.getString(first_time_dialog, null);

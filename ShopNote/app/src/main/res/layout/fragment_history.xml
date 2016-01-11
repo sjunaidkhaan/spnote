@@ -9,6 +9,7 @@
         android:layout_height="fill_parent"
         android:transcriptMode="alwaysScroll"
         android:cacheColorHint="#00000000"
+        style="@style/MyListActivityDividerHeight"
         android:listSelector="@android:color/transparent"/>
 
 </RelativeLayout>

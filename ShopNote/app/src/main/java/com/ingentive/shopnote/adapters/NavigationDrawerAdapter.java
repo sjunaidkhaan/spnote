@@ -41,7 +41,7 @@ public class NavigationDrawerAdapter extends RecyclerView.Adapter<NavigationDraw
     public void onBindViewHolder(MyViewHolder holder, int position) {
         NavDrawerItemModel current = data.get(position);
         holder.title.setText(current.getTitle());
-        holder.icon.setImageResource(current.getIconId());
+        holder.icon.setBackgroundResource(current.getIconId());
     }
 
     @Override

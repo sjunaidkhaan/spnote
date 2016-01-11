@@ -7,7 +7,6 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.ingentive.shopnote.DatabaseHandler;
 import com.ingentive.shopnote.R;
@@ -35,7 +34,6 @@ public class HistoryListAdapter extends BaseAdapter {
         this.data = dataC;
         inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
-
     @Override
     public int getCount() {
         return this.data.size();
@@ -53,22 +51,69 @@ public class HistoryListAdapter extends BaseAdapter {
 
     @Override
     public View getView(final int postion, View rowView, ViewGroup parent) {
+
         View vi = rowView;
-        final TextView itemName;
-        final ImageView ivFavorit, ivAdd;
+        ViewHolder vh = new ViewHolder();
+
         if (vi == null) {
-            vi = inflater.inflate(res, null);
+            LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            vi = inflater.inflate(R.layout.custom_row_history, parent, false);
+
+            vh.tvDate = (TextView) vi.findViewById(R.id.tv_date_history);
+            vh.itemName = (TextView) vi.findViewById(R.id.tv_itemname_history);
+            vh.ivFavorit = (ImageView) vi.findViewById(R.id.iv_fav_histor);
+            vh.ivAdd = (ImageView) vi.findViewById(R.id.iv_add_history);
+            int id = vi.generateViewId();
+            vi.setId(id);
+            vi.setTag(vh);
+        } else {
+            vh = (ViewHolder) vi.getTag();
         }
 
-        itemName = (TextView) vi.findViewById(R.id.tv_itemname_history);
-        ivFavorit = (ImageView) vi.findViewById(R.id.iv_fav_histor);
-        ivAdd = (ImageView) vi.findViewById(R.id.iv_add_history);
 
-        itemName.setText(data.get(postion).getItemName());
-        ivFavorit.setImageResource(R.drawable.favorite_unselected);
-        ivAdd.setImageResource(R.drawable.add_unselected);
+        final TextView itemName, tvDate;
+        final ImageView ivFavorit, ivAdd;
 
-        ivFavorit.setOnClickListener(new View.OnClickListener() {
+        vh.tvDate = (TextView) vi.findViewById(R.id.tv_date_history);
+        vh.itemName = (TextView) vi.findViewById(R.id.tv_itemname_history);
+        vh.ivFavorit = (ImageView) vi.findViewById(R.id.iv_fav_histor);
+        vh.ivAdd = (ImageView) vi.findViewById(R.id.iv_add_history);
+
+        if (data.get(postion).isDate()) {
+            vh.tvDate.setVisibility(View.VISIBLE);
+            vh.tvDate.setText(data.get(postion).getDatePurchased().toString());
+            vh.itemName.setVisibility(View.GONE);
+            vh.ivFavorit.setVisibility(View.GONE);
+            vh.ivAdd.setVisibility(View.GONE);
+        } else {
+            vh.tvDate.setVisibility(View.GONE);
+//            tvDate.setText(data.get(postion).getDatePurchased().toString());
+            vh.itemName.setVisibility(View.VISIBLE);
+            vh.itemName.setText(data.get(postion).getItemName());
+
+            vh.ivFavorit.setVisibility(View.VISIBLE);
+            vh.ivAdd.setVisibility(View.VISIBLE);
+            //ivFavorit.setImageResource(R.drawable.favorite_unselected);
+            vh.ivAdd.setBackgroundResource(R.drawable.add_unselected);
+           // Toast.makeText(mContext, "getItemName " + data.get(postion).getItemName().toString(), Toast.LENGTH_LONG).show();
+            //Log.d("HistoryListAdapter ","datePurchased "+data.get(postion).getDatePurchased().toString());
+
+            db = new DatabaseHandler(mContext);
+            boolean itemIsFav = db.isFavorit(data.get(postion).getItemName().toString());
+            if (itemIsFav) {
+                vh.ivFavorit.setBackgroundResource(R.drawable.favorite_unselected);
+            } else {
+                vh.ivFavorit.setBackgroundResource(R.drawable.favorite_selected);
+            }
+
+        }
+        tvDate=vh.tvDate;
+        itemName=vh.itemName;
+        ivFavorit=vh.ivFavorit;
+        ivAdd=vh.ivAdd;
+
+        //}
+        vh.ivFavorit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //Toast.makeText(mContext, "Favorite Clicked: " + itemName.getText().toString() + ":" + postion, Toast.LENGTH_SHORT).show();
@@ -79,26 +124,32 @@ public class HistoryListAdapter extends BaseAdapter {
                     FavoritListModel remFavItem = new FavoritListModel();
                     remFavItem.setItemName(itemName.getText().toString());
 
-                    ivFavorit.setImageResource(R.drawable.favorite_selected);
+                    ivFavorit.setBackgroundResource(R.drawable.favorite_selected);
                     db.removeFavorit(remFavItem);
 
                 } else {
                     FavoritListModel addFavItem = new FavoritListModel();
                     addFavItem.setItemName(itemName.getText().toString());
-                    ivFavorit.setImageResource(R.drawable.favorite_unselected);
+                    ivFavorit.setBackgroundResource(R.drawable.favorite_unselected);
                     db.addFavorit(addFavItem);
                 }
             }
         });
-        ivAdd.setOnClickListener(new View.OnClickListener() {
+        vh.ivAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 ivAdd.setImageResource(R.drawable.add_selected);
-                Toast.makeText(mContext, "get" + data.get(postion).getItemName(), Toast.LENGTH_SHORT).show();
+                //Toast.makeText(mContext, "get" + data.get(postion).getItemName(), Toast.LENGTH_SHORT).show();
                 db = new DatabaseHandler(mContext);
                 db.addCurrentList(new CurrentListModel(1, itemName.getText().toString(), 0, null, "My Firts Shopnote", 1));
             }
         });
         return vi;
+    }
+
+    public class ViewHolder {
+        TextView itemName, tvDate;
+        ImageView ivFavorit, ivAdd;
+
     }
 }

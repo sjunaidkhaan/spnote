@@ -9,7 +9,6 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
@@ -17,8 +16,6 @@ import android.widget.ListView;
 import com.ingentive.shopnote.DatabaseHandler;
 import com.ingentive.shopnote.R;
 import com.ingentive.shopnote.adapters.FavoritesListAdapter;
-import com.ingentive.shopnote.adapters.ManageSectionAdapter;
-import com.ingentive.shopnote.model.CurrentListModel;
 import com.ingentive.shopnote.model.FavoritListModel;
 
 import java.util.List;
@@ -49,7 +46,8 @@ public class FavoritsFragment extends Fragment {
         // TODO Add your menu entries here
         //inflater.inflate(R.menu.menu_main, menu);
         menu.findItem(R.id.action_add).setVisible(false);
-        menu.findItem(R.id.action_search).setVisible(true);
+        menu.findItem(R.id.action_history_search).setVisible(false);
+        menu.findItem(R.id.action_favorites_search).setVisible(true);
         super.onCreateOptionsMenu(menu, inflater);
     }
 

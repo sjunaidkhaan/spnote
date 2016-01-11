@@ -110,7 +110,8 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
                 });
         //
         try {
-            /*db = new DatabaseHandler(this);
+           /* db = new DatabaseHandler(this);
+
             db.addHistory(new HistoryModel("Sun,Nov 22", "Bananas",null));
             db.addHistory(new HistoryModel("Sun,Nov 22", "Kleenex",null));
             db.addHistory(new HistoryModel("Sun,Nov 22", "Onions",null));
@@ -177,8 +178,6 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
             //fragment.setTargetFragment(new FavoritsFragment(),2);
         }
 
-
-
         prefs = getSharedPreferences(MyPREFERENCES, MODE_PRIVATE);
         String restoredText = prefs.getString(first_time_dialog, null);
         if (restoredText == null) {
@@ -188,13 +187,6 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
             editor.commit();
         }
     }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
-    }
-
     public void firstDialog(){
         //AlertDialog.Builder
                 alertDialogBuilder = new AlertDialog.Builder(this);
@@ -227,32 +219,6 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
         });
         AlertDialog alertDialog = alertDialogBuilder.create();
         alertDialog.show();
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-        Intent mIntent;
-        switch (id){
-            case R.id.action_add:
-                mIntent = new Intent(getApplication(),ActivityAddList.class);
-                startActivity(mIntent);
-                break;
-            case R.id.action_search:
-                mIntent = new Intent(getApplication(),ActivityFavoritesSearch.class);
-                startActivity(mIntent);
-                break;
-        }
-        /*prefs = getSharedPreferences(MyPREFERENCES, MODE_PRIVATE);
-        String restoredText = prefs.getString(list_add_intro_dialog, null);
-        if (restoredText == null) {
-            thirdDialog();
-            editor = prefs.edit();
-            editor.putString(list_add_intro_dialog,"success");
-            editor.commit();
-        }*/
-        //getSupportActionBar().setIcon(R.drawable.back);
-        return super.onOptionsItemSelected(item);
     }
 
     @Override
@@ -393,4 +359,39 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
         }
         file_Name.close();
     }
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        return true;
+    }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        Intent mIntent;
+        switch (id){
+            case R.id.action_add:
+                mIntent = new Intent(getApplication(),ActivityAddList.class);
+                startActivity(mIntent);
+                break;
+            case R.id.action_favorites_search:
+                mIntent = new Intent(getApplication(),ActivityFavoritesSearch.class);
+                startActivity(mIntent);
+                break;
+            case R.id.action_history_search:
+                mIntent = new Intent(getApplication(),ActivityHistorySearch.class);
+                startActivity(mIntent);
+                break;
+        }
+        /*prefs = getSharedPreferences(MyPREFERENCES, MODE_PRIVATE);
+        String restoredText = prefs.getString(list_add_intro_dialog, null);
+        if (restoredText == null) {
+            thirdDialog();
+            editor = prefs.edit();
+            editor.putString(list_add_intro_dialog,"success");
+            editor.commit();
+        }*/
+        //getSupportActionBar().setIcon(R.drawable.back);
+        return super.onOptionsItemSelected(item);
+    }
+
 }

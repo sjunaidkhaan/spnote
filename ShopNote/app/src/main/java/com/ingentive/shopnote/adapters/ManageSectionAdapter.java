@@ -79,37 +79,37 @@ public class ManageSectionAdapter extends BaseAdapter {
         if(!data.get(postion).getSectionName().equals("Unknown")){
             switch (data.get(postion).getSectionName()) {
                 case "Clothing":
-                    ivSection.setImageResource(R.drawable.clothing);
+                    ivSection.setBackgroundResource(R.drawable.clothing);
                     break;
                 case "Household and Specialty":
-                    ivSection.setImageResource(R.drawable.house);
+                    ivSection.setBackgroundResource(R.drawable.house);
                     break;
                 case "Pharmacy":
-                    ivSection.setImageResource(R.drawable.pharmacy);
+                    ivSection.setBackgroundResource(R.drawable.pharmacy);
                     break;
                 case "Produce":
-                    ivSection.setImageResource(R.drawable.produce);
+                    ivSection.setBackgroundResource(R.drawable.produce);
                     break;
                 case "Bakery":
-                    ivSection.setImageResource(R.drawable.bakery);
+                    ivSection.setBackgroundResource(R.drawable.bakery);
                     break;
                 case "Packaged Foodstuff":
-                    ivSection.setImageResource(R.drawable.dry_goods);
+                    ivSection.setBackgroundResource(R.drawable.dry_goods);
                     break;
                 case "Beverages":
-                    ivSection.setImageResource(R.drawable.beverages);
+                    ivSection.setBackgroundResource(R.drawable.beverages);
                     break;
                 case "Frozen Food":
-                    ivSection.setImageResource(R.drawable.freezer);
+                    ivSection.setBackgroundResource(R.drawable.freezer);
                     break;
                 case "Dairy and Refridgerated":
-                    ivSection.setImageResource(R.drawable.dairy);
+                    ivSection.setBackgroundResource(R.drawable.dairy);
                     break;
                 case "Meat and Seafood":
-                    ivSection.setImageResource(R.drawable.meat);
+                    ivSection.setBackgroundResource(R.drawable.meat);
                     break;
                 default:
-                    ivSection.setImageResource(R.drawable.unknown);
+                    ivSection.setBackgroundResource(R.drawable.unknown);
                     break;
             }
         }

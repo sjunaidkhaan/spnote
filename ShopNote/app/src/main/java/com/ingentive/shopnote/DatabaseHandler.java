@@ -574,6 +574,13 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         return db.update(Const.TABLE_CURRENT_LIST, values, Const.ID_PRIMARY_KEY + " = ?",
                 new String[]{String.valueOf(curr.getCurrListId())});
     }
+
+    public void deleteItem(int id) {
+        Log.d("deleteItem ","id "+id);
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.delete(Const.TABLE_CURRENT_LIST, Const.ID_PRIMARY_KEY + " = ?",
+                new String[]{String.valueOf(id)});
+    }
     /*public List<AddListModel> getFavItem() {
         List<AddListModel> mList = new ArrayList<AddListModel>();
         String selectQuery = "SELECT * FROM " + Const.TABLE_FAVORIT_LIST + " LIMIT 3";

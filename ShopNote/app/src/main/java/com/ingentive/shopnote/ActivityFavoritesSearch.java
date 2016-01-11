@@ -1,43 +1,19 @@
 package com.ingentive.shopnote;
 
-import android.app.AlertDialog;
-import android.app.Fragment;
-import android.app.FragmentTransaction;
-import android.content.BroadcastReceiver;
-import android.content.Context;
-import android.content.DialogInterface;
-import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
-import android.view.KeyEvent;
 import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.inputmethod.EditorInfo;
 import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
-import android.widget.TextView;
-import android.widget.Toast;
 
-import com.ingentive.shopnote.adapters.DectionaryAdapter;
 import com.ingentive.shopnote.adapters.FavoritesListAdapter;
-import com.ingentive.shopnote.fragments.FavoritsFragment;
-import com.ingentive.shopnote.fragments.FeedbackFragment;
-import com.ingentive.shopnote.fragments.ManageSectionsFragment;
-import com.ingentive.shopnote.fragments.MyFirstNoteFragment;
-import com.ingentive.shopnote.fragments.ShareListFragment;
-import com.ingentive.shopnote.model.AddListModel;
-import com.ingentive.shopnote.model.CurrentListModel;
-import com.ingentive.shopnote.model.DictionaryModel;
 import com.ingentive.shopnote.model.FavoritListModel;
 
 import java.util.ArrayList;
@@ -68,11 +44,16 @@ public class ActivityFavoritesSearch extends AppCompatActivity {
         ivAdd = (ImageView) findViewById(R.id.iv_add);
         etFavSerch = (EditText) findViewById(R.id.et_favorites_search);
         mListView = (ListView) findViewById(R.id.lv_favorites_search);
+        mToolbar.setNavigationIcon(R.drawable.back);
         setSupportActionBar(mToolbar);
-        getSupportActionBar().setHomeButtonEnabled(true);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
 
-
+        mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
         //
         db = new DatabaseHandler(getApplication());
         favList = db.getFavList();
@@ -157,6 +138,7 @@ public class ActivityFavoritesSearch extends AppCompatActivity {
             mAdapter.notifyDataSetChanged();
             showData();
         } else {
+            searchItem = new ArrayList<FavoritListModel>();
             db = new DatabaseHandler(getApplication());
             favList = db.getFavList();
             FavoritListModel modleObj = new FavoritListModel();
@@ -174,53 +156,19 @@ public class ActivityFavoritesSearch extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_list_add, menu);
+        getMenuInflater().inflate(R.menu.menu_main, menu);
         menu.findItem(R.id.action_add).setVisible(false);
-        menu.findItem(R.id.action_search).setVisible(true);
+        menu.findItem(R.id.action_favorites_search).setVisible(true);
+        menu.findItem(R.id.action_history_search).setVisible(false);
         return true;
     }
-
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-        if (id == R.id.action_search) {
-//            android.support.v4.app.Fragment fragment  = new FavoritsFragment();
-//            FragmentManager fragmentManager = getSupportFragmentManager();
-//            android.support.v4.app.FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-//            fragmentTransaction.replace(R.id.container_body, fragment);
-//            fragmentTransaction.commit();
+        if (id == R.id.action_favorites_search) {
             return true;
         }
         return super.onOptionsItemSelected(item);
     }
-
-    @Override
-    public void onBackPressed() {
-        //super.onBackPressed();
-//        android.support.v4.app.Fragment fragment  = new FavoritsFragment();
-//        FragmentManager fragmentManager = getSupportFragmentManager();
-//        android.support.v4.app.FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-//        fragmentTransaction.replace(R.id.container_body, fragment);
-//        fragmentTransaction.commit();.
-       // fromFavoriteBackHit = true;
-        //finish();
-    }
-    /*@Override
-    public boolean onKeyDown(int keyCode, KeyEvent event)  {
-        Log.d("onKeyDown ","keyCode "+keyCode);
-        Log.d("onKeyDown ","KeyEvent "+event);
-        if (android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.ECLAIR
-                && keyCode == KeyEvent.KEYCODE_BACK
-                && event.getRepeatCount() == 0) {
-            // Take care of calling this method on earlier versions of
-            // the platform where it doesn't exist.
-            return true;
-        }
-
-        return super.onKeyDown(keyCode, event);
-    }*/
 }
 

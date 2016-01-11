@@ -50,11 +50,20 @@ public class DectionaryAdapter extends BaseAdapter {
     }
 
     @Override
-    public View getView(int postion, View rowView, ViewGroup parent) {
+    public View getView(final int postion, View rowView, final ViewGroup viewGroup){
 
-        View mView = rowView;
-        if ( mView == null  ){
-            mView = inflater.inflate(res, null);
+        View vi = rowView;
+        ViewHolder vh = new ViewHolder();
+        if ( vi == null  ){
+            vi = inflater.inflate(res,  viewGroup, false);
+            vh.tvItemName = (TextView)vi.findViewById(R.id.tv_item_name);
+            vh.ivFavIcon = (ImageView)vi.findViewById(R.id.iv_add_list_fav);
+            vh.ivHistIcon = (ImageView)vi.findViewById(R.id.iv_add_list_history);
+            int id = vi.generateViewId();
+            vi.setId(id);
+            vi.setTag(vh);
+        } else {
+            vh = (ViewHolder) vi.getTag();
         }
 
         /*TextView tvId, tvItemName,tvSectionId;
@@ -68,40 +77,45 @@ public class DectionaryAdapter extends BaseAdapter {
         tvSectionId.setText(data.get(postion).getSectionId());
         return mView;*/
 
+        final TextView tvItemName;
+        final ImageView ivHistIcon,ivFavIcon;
+
+        vh.tvItemName.setText(data.get(postion).getItemName());
+
+        if ( data.get(postion).getHistoryItem()==1 && data.get(postion).getFavItem()==1){
+            vh.ivFavIcon.setVisibility(View.VISIBLE);
+            vh.ivHistIcon.setVisibility(View.VISIBLE);
+
+            vh.ivFavIcon.setBackgroundResource(data.get(postion).getFavIcon());
+            vh.ivHistIcon.setBackgroundResource(data.get(postion).getHistoryIcon());
+        }else if ( data.get(postion).getHistoryItem()==1 ){
+            vh.ivFavIcon.setVisibility(View.GONE);
+            vh.ivHistIcon.setVisibility(View.VISIBLE);
+
+            vh.ivHistIcon.setBackgroundResource(data.get(postion).getHistoryIcon());
+        }else if (data.get(postion).getFavItem()==1 ){
+            vh.ivFavIcon.setVisibility(View.VISIBLE);
+            vh.ivHistIcon.setVisibility(View.GONE);
+
+            //setting gravity
+            RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams)vh.ivFavIcon.getLayoutParams();
+            params.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+            vh.ivFavIcon.setLayoutParams(params);
+
+            vh.ivFavIcon.setBackgroundResource(data.get(postion).getFavIcon());
+        }else{
+            vh.ivFavIcon.setVisibility(View.GONE);
+            vh.ivHistIcon.setVisibility(View.GONE);
+        }
+        tvItemName = vh.tvItemName;
+        ivFavIcon = vh.ivFavIcon;
+        ivHistIcon = vh.ivHistIcon;
+        return vi;
+    }
+    public class ViewHolder
+    {
         TextView tvItemName;
         ImageView ivHistIcon,ivFavIcon;
 
-        tvItemName = (TextView)mView.findViewById(R.id.tv_item_name);
-        ivFavIcon = (ImageView)mView.findViewById(R.id.iv_add_list_fav);
-        ivHistIcon = (ImageView)mView.findViewById(R.id.iv_add_list_history);
-
-        tvItemName.setText(data.get(postion).getItemName());
-
-        if ( data.get(postion).getHistoryItem()==1 && data.get(postion).getFavItem()==1){
-            ivFavIcon.setVisibility(View.VISIBLE);
-            ivHistIcon.setVisibility(View.VISIBLE);
-
-            ivFavIcon.setBackgroundResource(data.get(postion).getFavIcon());
-            ivHistIcon.setBackgroundResource(data.get(postion).getHistoryIcon());
-        }else if ( data.get(postion).getHistoryItem()==1 ){
-            ivFavIcon.setVisibility(View.GONE);
-            ivHistIcon.setVisibility(View.VISIBLE);
-
-            ivHistIcon.setBackgroundResource(data.get(postion).getHistoryIcon());
-        }else if (data.get(postion).getFavItem()==1 ){
-            ivFavIcon.setVisibility(View.VISIBLE);
-            ivHistIcon.setVisibility(View.GONE);
-
-            //setting gravity
-            RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams)ivFavIcon.getLayoutParams();
-            params.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
-            ivFavIcon.setLayoutParams(params);
-
-            ivFavIcon.setBackgroundResource(data.get(postion).getFavIcon());
-        }else{
-            ivFavIcon.setVisibility(View.GONE);
-            ivHistIcon.setVisibility(View.GONE);
-        }
-        return mView;
     }
 }

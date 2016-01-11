@@ -9,7 +9,7 @@
     local:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
 
     <EditText
-        android:id="@+id/et_favorites_search"
+        android:id="@+id/et_history_search"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
@@ -20,7 +20,6 @@
         android:completionThreshold="1"
         android:gravity="left"
         android:textColor="@android:color/black">
-
         <requestFocus />
     </EditText>
 

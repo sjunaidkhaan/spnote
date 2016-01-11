@@ -6,10 +6,17 @@
 
     <ExpandableListView android:id="@+id/expandable_shop_list"
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
+        android:layout_height="wrap_content"
         style="@style/MyListActivityDividerHeight"
         android:transcriptMode="alwaysScroll"
         android:cacheColorHint="#00000000"
         android:groupIndicator="@null"
         android:listSelector="@android:color/transparent"/>
+
+    <Button
+        android:layout_below="@+id/expandable_shop_list"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="HELLO"/>
+
 </RelativeLayout>

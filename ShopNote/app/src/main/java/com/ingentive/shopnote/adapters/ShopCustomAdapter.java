@@ -9,7 +9,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
-import android.widget.EditText;
 import android.widget.ExpandableListView;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -294,7 +293,6 @@ public class ShopCustomAdapter extends BaseExpandableListAdapter {
 
     public class ViewHolderParent
     {
-
         TextView tvShopSecNamePar;
         ImageView ivShopSecIcon;
         ImageView ivArrow;

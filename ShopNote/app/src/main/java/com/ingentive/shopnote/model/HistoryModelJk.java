@@ -3,7 +3,7 @@ package com.ingentive.shopnote.model;
 /**
  * Created by PC on 12/23/2015.
  */
-public class HistoryModel {
+public class HistoryModelJk {
 
     int historyId;
     String datePurchased;
@@ -11,24 +11,16 @@ public class HistoryModel {
     String quantity;
     boolean isDate;
 
-    public boolean isDate() {
-        return isDate;
+    public HistoryModelJk() {
+        isDate = false;
     }
-
-    public void setIsDate(boolean isDate) {
-        this.isDate = isDate;
-    }
-
-    public HistoryModel() {
-
-    }
-    public HistoryModel(int historyId,String datePurchased,String itemName,String quantity) {
+    public HistoryModelJk(int historyId, String datePurchased, String itemName, String quantity) {
         this.historyId = historyId;
         this.itemName = itemName;
         this.quantity = quantity;
         this.datePurchased = datePurchased;
     }
-    public HistoryModel(String datePurchased,String itemName,String quantity) {
+    public HistoryModelJk(String datePurchased, String itemName, String quantity) {
         this.itemName = itemName;
         this.quantity = quantity;
         this.datePurchased = datePurchased;
@@ -65,4 +57,11 @@ public class HistoryModel {
         this.quantity = quantity;
     }
 
+    public boolean isDate() {
+        return isDate;
+    }
+
+    public void setIsDate(boolean isDate) {
+        this.isDate = isDate;
+    }
 }

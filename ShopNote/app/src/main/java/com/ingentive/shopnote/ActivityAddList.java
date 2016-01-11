@@ -1,41 +1,31 @@
 package com.ingentive.shopnote;
 
-import android.app.ActionBar;
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.support.v4.app.NavUtils;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.ingentive.shopnote.adapters.AddListAdapter;
 import com.ingentive.shopnote.adapters.DectionaryAdapter;
-import com.ingentive.shopnote.adapters.ListAddBasicAdapter;
 import com.ingentive.shopnote.model.AddListModel;
 import com.ingentive.shopnote.model.CurrentListModel;
 import com.ingentive.shopnote.model.DictionaryModel;
-import com.ingentive.shopnote.model.ListAddBasicModel;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -300,7 +290,7 @@ public class ActivityAddList extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_list_add, menu);
+        getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
     }
 
@@ -315,7 +305,10 @@ public class ActivityAddList extends AppCompatActivity {
         if (id == R.id.action_add) {
             return true;
         }
-        if (id == R.id.action_search) {
+        if (id == R.id.action_favorites_search) {
+            return true;
+        }
+        if (id == R.id.action_history_search) {
             return true;
         }
         return super.onOptionsItemSelected(item);

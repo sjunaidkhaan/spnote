@@ -90,13 +90,13 @@ public class HistoryCustomAdapter extends BaseExpandableListAdapter {
         tvHistParDp.setText(histParent.get(groupPosition).getHisPaDatePurchased().toString());
 
         final ImageView ivHistParAdd = (ImageView) vi.findViewById(R.id.iv_add_his_par);
-        ivHistParAdd.setImageResource(R.drawable.add_large_unselected);
+        ivHistParAdd.setBackgroundResource(R.drawable.add_large_unselected);
         vi.setTag(holder);
 
         ivHistParAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ivHistParAdd.setImageResource(R.drawable.add_large_selected);
+                ivHistParAdd.setBackgroundResource(R.drawable.add_large_selected);
                 db = new DatabaseHandler(mContext);
                 for(int i=0; i<histParent.get(groupPosition).getArrayChildren().size();i++){
                     Toast.makeText(mContext,"ChildrenName "+histParent.get(groupPosition).getArrayChildren().get(i).getHisChItemName(),Toast.LENGTH_LONG).show();
@@ -130,18 +130,18 @@ public class HistoryCustomAdapter extends BaseExpandableListAdapter {
         final boolean itemIsInList = db.isInList(childName);
         //Toast.makeText(mContext,"itemIsFav "+itemIsFav,Toast.LENGTH_LONG).show();
         if (itemIsInList) {
-            ivAddChil.setImageResource(R.drawable.add_selected);
+            ivAddChil.setBackgroundResource(R.drawable.add_selected);
             ivAddChil.setOnClickListener(null);
         } else {
-            ivAddChil.setImageResource(R.drawable.add_unselected);
+            ivAddChil.setBackgroundResource(R.drawable.add_unselected);
         }
         db = new DatabaseHandler(mContext);
         final boolean itemIsFav = db.isFavorit(childName);
         //Toast.makeText(mContext,"itemIsFav "+itemIsFav,Toast.LENGTH_LONG).show();
         if (itemIsFav) {
-            ivFavChil.setImageResource(R.drawable.favorite_unselected);
+            ivFavChil.setBackgroundResource(R.drawable.favorite_unselected);
         } else {
-            ivFavChil.setImageResource(R.drawable.favorite_selected);
+            ivFavChil.setBackgroundResource(R.drawable.favorite_selected);
         }
         childView.setTag(holder);
 
@@ -155,12 +155,12 @@ public class HistoryCustomAdapter extends BaseExpandableListAdapter {
                 if (itemIsFav) {
                     FavoritListModel remFavItem = new FavoritListModel();
                     remFavItem.setItemName(childName);
-                    ivFavChil.setImageResource(R.drawable.favorite_selected);
+                    ivFavChil.setBackgroundResource(R.drawable.favorite_selected);
                     db.removeFavorit(remFavItem);
                 } else {
                     FavoritListModel addFavItem = new FavoritListModel();
                     addFavItem.setItemName(childName);
-                    ivFavChil.setImageResource(R.drawable.favorite_unselected);
+                    ivFavChil.setBackgroundResource(R.drawable.favorite_unselected);
                     db.addFavorit(addFavItem);
                 }
             }
@@ -171,7 +171,7 @@ public class HistoryCustomAdapter extends BaseExpandableListAdapter {
                 db = new DatabaseHandler(mContext);
                 final boolean itemIsInList = db.isInList(childName);
                 if(!itemIsInList){
-                    ivAddChil.setImageResource(R.drawable.add_selected);
+                    ivAddChil.setBackgroundResource(R.drawable.add_selected);
                     Toast.makeText(mContext, "get child "+childName, Toast.LENGTH_SHORT).show();
                     db = new DatabaseHandler(mContext);
                     db.addCurrentList(new CurrentListModel(1, childName, 0, null, "My Firts Shopnote", 1));
