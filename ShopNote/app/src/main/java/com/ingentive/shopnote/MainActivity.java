@@ -274,7 +274,6 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
             //jk
             tvToolbarTitle.setText(title);
             //
-
         }
     }
 

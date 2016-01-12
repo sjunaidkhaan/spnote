@@ -1,6 +1,8 @@
 package com.ingentive.shopnote.adapters;
 
+import android.annotation.TargetApi;
 import android.content.Context;
+import android.os.Build;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -49,6 +51,7 @@ public class HistoryListAdapter extends BaseAdapter {
         return i;
     }
 
+    @TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
     @Override
     public View getView(final int postion, View rowView, ViewGroup parent) {
 
@@ -83,8 +86,8 @@ public class HistoryListAdapter extends BaseAdapter {
             vh.tvDate.setVisibility(View.VISIBLE);
             vh.tvDate.setText(data.get(postion).getDatePurchased().toString());
             vh.itemName.setVisibility(View.GONE);
-            vh.ivFavorit.setVisibility(View.GONE);
-            vh.ivAdd.setVisibility(View.GONE);
+            vh.ivFavorit.setBackgroundResource(R.drawable.favorite_unselected);
+            vh.ivFavorit.setVisibility(View.INVISIBLE);
         } else {
             vh.tvDate.setVisibility(View.GONE);
 //            tvDate.setText(data.get(postion).getDatePurchased().toString());
@@ -94,7 +97,17 @@ public class HistoryListAdapter extends BaseAdapter {
             vh.ivFavorit.setVisibility(View.VISIBLE);
             vh.ivAdd.setVisibility(View.VISIBLE);
             //ivFavorit.setImageResource(R.drawable.favorite_unselected);
-            vh.ivAdd.setBackgroundResource(R.drawable.add_unselected);
+
+            db = new DatabaseHandler(mContext);
+            final boolean itemIsInList = db.isInList(data.get(postion).getItemName());
+            //Toast.makeText(mContext,"itemIsFav "+itemIsFav,Toast.LENGTH_LONG).show();
+            if (itemIsInList) {
+                vh.ivAdd.setBackgroundResource(R.drawable.add_selected);
+                vh.ivAdd.setOnClickListener(null);
+            } else {
+                vh.ivAdd.setBackgroundResource(R.drawable.add_unselected);
+            }
+            //vh.ivAdd.setBackgroundResource(R.drawable.add_unselected);
            // Toast.makeText(mContext, "getItemName " + data.get(postion).getItemName().toString(), Toast.LENGTH_LONG).show();
             //Log.d("HistoryListAdapter ","datePurchased "+data.get(postion).getDatePurchased().toString());
 

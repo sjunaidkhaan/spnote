@@ -15,7 +15,6 @@ import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.baoyz.swipemenulistview.SwipeMenuListView;
 import com.ingentive.shopnote.DatabaseHandler;
@@ -143,7 +142,6 @@ public class CurrentListAdapter extends ArrayAdapter<CurrentListModel> {
         etQuantity = vh.etQuantity;
         ivSection = vh.ivSection;
 
-
         vh.ivOption.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -197,17 +195,28 @@ public class CurrentListAdapter extends ArrayAdapter<CurrentListModel> {
                                         event.getKeyCode() == KeyEvent.KEYCODE_ENTER) {
                             if (!event.isShiftPressed()) {
                                 db = new DatabaseHandler(mContext);
-                                //db.addContact(new Contact("Azhar Abbas", "0346-6969193"));
-                                CurrentListModel model = new CurrentListModel();
-                                model.setCurrListId(data.get(postion).getCurrListId());
-                                model.setQuantity(etQuantity.getText().toString());
-                                db.updateQuantity(model);
-                                Toast.makeText(mContext, "ID " + data.get(postion).getCurrListId(), Toast.LENGTH_SHORT).show();
-                                Toast.makeText(mContext, " in editor Quantity is" + etQuantity.getText().toString(), Toast.LENGTH_SHORT).show();
-                                ivOption.setVisibility(View.VISIBLE);
-                                etQuantity.setVisibility(View.GONE);
-                                tvQuantity.setVisibility(View.VISIBLE);
-                                tvQuantity.setText(etQuantity.getText().toString());
+                                if(!etQuantity.getText().toString().isEmpty()&&
+                                        !etQuantity.getText().toString().equals(null)&&
+                                        !etQuantity.getText().toString().equals("1")) {
+                                    //Toast.makeText(mContext, "quantity " + etQuantity.getText().toString(), Toast.LENGTH_SHORT).show();
+                                    CurrentListModel model = new CurrentListModel();
+                                    model.setCurrListId(data.get(postion).getCurrListId());
+                                    model.setQuantity(etQuantity.getText().toString());
+                                    db.updateQuantity(model);
+                                    ivOption.setVisibility(View.VISIBLE);
+                                    etQuantity.setVisibility(View.GONE);
+                                    tvQuantity.setVisibility(View.VISIBLE);
+                                    tvQuantity.setText(etQuantity.getText().toString());
+                                }else{
+                                    CurrentListModel model = new CurrentListModel();
+                                    model.setCurrListId(data.get(postion).getCurrListId());
+                                    model.setQuantity("1");
+                                    db.updateQuantity(model);
+                                    ivOption.setVisibility(View.VISIBLE);
+                                    etQuantity.setVisibility(View.GONE);
+                                    tvQuantity.setVisibility(View.VISIBLE);
+                                    tvQuantity.setText("");
+                                }
                                 return true;
                             }
                         }
@@ -215,11 +224,10 @@ public class CurrentListAdapter extends ArrayAdapter<CurrentListModel> {
                     }
                 });
 
-
         vh.ivFavorit_selected.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(mContext, "Favorite Clicked: " + itemName.getText().toString() + ":" + postion, Toast.LENGTH_SHORT).show();
+                //Toast.makeText(mContext, "Favorite Clicked: " + itemName.getText().toString() + ":" + postion, Toast.LENGTH_SHORT).show();
 
                 db = new DatabaseHandler(mContext);
                 boolean itemIsFav = db.isFavorit(data.get(postion).getItemName().toString());

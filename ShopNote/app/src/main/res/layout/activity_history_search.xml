@@ -3,8 +3,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:fitsSystemWindows="false"
+    style="@style/MyListActivityDividerHeight"
     android:background="@drawable/shopnote_background"
-    tools:context="com.ingentive.shopnote.ActivityAddList">
+    tools:context=".ActivityHistorySearch"
+    android:elevation="7dp">
 
     <include
         android:id="@+id/toolbar_history"

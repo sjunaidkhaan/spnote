@@ -19,6 +19,6 @@
     <string name="title_manage_sections">Manage Sections</string>
     <string name="title_send_feedback">Send Your Feedback</string>
     <string name="title_first_note">My First Shopnote</string>
-
     <string name="btn_manage_section">Add Section</string>
+    <string name="BTN_FINISH_SHOPPING">Finish Shopping</string>
 </resources>

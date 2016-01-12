@@ -3,16 +3,27 @@
     android:id="@+id/custom_row_list"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
+    android:background="@color/colorTransparent"
     style="@style/MyListActivityRowLayout"
     >
 
     <TextView
+        android:id="@+id/tv_item_quantity_shop_child"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:visibility="gone"
+        android:layout_marginLeft="50dp"
+        android:textColor="@android:color/black" />
+
+    <TextView
+        android:layout_toRightOf="@+id/tv_item_quantity_shop_child"
         android:id="@+id/tv_item_name_shop_child"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
         android:layout_alignParentLeft="true"
-        android:paddingLeft="114px"
+        android:layout_marginLeft="114px"
         android:textColor="@android:color/black" />
 
     <ImageView

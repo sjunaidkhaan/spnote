@@ -7,7 +7,6 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.ingentive.shopnote.DatabaseHandler;
 import com.ingentive.shopnote.R;
@@ -65,7 +64,18 @@ public class FavoritesListAdapter extends BaseAdapter {
 
         itemName.setText(data.get(postion).getItemName());
         ivFavorit.setImageResource(R.drawable.favorite_unselected);
-        ivAdd.setImageResource(R.drawable.add_unselected);
+
+
+        db = new DatabaseHandler(mContext);
+        final boolean itemIsInList = db.isInList(data.get(postion).getItemName().toString());
+        //Toast.makeText(mContext,"itemIsFav "+itemIsFav,Toast.LENGTH_LONG).show();
+        if (itemIsInList) {
+            ivAdd.setBackgroundResource(R.drawable.add_selected);
+            ivAdd.setOnClickListener(null);
+        } else {
+            ivAdd.setBackgroundResource(R.drawable.add_unselected);
+        }
+        //ivAdd.setImageResource(R.drawable.add_unselected);
 
         ivFavorit.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -93,7 +103,7 @@ public class FavoritesListAdapter extends BaseAdapter {
             @Override
             public void onClick(View v) {
                 ivAdd.setImageResource(R.drawable.add_selected);
-                Toast.makeText(mContext, "get" + data.get(postion).getItemName(), Toast.LENGTH_SHORT).show();
+               // Toast.makeText(mContext, "get" + data.get(postion).getItemName(), Toast.LENGTH_SHORT).show();
                 db = new DatabaseHandler(mContext);
                 db.addCurrentList(new CurrentListModel(1, itemName.getText().toString(), 0, null, "My Firts Shopnote", 1));
             }

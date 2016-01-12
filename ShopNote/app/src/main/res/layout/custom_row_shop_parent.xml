@@ -1,15 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    style="@style/MyListActivityRowLayout"
     android:id="@+id/custom_row_list"
+    style="@style/MyListActivityRowLayout"
     android:layout_width="wrap_content"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:background="@color/colorTransparent">
 
 
     <ImageView
         android:id="@+id/iv_grab_shop_ex"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
         android:background="@drawable/grab_notgrabbed"
         android:layout_alignParentLeft="true" />
 
@@ -17,6 +19,7 @@
         android:id="@+id/iv_grab_shop_par"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
         android:layout_toRightOf="@id/iv_grab_shop_ex" />
     <TextView
         android:layout_centerVertical="true"
@@ -32,6 +35,7 @@
         android:id="@+id/iv_section_shop_par"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
         android:layout_alignParentRight="true" />
 
 </RelativeLayout>
