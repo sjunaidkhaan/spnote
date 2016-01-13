@@ -10,7 +10,7 @@
         android:id="@+id/toolbar_manage_section"
         layout="@layout/toolbar_manage_sections" />
 
-    <ListView
+    <com.nhaarman.listviewanimations.itemmanipulation.DynamicListView
         android:id="@+id/lv_manage_section"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"

@@ -2,23 +2,66 @@ package com.ingentive.shopnote.adapters;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.ingentive.shopnote.DatabaseHandler;
 import com.ingentive.shopnote.R;
 import com.ingentive.shopnote.model.ManageSectionModel;
+import com.ingentive.shopnote.model.SectionModel;
+import com.nhaarman.listviewanimations.util.Swappable;
 
 import java.util.List;
 
 /**
  * Created by PC on 12/22/2015.
  */
-public class ManageSectionAdapter extends BaseAdapter {
+public class ManageSectionAdapter extends BaseAdapter implements com.nhaarman.listviewanimations.itemmanipulation.swipedismiss.undo.UndoAdapter, Swappable {
+    @NonNull
+    @Override
+    public View getUndoView(final int position, View convertView, @NonNull ViewGroup parent) {
+
+        Button bDelete;
+        View view = convertView;
+        if (view == null) {
+            view = LayoutInflater.from(mContext).inflate(R.layout.custom_row_manage_section_undo, parent, false);
+            bDelete = (Button)view.findViewById(R.id.dell);
+        }else{
+            bDelete = (Button)view.findViewById(R.id.dell);
+        }
+
+        bDelete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(mContext,"yo", Toast.LENGTH_LONG).show();
+                data.remove(position);
+                notifyDataSetChanged();
+            }
+        });
+
+        return view;
+    }
+
+    @NonNull
+    @Override
+    public View getUndoClickView(@NonNull View view) {
+        Button bDelete = (Button)view.findViewById(R.id.dellll);
+
+        bDelete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(mContext,"yo", Toast.LENGTH_LONG).show();
+            }
+        });
+        return view.findViewById(R.id.dellll);
+    }
 
     public List<ManageSectionModel> data;
     public int res;
@@ -40,14 +83,22 @@ public class ManageSectionAdapter extends BaseAdapter {
     }
 
     @Override
-    public Object getItem(int i) {
-        return data.get(i);
+    public Object getItem(int position) {
+        return data.get(position);
     }
+
 
     @Override
     public long getItemId(int i) {
-        return i;
+        return getItem(i).hashCode();
     }
+
+    @Override
+    public boolean hasStableIds() {
+        return true;
+    }
+
+
 
     @Override
     public View getView(int postion, View rowView, ViewGroup parent) {
@@ -57,12 +108,12 @@ public class ManageSectionAdapter extends BaseAdapter {
             vi = inflater.inflate(res, null);
         }
 
-       vi.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                v.setBackgroundColor(Color.GRAY);
-            }
-        });
+//       vi.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                v.setBackgroundColor(Color.GRAY);
+//            }
+//        });
 
         TextView sectionName;
         ImageView ivOption, ivSection;
@@ -115,4 +166,17 @@ public class ManageSectionAdapter extends BaseAdapter {
         }
         return vi;
     }
+
+
+    @Override
+    public void swapItems(int positionOne, int positionTwo) {
+
+        Object temp = data.get(positionOne);
+        data.set(positionOne, data.get(positionTwo));
+        data.set(positionTwo, (ManageSectionModel) temp);
+
+        notifyDataSetChanged();
+
+    }
+
 }

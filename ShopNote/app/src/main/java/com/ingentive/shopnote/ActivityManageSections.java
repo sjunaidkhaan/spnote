@@ -6,11 +6,14 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.KeyEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -21,6 +24,9 @@ import android.widget.Toast;
 import com.ingentive.shopnote.adapters.ManageSectionAdapter;
 import com.ingentive.shopnote.model.ManageSectionModel;
 import com.ingentive.shopnote.model.SectionModel;
+import com.nhaarman.listviewanimations.itemmanipulation.DynamicListView;
+import com.nhaarman.listviewanimations.itemmanipulation.swipedismiss.OnDismissCallback;
+import com.nhaarman.listviewanimations.itemmanipulation.swipedismiss.undo.SimpleSwipeUndoAdapter;
 
 import java.util.List;
 
@@ -36,15 +42,17 @@ public class ActivityManageSections extends AppCompatActivity {
     public static final String first_time_dialog = "first_time";
     public static SharedPreferences prefs;
     ManageSectionAdapter mAdapter;
-    ListView mListView;
+    DynamicListView mListView;
     DatabaseHandler db;
     EditText etAddSection;
     Button btnAddSection;
     List<ManageSectionModel> section;
+    SimpleSwipeUndoAdapter swipeUndoAdapter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_manage_section);
+
 
         mToolbar = (Toolbar) findViewById(R.id.toolbar_manage_section);
         setSupportActionBar(mToolbar);
@@ -60,7 +68,38 @@ public class ActivityManageSections extends AppCompatActivity {
         //ivBack = (ImageView) findViewById(R.id.back);
         etAddSection = (EditText) findViewById(R.id.et_add_manage_section);
         btnAddSection = (Button) findViewById(R.id.btn_add_manage_section);
-        mListView = (ListView) findViewById(R.id.lv_manage_section);
+        mListView = (DynamicListView) findViewById(R.id.lv_manage_section);
+        mListView.enableDragAndDrop();
+
+
+        db = new DatabaseHandler(ActivityManageSections.this);
+        section = db.getSectionData();
+        mAdapter  = new ManageSectionAdapter(ActivityManageSections.this, section, R.layout.custom_row_manage_section);
+        //mListView.setAdapter(mAdapter);
+
+
+//        mListView.enableSwipeToDismiss(new OnDismissCallback() {
+//            @Override
+//            public void onDismiss(ViewGroup listView, int[] reverseSortedPositions) {
+//                for (int position : reverseSortedPositions) {
+//                    section.remove(position);
+//                }
+//            }
+//        });
+
+
+        mListView.setOnItemLongClickListener(
+                new AdapterView.OnItemLongClickListener() {
+                    @Override
+                    public boolean onItemLongClick(final AdapterView<?> parent, final View view,
+                                                   final int position, final long id) {
+                        mListView.startDragging(position);
+                        return true;
+                    }
+                }
+        );
+
+
 //       ivBack.setOnClickListener(new View.OnClickListener() {
 //            @Override
 //            public void onClick(View v) {
@@ -148,7 +187,25 @@ public class ActivityManageSections extends AppCompatActivity {
         db = new DatabaseHandler(ActivityManageSections.this);
         section = db.getSectionData();
         mAdapter  = new ManageSectionAdapter(ActivityManageSections.this, section, R.layout.custom_row_manage_section);
-        mListView.setAdapter(mAdapter);
+        swipeUndoAdapter = new SimpleSwipeUndoAdapter(mAdapter, ActivityManageSections.this,
+                new OnDismissCallback() {
+                    @Override
+                    public void onDismiss(@NonNull final ViewGroup listView, @NonNull final int[] reverseSortedPositions) {
+                        for (int position : reverseSortedPositions) {
+                            Toast.makeText(ActivityManageSections.this,"activity", Toast.LENGTH_LONG).show();
+                            section.remove(position);
+
+                        }
+                    }
+                }
+        );
+        swipeUndoAdapter.setAbsListView(mListView);
+        mListView.setAdapter(swipeUndoAdapter);
+        mListView.enableSimpleSwipeUndo();
+
+
+        //mListView.setAdapter(mAdapter);
+
     }
     public void showDialog(){
         //AlertDialog.Builder
