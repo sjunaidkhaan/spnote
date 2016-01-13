@@ -1,17 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/custom_row_list"
+    style="@style/MyListActivityRowLayout"
     android:layout_width="wrap_content"
-    android:layout_height="30dp"
-    android:background="@drawable/row_border_blue">
+    android:layout_height="wrap_content"
+    android:background="@color/colorTransparent">
 
     <TextView
         android:id="@+id/tv_dp_his_par"
         android:layout_width="wrap_content"
-        android:layout_height="30dp"
-        android:layout_gravity="center_vertical"
-        android:gravity="center_vertical"
-        android:layout_marginLeft="35dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="16dp"
+        android:textStyle="bold"
+        android:textSize="18sp"
+        android:layout_centerVertical="true"
         android:layout_alignParentLeft="true"
         android:textColor="@android:color/black" />
 
@@ -19,6 +21,7 @@
         android:id="@+id/iv_add_his_par"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
         android:layout_marginRight="12px"
         android:layout_alignParentRight="true" />
 

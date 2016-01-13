@@ -6,6 +6,18 @@ package com.ingentive.shopnote.model;
 public class InventoryModel {
 
 
+    public void setInventoryId(int inventoryId) {
+        this.inventoryId = inventoryId;
+    }
+
+    public void setListNo(int listNo) {
+        this.listNo = listNo;
+    }
+
+    public void setListName(String listName) {
+        this.listName = listName;
+    }
+
     int inventoryId;
     int listNo;
     String listName;

@@ -7,9 +7,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.Button;
+import android.widget.ExpandableListView;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.ingentive.shopnote.DatabaseHandler;
 import com.ingentive.shopnote.R;
@@ -30,11 +30,12 @@ public class HistoryCustomAdapter extends BaseExpandableListAdapter {
     private static LayoutInflater inflater = null;
     public DatabaseHandler db;
 
-    public HistoryCustomAdapter(Context context, List<HistoryParentModel> parent){
+    public HistoryCustomAdapter(Context context, List<HistoryParentModel> parent) {
         this.histParent = parent;
         this.mContext = context;
         inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
+
     @Override
     //counts the number of group/parent items so the list knows how many times calls getGroupView() method
     public int getGroupCount() {
@@ -76,14 +77,14 @@ public class HistoryCustomAdapter extends BaseExpandableListAdapter {
 
     @Override
     //in this method you must set the text to see the parent/group on the list
-    public View getGroupView(final int groupPosition, boolean b, View rowView, ViewGroup viewGroup) {
+    public View getGroupView(final int groupPosition, boolean b, View rowView, final ViewGroup viewGroup) {
 
         View vi = rowView;
         ViewHolder holder = new ViewHolder();
         holder.groupPosition = groupPosition;
 
         if (vi == null) {
-            vi = inflater.inflate(R.layout.custom_row_history_parent, viewGroup,false);
+            vi = inflater.inflate(R.layout.custom_row_history_parent, viewGroup, false);
         }
 
         final TextView tvHistParDp = (TextView) vi.findViewById(R.id.tv_dp_his_par);
@@ -91,16 +92,34 @@ public class HistoryCustomAdapter extends BaseExpandableListAdapter {
 
         final ImageView ivHistParAdd = (ImageView) vi.findViewById(R.id.iv_add_his_par);
         ivHistParAdd.setBackgroundResource(R.drawable.add_large_unselected);
+
         vi.setTag(holder);
+
+        ExpandableListView mExpandableListView = (ExpandableListView) viewGroup;
+        mExpandableListView.expandGroup(groupPosition);
 
         ivHistParAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 ivHistParAdd.setBackgroundResource(R.drawable.add_large_selected);
                 db = new DatabaseHandler(mContext);
-                for(int i=0; i<histParent.get(groupPosition).getArrayChildren().size();i++){
-                    Toast.makeText(mContext,"ChildrenName "+histParent.get(groupPosition).getArrayChildren().get(i).getHisChItemName(),Toast.LENGTH_LONG).show();
-                    db.addCurrentList(new CurrentListModel(1, histParent.get(groupPosition).getArrayChildren().get(i).getHisChItemName(), 0, null, "My Firts Shopnote", 1));
+                boolean itemExist = false;
+                db = new DatabaseHandler(mContext);
+                List<CurrentListModel> currList = db.getCurrList();
+                for (int i = 0; i < histParent.get(groupPosition).getArrayChildren().size(); i++) {
+                    String itemname = histParent.get(groupPosition).getArrayChildren().get(i).getHisChItemName().toString();
+                    for (int j = 0; j < currList.size(); j++) {
+                        if (currList.get(j).getItemName().toLowerCase().equals(itemname.toLowerCase())) {
+                            itemExist = true;
+                        }
+                    }
+                    if (!itemExist) {
+                        db = new DatabaseHandler(mContext);
+                        String title = db.getListName();
+                        db = new DatabaseHandler(mContext);
+                        db.addCurrentList(new CurrentListModel(1, itemname, 0, null, title, 1));
+                    }
+                    //db.addCurrentList(new CurrentListModel(1, histParent.get(groupPosition).getArrayChildren().get(i).getHisChItemName(), 0, null, "My Firts Shopnote", 1));
                 }
             }
         });
@@ -109,14 +128,14 @@ public class HistoryCustomAdapter extends BaseExpandableListAdapter {
 
     @Override
     //in this method you must set the text to see the children on the list
-    public View getChildView(final int groupPosition, final int childPosition, boolean isLastChild, View view, ViewGroup viewGroup) {
+    public View getChildView(final int groupPosition, final int childPosition, final boolean isLastChild, View view, ViewGroup viewGroup) {
 
         View childView = view;
         ViewHolder holder = new ViewHolder();
         holder.childPosition = childPosition;
         holder.groupPosition = groupPosition;
         if (childView == null) {
-            childView = inflater.inflate(R.layout.custom_row_history_child, viewGroup,false);
+            childView = inflater.inflate(R.layout.custom_row_history_child, viewGroup, false);
         }
 
         final TextView textView = (TextView) childView.findViewById(R.id.tv_item_name_his_ch);
@@ -143,6 +162,7 @@ public class HistoryCustomAdapter extends BaseExpandableListAdapter {
         } else {
             ivFavChil.setBackgroundResource(R.drawable.favorite_selected);
         }
+
         childView.setTag(holder);
 
         ivFavChil.setOnClickListener(new View.OnClickListener() {
@@ -170,13 +190,26 @@ public class HistoryCustomAdapter extends BaseExpandableListAdapter {
             public void onClick(View v) {
                 db = new DatabaseHandler(mContext);
                 final boolean itemIsInList = db.isInList(childName);
-                if(!itemIsInList){
+                if (!itemIsInList) {
                     ivAddChil.setBackgroundResource(R.drawable.add_selected);
-                    Toast.makeText(mContext, "get child "+childName, Toast.LENGTH_SHORT).show();
                     db = new DatabaseHandler(mContext);
-                    db.addCurrentList(new CurrentListModel(1, childName, 0, null, "My Firts Shopnote", 1));
+                    List<CurrentListModel> currList = db.getCurrList();
+                    boolean itemExist = false;
+                    for (int i = 0; i < currList.size(); i++) {
+                        final String itemname = histParent.get(groupPosition).getArrayChildren().get(childPosition).getHisChItemName().toString();
+                        if (currList.get(i).getItemName().toLowerCase().equals(itemname.toLowerCase())) {
+                            itemExist = true;
+                        }
+                    }
+                    if (!itemExist) {
+                        db = new DatabaseHandler(mContext);
+                        String title = db.getListName();
+                        db = new DatabaseHandler(mContext);
+                        db.addCurrentList(new CurrentListModel(1, childName, 0, null, title, 1));
+                    }
                 }
             }
+
         });
 
         return childView;

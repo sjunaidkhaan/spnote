@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,6 +26,7 @@ import com.ingentive.shopnote.adapters.ManageSectionAdapter;
 import com.ingentive.shopnote.model.ManageSectionModel;
 import com.ingentive.shopnote.model.SectionModel;
 import com.nhaarman.listviewanimations.itemmanipulation.DynamicListView;
+import com.nhaarman.listviewanimations.itemmanipulation.dragdrop.OnItemMovedListener;
 import com.nhaarman.listviewanimations.itemmanipulation.swipedismiss.OnDismissCallback;
 import com.nhaarman.listviewanimations.itemmanipulation.swipedismiss.undo.SimpleSwipeUndoAdapter;
 
@@ -37,7 +39,7 @@ public class ActivityManageSections extends AppCompatActivity {
     AlertDialog.Builder builder1;
     AlertDialog.Builder alertDialogBuilder;
     public static SharedPreferences.Editor editor;
-    public static final String MYPREFERENCES = "MyPrefs" ;
+    public static final String MYPREFERENCES = "MyPrefs";
     public static final String dbCreated = "dbKey";
     public static final String first_time_dialog = "first_time";
     public static SharedPreferences prefs;
@@ -48,6 +50,7 @@ public class ActivityManageSections extends AppCompatActivity {
     Button btnAddSection;
     List<ManageSectionModel> section;
     SimpleSwipeUndoAdapter swipeUndoAdapter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -74,7 +77,7 @@ public class ActivityManageSections extends AppCompatActivity {
 
         db = new DatabaseHandler(ActivityManageSections.this);
         section = db.getSectionData();
-        mAdapter  = new ManageSectionAdapter(ActivityManageSections.this, section, R.layout.custom_row_manage_section);
+        mAdapter = new ManageSectionAdapter(ActivityManageSections.this, section, R.layout.custom_row_manage_section);
         //mListView.setAdapter(mAdapter);
 
 
@@ -100,6 +103,13 @@ public class ActivityManageSections extends AppCompatActivity {
         );
 
 
+        mListView.setOnItemMovedListener(new OnItemMovedListener() {
+            @Override
+            public void onItemMoved(int originalPosition, int newPosition) {
+                Toast.makeText(ActivityManageSections.this, "Item moved from :" + originalPosition + "To " + newPosition, Toast.LENGTH_LONG).show();
+            }
+        });
+
 //       ivBack.setOnClickListener(new View.OnClickListener() {
 //            @Override
 //            public void onClick(View v) {
@@ -109,13 +119,12 @@ public class ActivityManageSections extends AppCompatActivity {
 //        });
 
 
-
         prefs = ActivityManageSections.this.getSharedPreferences(MYPREFERENCES, Context.MODE_PRIVATE);
         String restoredText = prefs.getString(first_time_dialog, null);
         if (restoredText == null) {
             showDialog();
             editor = prefs.edit();
-            editor.putString(first_time_dialog,"success");
+            editor.putString(first_time_dialog, "success");
             editor.commit();
         }
         showData();
@@ -129,9 +138,9 @@ public class ActivityManageSections extends AppCompatActivity {
                                 event.getKeyCode() == KeyEvent.KEYCODE_ENTER) {
                     if (!event.isShiftPressed()) {
                         Toast.makeText(getApplication(), "" + etAddSection.getText().toString(), Toast.LENGTH_SHORT).show();
-                        if (isSection(etAddSection.getText().toString().trim())){
+                        if (isSection(etAddSection.getText().toString().trim())) {
                             warningDialog();
-                        } else{
+                        } else {
                             db = new DatabaseHandler(ActivityManageSections.this);
                             SectionModel addSection = new SectionModel();
                             addSection.setSectionOrderNo(99);
@@ -175,24 +184,26 @@ public class ActivityManageSections extends AppCompatActivity {
             }
         });
     }
-    public boolean isSection(String name){
-        for(int i=0; i<section.size();i++){
-            if(section.get(i).getSectionName().toLowerCase().equals(name.toLowerCase())){
+
+    public boolean isSection(String name) {
+        for (int i = 0; i < section.size(); i++) {
+            if (section.get(i).getSectionName().toLowerCase().equals(name.toLowerCase())) {
                 return true;
             }
         }
         return false;
     }
-    public void showData(){
+
+    public void showData() {
         db = new DatabaseHandler(ActivityManageSections.this);
         section = db.getSectionData();
-        mAdapter  = new ManageSectionAdapter(ActivityManageSections.this, section, R.layout.custom_row_manage_section);
+        mAdapter = new ManageSectionAdapter(ActivityManageSections.this, section, R.layout.custom_row_manage_section);
         swipeUndoAdapter = new SimpleSwipeUndoAdapter(mAdapter, ActivityManageSections.this,
                 new OnDismissCallback() {
                     @Override
                     public void onDismiss(@NonNull final ViewGroup listView, @NonNull final int[] reverseSortedPositions) {
                         for (int position : reverseSortedPositions) {
-                            Toast.makeText(ActivityManageSections.this,"activity", Toast.LENGTH_LONG).show();
+                            Toast.makeText(ActivityManageSections.this, "activity", Toast.LENGTH_LONG).show();
                             section.remove(position);
 
                         }
@@ -207,7 +218,8 @@ public class ActivityManageSections extends AppCompatActivity {
         //mListView.setAdapter(mAdapter);
 
     }
-    public void showDialog(){
+
+    public void showDialog() {
         //AlertDialog.Builder
         alertDialogBuilder = new AlertDialog.Builder(ActivityManageSections.this)
                 .setMessage("Reassign item on your list to new sections or" +
@@ -221,7 +233,8 @@ public class ActivityManageSections extends AppCompatActivity {
         AlertDialog alertDialog = alertDialogBuilder.create();
         alertDialog.show();
     }
-    public void warningDialog(){
+
+    public void warningDialog() {
         //AlertDialog.Builder
         alertDialogBuilder = new AlertDialog.Builder(ActivityManageSections.this)
                 .setTitle("Section already exists.")

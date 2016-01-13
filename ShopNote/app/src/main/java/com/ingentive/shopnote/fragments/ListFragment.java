@@ -15,7 +15,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.Toast;
 
 import com.baoyz.swipemenulistview.SwipeMenu;
 import com.baoyz.swipemenulistview.SwipeMenuCreator;
@@ -34,6 +33,7 @@ public class ListFragment extends Fragment {
     SwipeMenuListView mListView;
     DatabaseHandler db;
     CurrentListAdapter mAdapter;
+    List<CurrentListModel> currList;
     private List<ApplicationInfo> mAppList;
 
     public ListFragment() {
@@ -43,48 +43,24 @@ public class ListFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        //Toast.makeText(getActivity(),"ListFragment onCreate ",Toast.LENGTH_LONG).show();
     }
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_list, null);
         mListView = (SwipeMenuListView) rootView.findViewById(R.id.lv_list);
         db = new DatabaseHandler(getActivity());
-        final List<CurrentListModel> currList = db.getCurrList();
+        currList = db.getCurrList();
         mAdapter = new CurrentListAdapter(getActivity(), currList, R.layout.custom_row_list);
         mListView.setAdapter(mAdapter);
 
-
-
         ///jk
-
-        // step 1. create a MenuCreator
         SwipeMenuCreator creator = new SwipeMenuCreator() {
-
             @Override
             public void create(SwipeMenu menu) {
-//                // create "open" item
-//                SwipeMenuItem openItem = new SwipeMenuItem(
-//                        getActivity());
-//                // set item background
-//                openItem.setBackground(new ColorDrawable(Color.rgb(0xC9, 0xC9,
-//                        0xCE)));
-//                // set item width
-//                openItem.setWidth(dp2px(90));
-//                // set item title
-//                openItem.setTitle("Open");
-//                // set item title fontsize
-//                openItem.setTitleSize(18);
-//                // set item title font color
-//                openItem.setTitleColor(Color.WHITE);
-//                // add to menu
-//                menu.addMenuItem(openItem);
-
-                // create "delete" item
                 SwipeMenuItem deleteItem = new SwipeMenuItem(
                         getActivity());
-                // set item background
                 deleteItem.setBackground(new ColorDrawable(Color.rgb(0xF9,
                         0x3F, 0x25)));
                 // set item width
@@ -110,14 +86,11 @@ public class ListFragment extends Fragment {
                         // delete
 //					delete(item);
                         db = new DatabaseHandler(getActivity());
-                        //deleteItem();
-
                         CurrentListModel model = new CurrentListModel();
-                       // model.setCurrListId();
-                       // db.deleteItem(model);
+                        model.setCurrListId(mAdapter.getItem(position).getCurrListId());
+                       db.deleteItem(model);
                         currList.remove(position);
                         mAdapter.notifyDataSetChanged();
-
                         break;
                 }
                 return false;
@@ -130,13 +103,13 @@ public class ListFragment extends Fragment {
             @Override
             public void onSwipeStart(int position) {
                 // swipe start
-                Toast.makeText(getActivity(), position + " START", Toast.LENGTH_SHORT).show();
+               // Toast.makeText(getActivity(), position + " START", Toast.LENGTH_SHORT).show();
             }
 
             @Override
             public void onSwipeEnd(int position) {
                 // swipe end
-                Toast.makeText(getActivity(), position + " CLOSE", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(getActivity(), position + " CLOSE", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -144,12 +117,12 @@ public class ListFragment extends Fragment {
         mListView.setOnMenuStateChangeListener(new SwipeMenuListView.OnMenuStateChangeListener() {
             @Override
             public void onMenuOpen(int position) {
-                Toast.makeText(getActivity(), position + " OPEN", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(getActivity(), position + " OPEN", Toast.LENGTH_SHORT).show();
             }
 
             @Override
             public void onMenuClose(int position) {
-                Toast.makeText(getActivity(), position + " CLOSE", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(getActivity(), position + " CLOSE", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -158,7 +131,7 @@ public class ListFragment extends Fragment {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view,
                                            int position, long id) {
-                Toast.makeText(getActivity(), position + " long click", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(getActivity(), position + " long click", Toast.LENGTH_SHORT).show();
                 return false;
             }
         });
@@ -206,7 +179,7 @@ public class ListFragment extends Fragment {
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
 
-        Toast.makeText(getActivity(), "id" + id, Toast.LENGTH_LONG).show();
+        //Toast.makeText(getActivity(), "id" + id, Toast.LENGTH_LONG).show();
         if (id == 1) {
             mListView.setSwipeDirection(SwipeMenuListView.DIRECTION_LEFT);
             return true;
@@ -219,4 +192,12 @@ public class ListFragment extends Fragment {
         return super.onOptionsItemSelected(item);
     }
 
+    @Override
+    public void setMenuVisibility(boolean menuVisible) {
+        super.setMenuVisibility(menuVisible);
+
+        if ( menuVisible ){
+        }
+
+    }
 }

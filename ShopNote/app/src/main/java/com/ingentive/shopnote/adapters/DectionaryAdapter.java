@@ -1,6 +1,8 @@
 package com.ingentive.shopnote.adapters;
 
+import android.annotation.TargetApi;
 import android.content.Context;
+import android.os.Build;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -49,6 +51,7 @@ public class DectionaryAdapter extends BaseAdapter {
         return i;
     }
 
+    @TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
     @Override
     public View getView(final int postion, View rowView, final ViewGroup viewGroup){
 

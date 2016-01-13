@@ -74,7 +74,7 @@ public class Const {
     // LIST INVENTORY TABLE
     public static String CREATE_TABLE_LIST_INVENTORY = "CREATE TABLE " + TABLE_LIST_INVENTORY + "("
             + ID_PRIMARY_KEY + " INTEGER PRIMARY KEY AUTOINCREMENT,"
-            + NAME_LIST_NO + " INTEGER,"
+            + NAME_LIST_NO + " INTEGER AUTOINCREMENT,"
             + NAME_LIST_NAME + " TEXT" +")";
     // HISTORY TABLE
     public static String CREATE_TABLE_HISTORY = "CREATE TABLE " + TABLE_HISTORY + "("

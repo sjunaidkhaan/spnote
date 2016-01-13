@@ -12,7 +12,6 @@ import android.widget.BaseExpandableListAdapter;
 import android.widget.ExpandableListView;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.ingentive.shopnote.DatabaseHandler;
 import com.ingentive.shopnote.R;
@@ -160,8 +159,6 @@ public class ShopCustomAdapter extends BaseExpandableListAdapter {
             vhp.tvShopSecNamePar.setTextColor(Color.BLACK);
         }
         //
-
-
         ivArrow = vhp.ivArrow;
         vhp.ivArrow.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -192,9 +189,9 @@ public class ShopCustomAdapter extends BaseExpandableListAdapter {
 
         ViewHolderChild vhc = new ViewHolderChild();
 
-
         if (childView == null) {
             childView = inflater.inflate(R.layout.custom_row_shop_child, null);
+            vhc.tvShopChilQuantity = (TextView) childView.findViewById(R.id.tv_item_quantity_shop_child);
             vhc.tvShopChilItemName = (TextView) childView.findViewById(R.id.tv_item_name_shop_child);
             vhc.ivShopChilCheckBox = (ImageView) childView.findViewById(R.id.iv_checkbox_shop_child);
             int id = childView.generateViewId();
@@ -205,13 +202,19 @@ public class ShopCustomAdapter extends BaseExpandableListAdapter {
             vhc = (ViewHolderChild)childView.getTag();
         }
 
-
-//        final String quantity = shopParent.get(groupPosition).getArrayChildren().get(childPosition).getShopChQuantity().toString();
-        final String name = shopParent.get(groupPosition).getArrayChildren().get(childPosition).getShopChItemName().toString();
-        /*if(!quantity.equals(null)&&!quantity.equals("1"))
-            tvShopChilItemName.setText(quantity+" "+name);
-        else*/
+        //final ImageView ivShopChilQuantity = vhc.ivShopChilQuantity;
+        final String quantity = shopParent.get(groupPosition).getArrayChildren().get(childPosition).getShopChQuantity().toString();
+        //Toast.makeText(mContext,"quantity "+quantity,Toast.LENGTH_LONG).show();
+        if(!quantity.equals(null)&&!quantity.equals("1")&&!quantity.isEmpty()){
+            //Toast.makeText(mContext,"quantity "+quantity,Toast.LENGTH_LONG).show();
+            vhc.tvShopChilQuantity.setVisibility(View.VISIBLE);
+            vhc.tvShopChilQuantity.setText(quantity);
+        }else{
+            vhc.tvShopChilQuantity.setVisibility(View.GONE);
+        }
+     final String name = shopParent.get(groupPosition).getArrayChildren().get(childPosition).getShopChItemName().toString();
         vhc.tvShopChilItemName.setText(name);
+
 
         db = new DatabaseHandler(mContext);
         int isChecked = db.isChecked(name);
@@ -224,7 +227,6 @@ public class ShopCustomAdapter extends BaseExpandableListAdapter {
             vhc.tvShopChilItemName.setTextColor(Color.BLACK);
             //Toast.makeText(mContext, "else "+shopParent.get(groupPosition).getArrayChildren().get(childPosition).CheckBox(), Toast.LENGTH_SHORT).show();
         }
-
         final ImageView ivShopChilCheckBox = vhc.ivShopChilCheckBox;
         final TextView tvShopChilItemName = vhc.tvShopChilItemName;
         vhc.ivShopChilCheckBox.setOnClickListener(new View.OnClickListener() {
@@ -268,7 +270,7 @@ public class ShopCustomAdapter extends BaseExpandableListAdapter {
                     }
                 }
                 if (counter == shopParent.get(groupPosition).getArrayChildren().size()) {
-                    Toast.makeText(mContext, "due to child", Toast.LENGTH_LONG).show();
+                    //Toast.makeText(mContext, "due to child", Toast.LENGTH_LONG).show();
                     (shopParent.get(groupPosition).getView().tvShopSecNamePar).setTextColor(Color.GRAY);
                 } else {
                     (shopParent.get(groupPosition).getView().tvShopSecNamePar).setTextColor(Color.BLACK);
@@ -300,7 +302,7 @@ public class ShopCustomAdapter extends BaseExpandableListAdapter {
     }
     public class ViewHolderChild
     {
-        TextView tvShopChilItemName;
+        TextView tvShopChilItemName,tvShopChilQuantity;
         ImageView ivShopChilCheckBox;
     }
 }
