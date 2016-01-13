@@ -55,50 +55,6 @@ public class ShopFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
     }
-    @Override
-    public void setUserVisibleHint(boolean isVisibleToUser) {
-        super.setUserVisibleHint(isVisibleToUser);
-        if (isVisibleToUser) {
-            shopList = new ArrayList<ShopParentModel>();
-            }
-        else {}
-    }
-//    @Override
-//    public void onPause() {
-//        super.onPause();
-//        Log.d("ShopFragment ", "onPause ");
-//        Toast.makeText(getActivity(),"ShopFragment onPause ",Toast.LENGTH_LONG).show();
-//    }
-//
-//    @Override
-//    public void onResume() {
-//        super.onResume();
-//        Log.d("ShopFragment ", "onResume ");
-//        Toast.makeText(getActivity(),"ShopFragment onResume ",Toast.LENGTH_LONG).show();
-//    }
-//
-//    @Override
-//    public void onStop() {
-//        super.onStop();
-//        Log.d("ShopFragment ", "onStop ");
-//        Toast.makeText(getActivity(),"ShopFragment onStop ",Toast.LENGTH_LONG).show();
-//    }
-//
-//    @Override
-//    public void onAttach(Context context) {
-//        super.onAttach(context);
-//        shopList = new ArrayList<ShopParentModel>();
-//        Log.d("ShopFragment ", "onAttach ");
-//        Toast.makeText(getActivity(),"ShopFragment onAttach ",Toast.LENGTH_LONG).show();
-//    }
-//
-//    @Override
-//    public void onStart() {
-//        super.onStart();
-//        Log.d("ShopFragment ", "onStart ");
-//        Toast.makeText(getActivity(),"ShopFragment onStart ",Toast.LENGTH_LONG).show();
-//    }
-
 
     @SuppressLint("SimpleDateFormat")
     @Override

@@ -18,10 +18,10 @@
         android:layout_height="30dp"
         android:visibility="gone"
         android:background="#ADD8E6"
+        android:focusable="true"
         android:layout_toRightOf="@id/ivOpt"
         android:textColor="@android:color/black"
         android:layout_alignParentLeft="true" />
-
 
     <TextView
         android:id="@+id/tvQuantity"

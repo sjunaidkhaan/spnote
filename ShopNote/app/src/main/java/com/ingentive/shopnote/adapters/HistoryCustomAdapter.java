@@ -115,7 +115,9 @@ public class HistoryCustomAdapter extends BaseExpandableListAdapter {
                     }
                     if (!itemExist) {
                         db = new DatabaseHandler(mContext);
-                        db.addCurrentList(new CurrentListModel(1, itemname, 0, null, "My Firts Shopnote", 1));
+                        String title = db.getListName();
+                        db = new DatabaseHandler(mContext);
+                        db.addCurrentList(new CurrentListModel(1, itemname, 0, null, title, 1));
                     }
                     //db.addCurrentList(new CurrentListModel(1, histParent.get(groupPosition).getArrayChildren().get(i).getHisChItemName(), 0, null, "My Firts Shopnote", 1));
                 }
@@ -200,9 +202,10 @@ public class HistoryCustomAdapter extends BaseExpandableListAdapter {
                         }
                     }
                     if (!itemExist) {
-                       // Toast.makeText(mContext, "item not exist  " + itemExist, Toast.LENGTH_LONG).show();
                         db = new DatabaseHandler(mContext);
-                        db.addCurrentList(new CurrentListModel(1, childName, 0, null, "My Firts Shopnote", 1));
+                        String title = db.getListName();
+                        db = new DatabaseHandler(mContext);
+                        db.addCurrentList(new CurrentListModel(1, childName, 0, null, title, 1));
                     }
                 }
             }

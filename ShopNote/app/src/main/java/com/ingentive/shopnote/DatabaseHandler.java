@@ -141,7 +141,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         }
     }
 
-    void addInventry(InventoryModel invent) {
+   public  void addInventry(InventoryModel invent) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values;
         values = new ContentValues();
@@ -196,14 +196,6 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         values.put(Const.NAME_ADD_INTRO, setting.getAddIntro());
         values.put(Const.NAME_USER_RATED, setting.getUserRated());
         db.insert(Const.TABLE_SETTING, null, values);
-    }
-
-    public void changeListName(String listName) {
-        SQLiteDatabase db = this.getWritableDatabase();
-        ContentValues values = new ContentValues();
-        db.update(Const.TABLE_CURRENT_LIST,
-                values, Const.NAME_LIST_NAME + " = ?",
-                new String[]{String.valueOf(listName)});
     }
 
     void makeFav(String itemName) {
@@ -335,6 +327,29 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         return mList;
     }
 
+    public void updateListName(CurrentListModel curr) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        Log.d("updateListName "," getListName "+curr.getListName());
+        values.put(Const.NAME_LIST_NAME , curr.getListName());
+        db.update(Const.TABLE_CURRENT_LIST, values, null, null);
+    }
+
+    public String getListName() {
+        String title = "";
+        String selectQuery = "SELECT  * FROM " + Const.TABLE_CURRENT_LIST;
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(selectQuery, null);
+
+        if (cursor.moveToFirst())
+            if (cursor != null && cursor.getCount() != 0) {
+                title = cursor.getString(5).toString();
+            } else {
+                title = "My First Shopnote";
+            }
+        return title;
+    }
+
     public List<ManageSectionModel> getSectionData() {
         List<ManageSectionModel> secList = new ArrayList<ManageSectionModel>();
         String selectQuery = "SELECT * FROM " + Const.TABLE_SECTION_ORDER;
@@ -401,7 +416,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
     public List<CurrentListModel> getCurrList() {
         List<CurrentListModel> mList = new ArrayList<CurrentListModel>();
-        String selectQuery = "SELECT  * FROM " + Const.TABLE_CURRENT_LIST;
+        String selectQuery = "SELECT  * FROM " + Const.TABLE_CURRENT_LIST + " ORDER BY id DESC";
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery(selectQuery, null);
         if (cursor.moveToFirst()) {

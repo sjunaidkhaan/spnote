@@ -31,13 +31,13 @@ import java.util.List;
 public class CurrentListAdapter extends ArrayAdapter<CurrentListModel> {
 
     public List<CurrentListModel> data;
-     SwipeMenuListView mListView;
+    SwipeMenuListView mListView;
     public int res;
     public Context mContext;
     private static LayoutInflater inflater = null;
     public DatabaseHandler db;
     public static SharedPreferences.Editor editor;
-    public static final String MYPREFERENCES = "MyPrefs" ;
+    public static final String MYPREFERENCES = "MyPrefs";
     public static final String dbCreated = "dbKey";
     public static SharedPreferences prefs;
     public static final String first_time_dialog = "first_time";
@@ -58,7 +58,7 @@ public class CurrentListAdapter extends ArrayAdapter<CurrentListModel> {
         View vi = rowView;
 
         ViewHolder vh = new ViewHolder();
-        if ( vi == null ){
+        if (vi == null) {
             LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             vi = inflater.inflate(R.layout.custom_row_list, parent, false);
 
@@ -67,16 +67,16 @@ public class CurrentListAdapter extends ArrayAdapter<CurrentListModel> {
             vh.ivFavorit_selected = (ImageView) vi.findViewById(R.id.ivFav_selected);
             vh.ivSection = (ImageView) vi.findViewById(R.id.iv_Section);
             vh.etQuantity = (EditText) vi.findViewById(R.id.etQuantity);
-            vh.tvQuantity =(TextView) vi.findViewById(R.id.tvQuantity);
+            vh.tvQuantity = (TextView) vi.findViewById(R.id.tvQuantity);
             int id = vi.generateViewId();
             vi.setId(id);
             vi.setTag(vh);
-        }else{
-            vh = (ViewHolder)vi.getTag();
+        } else {
+            vh = (ViewHolder) vi.getTag();
         }
 
 
-        final TextView itemName,tvQuantity;
+        final TextView itemName, tvQuantity;
         final ImageView ivOption, ivFavorit_selected, ivSection;
         final EditText etQuantity;
 
@@ -85,10 +85,10 @@ public class CurrentListAdapter extends ArrayAdapter<CurrentListModel> {
         vh.ivOption.setBackgroundResource(R.drawable.grab_notgrabbed);
         vh.ivFavorit_selected.setBackgroundResource(R.drawable.favorite_selected);
         vh.etQuantity.setText(data.get(postion).getQuantity());
-        if(!data.get(postion).getQuantity().equals("1")){
+        if (!data.get(postion).getQuantity().equals("1")) {
             vh.tvQuantity.setVisibility(View.VISIBLE);
             vh.tvQuantity.setText(data.get(postion).getQuantity());
-        }else{
+        } else {
             vh.tvQuantity.setVisibility(View.GONE);
         }
         db = new DatabaseHandler(mContext);
@@ -154,7 +154,7 @@ public class CurrentListAdapter extends ArrayAdapter<CurrentListModel> {
                 if (restoredText == null) {
                     showDialog();
                     editor = prefs.edit();
-                    editor.putString(first_time_dialog,"success");
+                    editor.putString(first_time_dialog, "success");
                     editor.commit();
                 }
                 //Toast.makeText(mContext, "getQuantity" + data.get(postion).getQuantity().toString(), Toast.LENGTH_SHORT).show();
@@ -166,25 +166,6 @@ public class CurrentListAdapter extends ArrayAdapter<CurrentListModel> {
 //                Toast.makeText(mContext, "section image click" + postion, Toast.LENGTH_SHORT).show();
             }
         });
-
-       /* etQuantity.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                if (!hasFocus) {
-                    db = new DatabaseHandler(mContext);
-                    //db.addContact(new Contact("Azhar Abbas", "0346-6969193"));
-                    CurrentListModel model = new CurrentListModel();
-                    model.setCurrListId(data.get(postion).getCurrListId());
-                    model.setQuantity(etQuantity.getText().toString());
-                    db.updateQuantity(model);
-                    //Toast.makeText(mContext, "ID " + data.get(postion).getCurrListId(), Toast.LENGTH_SHORT).show();
-                    Toast.makeText(mContext, "onFocus Quantity is" + etQuantity.getText().toString(), Toast.LENGTH_SHORT).show();
-                    ivOption.setVisibility(View.VISIBLE);
-                    etQuantity.setVisibility(View.GONE);
-                }
-            }
-        });*/
-
         vh.etQuantity.setOnEditorActionListener(
                 new EditText.OnEditorActionListener() {
                     @Override
@@ -195,8 +176,9 @@ public class CurrentListAdapter extends ArrayAdapter<CurrentListModel> {
                                         event.getKeyCode() == KeyEvent.KEYCODE_ENTER) {
                             if (!event.isShiftPressed()) {
                                 db = new DatabaseHandler(mContext);
-                                if(!etQuantity.getText().toString().isEmpty()&&
-                                        !etQuantity.getText().toString().equals(null)&&
+                                etQuantity.requestFocus();
+                                if (!etQuantity.getText().toString().isEmpty() &&
+                                        !etQuantity.getText().toString().equals(null) &&
                                         !etQuantity.getText().toString().equals("1")) {
                                     //Toast.makeText(mContext, "quantity " + etQuantity.getText().toString(), Toast.LENGTH_SHORT).show();
                                     CurrentListModel model = new CurrentListModel();
@@ -207,7 +189,7 @@ public class CurrentListAdapter extends ArrayAdapter<CurrentListModel> {
                                     etQuantity.setVisibility(View.GONE);
                                     tvQuantity.setVisibility(View.VISIBLE);
                                     tvQuantity.setText(etQuantity.getText().toString());
-                                }else{
+                                } else {
                                     CurrentListModel model = new CurrentListModel();
                                     model.setCurrListId(data.get(postion).getCurrListId());
                                     model.setQuantity("1");
@@ -223,6 +205,39 @@ public class CurrentListAdapter extends ArrayAdapter<CurrentListModel> {
                         return false;
                     }
                 });
+
+        vh.etQuantity.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (!hasFocus) {
+                    db = new DatabaseHandler(mContext);
+                    etQuantity.requestFocus();
+                    if (!etQuantity.getText().toString().isEmpty() &&
+                            !etQuantity.getText().toString().equals(null) &&
+                            !etQuantity.getText().toString().equals("1")) {
+                        //Toast.makeText(mContext, "quantity " + etQuantity.getText().toString(), Toast.LENGTH_SHORT).show();
+                        CurrentListModel model = new CurrentListModel();
+                        model.setCurrListId(data.get(postion).getCurrListId());
+                        model.setQuantity(etQuantity.getText().toString());
+                        db.updateQuantity(model);
+                        ivOption.setVisibility(View.VISIBLE);
+                        etQuantity.setVisibility(View.GONE);
+                        tvQuantity.setVisibility(View.VISIBLE);
+                        tvQuantity.setText(etQuantity.getText().toString());
+                    } else {
+                        CurrentListModel model = new CurrentListModel();
+                        model.setCurrListId(data.get(postion).getCurrListId());
+                        model.setQuantity("1");
+                        db.updateQuantity(model);
+                        ivOption.setVisibility(View.VISIBLE);
+                        etQuantity.setVisibility(View.GONE);
+                        tvQuantity.setVisibility(View.VISIBLE);
+                        tvQuantity.setText("");
+                    }
+
+                }
+            }
+        });
 
         vh.ivFavorit_selected.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -253,9 +268,10 @@ public class CurrentListAdapter extends ArrayAdapter<CurrentListModel> {
 
         return vi;
     }
-    public void showDialog(){
+
+    public void showDialog() {
         AlertDialog.Builder
-        alertDialogBuilder = new AlertDialog.Builder(mContext)
+                alertDialogBuilder = new AlertDialog.Builder(mContext)
                 .setMessage("You can enter a quantity here include any units " +
                         "of measurement such as oz,L,lb or kg.")
                 .setPositiveButton("Got it", new DialogInterface.OnClickListener() {
@@ -269,11 +285,10 @@ public class CurrentListAdapter extends ArrayAdapter<CurrentListModel> {
     }
 
 
-    public class ViewHolder
-    {
-         TextView itemName,tvQuantity;
-         ImageView ivOption, ivFavorit_selected, ivSection;
-         EditText etQuantity;
+    public class ViewHolder {
+        TextView itemName, tvQuantity;
+        ImageView ivOption, ivFavorit_selected, ivSection;
+        EditText etQuantity;
 
     }
 

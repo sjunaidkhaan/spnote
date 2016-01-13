@@ -105,7 +105,9 @@ public class FavoritesListAdapter extends BaseAdapter {
                 ivAdd.setImageResource(R.drawable.add_selected);
                // Toast.makeText(mContext, "get" + data.get(postion).getItemName(), Toast.LENGTH_SHORT).show();
                 db = new DatabaseHandler(mContext);
-                db.addCurrentList(new CurrentListModel(1, itemName.getText().toString(), 0, null, "My Firts Shopnote", 1));
+                String title = db.getListName();
+                db = new DatabaseHandler(mContext);
+                db.addCurrentList(new CurrentListModel(1, itemName.getText().toString(), 0, null, title, 1));
             }
         });
         return vi;

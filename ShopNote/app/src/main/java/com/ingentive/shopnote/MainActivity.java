@@ -50,6 +50,7 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
     public static SharedPreferences prefs;
     TextView tvToolbarTitle;
     EditText edToolbarTitle;
+    public String title ;//= "My First Shopnote";
 
 
     @Override
@@ -63,7 +64,7 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
         tvToolbarTitle.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(MainActivity.this, "Clicked", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(MainActivity.this, "Clicked", Toast.LENGTH_SHORT).show();
                 tvToolbarTitle.setVisibility(View.GONE);
                 edToolbarTitle.setVisibility(View.VISIBLE);
                 edToolbarTitle.requestFocus();
@@ -78,11 +79,19 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
             * has valid values.
             */
                 if (!hasFocus) {
-                   // db.changeListName(edToolbarTitle.getText().toString());
-                    Toast.makeText(MainActivity.this, "in Focus "+edToolbarTitle.getText().toString(), Toast.LENGTH_SHORT).show();
-                    tvToolbarTitle.setText(edToolbarTitle.getText().toString());
-                    tvToolbarTitle.setVisibility(View.VISIBLE);
-                    edToolbarTitle.setVisibility(View.GONE);
+                    if(edToolbarTitle.getText().toString().replaceAll(" ","").length()>0){
+                        CurrentListModel curr = new CurrentListModel();
+                        curr.setListName(edToolbarTitle.getText().toString());
+                        db.updateListName(curr);
+                        tvToolbarTitle.setText(edToolbarTitle.getText().toString());
+                        title = edToolbarTitle.getText().toString();
+                        tvToolbarTitle.setVisibility(View.VISIBLE);
+                        edToolbarTitle.setVisibility(View.GONE);
+                    }
+//                    Toast.makeText(MainActivity.this, "in Focus "+edToolbarTitle.getText().toString(), Toast.LENGTH_SHORT).show();
+//                    tvToolbarTitle.setText(edToolbarTitle.getText().toString());
+//                    tvToolbarTitle.setVisibility(View.VISIBLE);
+//                    edToolbarTitle.setVisibility(View.GONE);
                 }
             }
         });
@@ -96,19 +105,22 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
                                 event.getAction() == KeyEvent.ACTION_DOWN &&
                                         event.getKeyCode() == KeyEvent.KEYCODE_ENTER) {
                             if (!event.isShiftPressed()) {
-                                // the user is done typing.
-                                //db.changeListName(edToolbarTitle.getText().toString());
-                                Toast.makeText(MainActivity.this, "in Editor "+edToolbarTitle.getText().toString(), Toast.LENGTH_SHORT).show();
-                                tvToolbarTitle.setText(edToolbarTitle.getText().toString());
-                                tvToolbarTitle.setVisibility(View.VISIBLE);
-                                edToolbarTitle.setVisibility(View.GONE);
-                                return true; // consume.
+                                if(edToolbarTitle.getText().toString().replaceAll(" ","").length()>0){
+                                    CurrentListModel curr = new CurrentListModel();
+                                    curr.setListName(edToolbarTitle.getText().toString());
+                                    db.updateListName(curr);
+                                    //db.changeListName(edToolbarTitle.getText().toString());
+                                    tvToolbarTitle.setText(edToolbarTitle.getText().toString());
+                                    title = edToolbarTitle.getText().toString();
+                                    tvToolbarTitle.setVisibility(View.VISIBLE);
+                                    edToolbarTitle.setVisibility(View.GONE);
+                                }
+                                return true;
                             }
                         }
-                        return false; // pass on to other listeners.
+                        return false;
                     }
                 });
-        //
         try {
            /* db = new DatabaseHandler(this);
 
@@ -229,7 +241,10 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
     private void displayView(int position) {
         Intent intent;
         android.support.v4.app.Fragment fragment = null;
-        String title = getString(R.string.app_name);
+        //String title = getString(R.string.app_name);
+        db = new DatabaseHandler(getApplication());
+        title = db.getListName();
+        //Toast.makeText(getApplication(),"title "+title,Toast.LENGTH_LONG).show();
         switch (position) {
             case 0:
                 //fragment = new ShareListFragment();
@@ -252,7 +267,7 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
                 break;
             case 3:
                 fragment = new MyFirstNoteFragment();
-               title = getString(R.string.title_first_note);
+               //title = getString(R.string.title_first_note);
                 break;
             /*case 4:
                 Intent intent = new Intent(MainActivity.this,MainTestNavigation.class);

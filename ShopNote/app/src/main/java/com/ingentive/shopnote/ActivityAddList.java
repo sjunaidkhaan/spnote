@@ -123,7 +123,9 @@ public class ActivityAddList extends AppCompatActivity {
                 //String item =  parent.getSelectedItem().toString();
                 String itemName = dicCurrentList.get(position).getItemName().toString();
                 db = new DatabaseHandler(getApplication());
-                db.addCurrentList(new CurrentListModel(1, itemName, 0, null, "My Firts Shopnote", 1));
+                String title = db.getListName();
+                db = new DatabaseHandler(getApplication());
+                db.addCurrentList(new CurrentListModel(1, itemName, 0, null, title, 1));
                 //Toast.makeText(getApplicationContext(), "itemName  "+itemName, Toast.LENGTH_LONG).show();
             }
         });
@@ -143,8 +145,10 @@ public class ActivityAddList extends AppCompatActivity {
                             }
                         }
                         if (!curritemExist) {
+                            db = new DatabaseHandler(getApplication());
+                            String title = db.getListName();
                             db = new DatabaseHandler(ActivityAddList.this);
-                            db.addCurrentList(new CurrentListModel(1, etSerch.getText().toString(), 0, null, "My Firts Shopnote", 1));
+                            db.addCurrentList(new CurrentListModel(1, etSerch.getText().toString(), 0, null, title, 1));
                         }
                         db = new DatabaseHandler(ActivityAddList.this);
                         List<DictionaryModel> dicList = db.getDicItems();
@@ -185,8 +189,10 @@ public class ActivityAddList extends AppCompatActivity {
                                         }
                                     }
                                     if (!curritemExist) {
+                                        db = new DatabaseHandler(getApplication());
+                                        String title = db.getListName();
                                         db = new DatabaseHandler(ActivityAddList.this);
-                                        db.addCurrentList(new CurrentListModel(1, etSerch.getText().toString(), 0, null, "My Firts Shopnote", 1));
+                                        db.addCurrentList(new CurrentListModel(1, etSerch.getText().toString(), 0, null,title, 1));
                                     }
                                     db = new DatabaseHandler(ActivityAddList.this);
                                     List<DictionaryModel> dicList = db.getDicItems();
