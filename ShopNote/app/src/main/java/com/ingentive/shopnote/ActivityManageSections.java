@@ -3,7 +3,6 @@ package com.ingentive.shopnote;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -61,6 +60,8 @@ public class ActivityManageSections extends AppCompatActivity {
         etAddSection = (EditText) findViewById(R.id.et_add_manage_section);
         btnAddSection = (Button) findViewById(R.id.btn_add_manage_section);
         mListView = (ListView) findViewById(R.id.lv_manage_section);
+
+        
 //       ivBack.setOnClickListener(new View.OnClickListener() {
 //            @Override
 //            public void onClick(View v) {

@@ -63,7 +63,6 @@ public class HistoryFragment extends Fragment {
         mExpHistoryList = (ExpandableListView) rootView.findViewById(R.id.expandable_history_list);
         db = new DatabaseHandler(getActivity());
         hisParList = db.getHisPar();
-
         for (int i = 0; i < hisParList.size(); i++) {
             if (!arrayPar.contains(hisParList.get(i).getHisPaDatePurchased().toString())) {
                 arrayPar.add(hisParList.get(i).getHisPaDatePurchased().toString());
@@ -80,7 +79,6 @@ public class HistoryFragment extends Fragment {
         mExpHistoryList.setAdapter(mAdapter);
         return rootView;
     }
-
     public void showDialog() {
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(getActivity())
                 .setMessage("Your history stores your completed purchased for your records." +

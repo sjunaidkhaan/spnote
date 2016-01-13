@@ -44,13 +44,13 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
     AlertDialog.Builder builder1;
     AlertDialog.Builder alertDialogBuilder;
     public static SharedPreferences.Editor editor;
-    public static final String MyPREFERENCES = "MyPrefs" ;
+    public static final String MyPREFERENCES = "MyPrefs";
     public static final String dbCreated = "dbKey";
     public static final String first_time_dialog = "first_time";
     public static SharedPreferences prefs;
     TextView tvToolbarTitle;
     EditText edToolbarTitle;
-    public String title ;//= "My First Shopnote";
+    public String title;//= "My First Shopnote";
 
 
     @Override
@@ -59,8 +59,8 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
         setContentView(R.layout.activity_main);
 
         //jk
-        edToolbarTitle = (EditText)findViewById(R.id.edittext_toolbar_title);
-        tvToolbarTitle = (TextView)findViewById(R.id.textview_title_toolbar);
+        edToolbarTitle = (EditText) findViewById(R.id.edittext_toolbar_title);
+        tvToolbarTitle = (TextView) findViewById(R.id.textview_title_toolbar);
         tvToolbarTitle.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -79,7 +79,7 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
             * has valid values.
             */
                 if (!hasFocus) {
-                    if(edToolbarTitle.getText().toString().replaceAll(" ","").length()>0){
+                    if (edToolbarTitle.getText().toString().replaceAll(" ", "").length() > 0) {
                         CurrentListModel curr = new CurrentListModel();
                         curr.setListName(edToolbarTitle.getText().toString());
                         db.updateListName(curr);
@@ -105,7 +105,7 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
                                 event.getAction() == KeyEvent.ACTION_DOWN &&
                                         event.getKeyCode() == KeyEvent.KEYCODE_ENTER) {
                             if (!event.isShiftPressed()) {
-                                if(edToolbarTitle.getText().toString().replaceAll(" ","").length()>0){
+                                if (edToolbarTitle.getText().toString().replaceAll(" ", "").length() > 0) {
                                     CurrentListModel curr = new CurrentListModel();
                                     curr.setListName(edToolbarTitle.getText().toString());
                                     db.updateListName(curr);
@@ -144,7 +144,7 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
             String restoredText = prefs.getString(dbCreated, null);
             if (restoredText == null) {
                 editor = prefs.edit();
-                editor.putString(dbCreated,"success");
+                editor.putString(dbCreated, "success");
                 editor.commit();
                 fileName = "dictionary";
                 PlayWithRawFiles(fileName);
@@ -158,7 +158,7 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
                 PlayWithRawFiles(fileName);
                 fileName = "settinglist";
                 PlayWithRawFiles(fileName);
-               // fileName = "historylist";
+                // fileName = "historylist";
                 //PlayWithRawFiles(fileName);
                 fileName = "screentextlist";
                 PlayWithRawFiles(fileName);
@@ -181,11 +181,11 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
         drawerFragment.setDrawerListener(this);
         //getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        if ( !ActivityFavoritesSearch.fromFavoriteBackHit ){
+        if (!ActivityFavoritesSearch.fromFavoriteBackHit) {
             displayView(3);
             //MyFirstNoteFragment fragment = new MyFirstNoteFragment();
 
-        }else{
+        } else {
             //MyFirstNoteFragment fragment = new MyFirstNoteFragment();
             //fragment.setTargetFragment(new FavoritsFragment(),2);
         }
@@ -195,13 +195,14 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
         if (restoredText == null) {
             firstDialog();
             editor = prefs.edit();
-            editor.putString(first_time_dialog,"success");
+            editor.putString(first_time_dialog, "success");
             editor.commit();
         }
     }
-    public void firstDialog(){
+
+    public void firstDialog() {
         //AlertDialog.Builder
-                alertDialogBuilder = new AlertDialog.Builder(this);
+        alertDialogBuilder = new AlertDialog.Builder(this);
         alertDialogBuilder.setMessage("Welcome to Shopnote We've started you on your " +
                 "first shopping list. Click on the + icon to add to more items or swipe " +
                 "left to delete items.");
@@ -209,14 +210,15 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
         alertDialogBuilder.setPositiveButton("Got it", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface arg0, int arg1) {
-               // Toast.makeText(MainActivity.this, "You clicked yes button", Toast.LENGTH_LONG).show();
+                // Toast.makeText(MainActivity.this, "You clicked yes button", Toast.LENGTH_LONG).show();
                 secondDialog();
             }
         });
         AlertDialog alertDialog = alertDialogBuilder.create();
         alertDialog.show();
     }
-    public void secondDialog(){
+
+    public void secondDialog() {
         //AlertDialog.Builder
         alertDialogBuilder = new AlertDialog.Builder(this);
         alertDialogBuilder.setMessage("Once you're done creating yor list, click" +
@@ -248,7 +250,7 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
         switch (position) {
             case 0:
                 //fragment = new ShareListFragment();
-               // title = getString(R.string.title_share_list);
+                // title = getString(R.string.title_share_list);
                 //tvToolbarTitle.setText(title);
                 //intent = new Intent(getApplication(),ActivityAddList.class);
                 //startActivity(intent);
@@ -257,7 +259,7 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
                 //fragment = new ManageSectionsFragment();
                 //title = getString(R.string.title_manage_sections);
                 //tvToolbarTitle.setText(title);
-                intent = new Intent(getApplication(),ActivityManageSections.class);
+                intent = new Intent(getApplication(), ActivityManageSections.class);
                 startActivity(intent);
                 break;
             case 2:
@@ -267,7 +269,7 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
                 break;
             case 3:
                 fragment = new MyFirstNoteFragment();
-               //title = getString(R.string.title_first_note);
+                //title = getString(R.string.title_first_note);
                 break;
             /*case 4:
                 Intent intent = new Intent(MainActivity.this,MainTestNavigation.class);
@@ -293,30 +295,28 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
     }
 
     public void PlayWithRawFiles(String filname) throws IOException {
-        String str="";
+        String str = "";
         String[] separated;
         //StringBuffer buf = new StringBuffer();
         InputStream file_Name = this.getAssets().open(filname);
         BufferedReader reader = new BufferedReader(new InputStreamReader(file_Name));
-        if (file_Name!=null) {
-            if(filname.equals("dictionary")){
+        if (file_Name != null) {
+            if (filname.equals("dictionary")) {
                 db = new DatabaseHandler(this);
                 while ((str = reader.readLine()) != null) {
-                    separated= str.split(",");
+                    separated = str.split(",");
                     db.addDictionary(new DictionaryModel(separated[1], Integer.parseInt(separated[0])));
                 }
                 db.close();
-            }
-            else  if(filname.equals("sectionorder")){
+            } else if (filname.equals("sectionorder")) {
                 db = new DatabaseHandler(this);
                 while ((str = reader.readLine()) != null) {
-                    separated= str.split(",");
-                    db.addSection(new SectionModel(Integer.parseInt(separated[0]),separated[1],
-                            separated[2],Integer.parseInt(separated[3])));
+                    separated = str.split(",");
+                    db.addSection(new SectionModel(Integer.parseInt(separated[0]), separated[1],
+                            separated[2], Integer.parseInt(separated[3])));
                 }
                 db.close();
-            }
-            else  if(filname.equals("currentlist")) {
+            } else if (filname.equals("currentlist")) {
                 db = new DatabaseHandler(this);
                 while ((str = reader.readLine()) != null) {
                     separated = str.split(",");
@@ -324,24 +324,21 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
                             Integer.parseInt(separated[2]), separated[3], separated[4], Integer.parseInt(separated[5])));
                 }
                 db.close();
-            }
-            else  if(filname.equals("favoritlist")) {
+            } else if (filname.equals("favoritlist")) {
                 db = new DatabaseHandler(this);
                 while ((str = reader.readLine()) != null) {
                     separated = str.split(",");
                     db.addFavorit(new FavoritListModel(separated[0]));
                 }
                 db.close();
-            }
-            else  if(filname.equals("inventrylist")) {
+            } else if (filname.equals("inventrylist")) {
                 db = new DatabaseHandler(this);
                 while ((str = reader.readLine()) != null) {
                     separated = str.split(",");
                     db.addInventry(new InventoryModel(Integer.parseInt(separated[0]), separated[1]));
                 }
                 db.close();
-            }
-            else  if(filname.equals("settinglist")) {
+            } else if (filname.equals("settinglist")) {
                 db = new DatabaseHandler(this);
                 while ((str = reader.readLine()) != null) {
                     separated = str.split(",");
@@ -353,16 +350,14 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
                             Integer.parseInt(separated[10]), Integer.parseInt(separated[11])));
                 }
                 db.close();
-            }
-            else  if(filname.equals("historylist")) {
+            } else if (filname.equals("historylist")) {
                 db = new DatabaseHandler(this);
                 while ((str = reader.readLine()) != null) {
                     separated = str.split(",");
-                    db.addHistory(new HistoryModel(separated[0], separated[1],separated[2]));
+                    db.addHistory(new HistoryModel(separated[0], separated[1], separated[2]));
                 }
                 db.close();
-            }
-            else  if(filname.equals("screentextlist")) {
+            } else if (filname.equals("screentextlist")) {
                 db = new DatabaseHandler(this);
                 while ((str = reader.readLine()) != null) {
                     separated = str.split(",");
@@ -373,26 +368,28 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
         }
         file_Name.close();
     }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
     }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         Intent mIntent;
-        switch (id){
+        switch (id) {
             case R.id.action_add:
-                mIntent = new Intent(getApplication(),ActivityAddList.class);
+                mIntent = new Intent(getApplication(), ActivityAddList.class);
                 startActivity(mIntent);
                 break;
             case R.id.action_favorites_search:
-                mIntent = new Intent(getApplication(),ActivityFavoritesSearch.class);
+                mIntent = new Intent(getApplication(), ActivityFavoritesSearch.class);
                 startActivity(mIntent);
                 break;
             case R.id.action_history_search:
-                mIntent = new Intent(getApplication(),ActivityHistorySearch.class);
+                mIntent = new Intent(getApplication(), ActivityHistorySearch.class);
                 startActivity(mIntent);
                 break;
         }

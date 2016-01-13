@@ -4,6 +4,7 @@ import android.annotation.TargetApi;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Build;
 import android.view.KeyEvent;
@@ -15,8 +16,10 @@ import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.baoyz.swipemenulistview.SwipeMenuListView;
+import com.ingentive.shopnote.ActivityManageSections;
 import com.ingentive.shopnote.DatabaseHandler;
 import com.ingentive.shopnote.R;
 import com.ingentive.shopnote.model.CurrentListModel;
@@ -163,7 +166,12 @@ public class CurrentListAdapter extends ArrayAdapter<CurrentListModel> {
         vh.ivSection.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                Toast.makeText(mContext, "section image click" + postion, Toast.LENGTH_SHORT).show();
+
+                Intent i = new Intent(mContext, ActivityManageSections.class);
+                String keyIdentifer  = data.get(postion).getItemName().toString();
+                i.putExtra("item_name", keyIdentifer);
+                mContext.startActivity(i);
+               Toast.makeText(mContext, "section image click  " + data.get(postion).getItemName().toString(), Toast.LENGTH_SHORT).show();
             }
         });
         vh.etQuantity.setOnEditorActionListener(
