@@ -14,8 +14,10 @@ import com.ingentive.shopnote.DatabaseHandler;
 import com.ingentive.shopnote.R;
 import com.ingentive.shopnote.model.CurrentListModel;
 import com.ingentive.shopnote.model.FavoritListModel;
+import com.ingentive.shopnote.model.HistoryChildModel;
 import com.ingentive.shopnote.model.HistoryModel;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -66,6 +68,8 @@ public class HistoryListAdapter extends BaseAdapter {
             vh.itemName = (TextView) vi.findViewById(R.id.tv_itemname_history);
             vh.ivFavorit = (ImageView) vi.findViewById(R.id.iv_fav_histor);
             vh.ivAdd = (ImageView) vi.findViewById(R.id.iv_add_history);
+            vh.ivAddDate = (ImageView) vi.findViewById(R.id.iv_add_history_date);
+
             int id = vi.generateViewId();
             vi.setId(id);
             vi.setTag(vh);
@@ -75,12 +79,13 @@ public class HistoryListAdapter extends BaseAdapter {
 
 
         final TextView itemName, tvDate;
-        final ImageView ivFavorit, ivAdd;
+        final ImageView ivFavorit, ivAdd,ivAddDate;
 
         vh.tvDate = (TextView) vi.findViewById(R.id.tv_date_history);
         vh.itemName = (TextView) vi.findViewById(R.id.tv_itemname_history);
         vh.ivFavorit = (ImageView) vi.findViewById(R.id.iv_fav_histor);
         vh.ivAdd = (ImageView) vi.findViewById(R.id.iv_add_history);
+        vh.ivAddDate = (ImageView) vi.findViewById(R.id.iv_add_history_date);
 
         if (data.get(postion).isDate()) {
             vh.tvDate.setVisibility(View.VISIBLE);
@@ -88,7 +93,10 @@ public class HistoryListAdapter extends BaseAdapter {
             vh.itemName.setVisibility(View.GONE);
             vh.ivFavorit.setBackgroundResource(R.drawable.favorite_unselected);
             vh.ivFavorit.setVisibility(View.INVISIBLE);
+            vh.ivAddDate.setVisibility(View.VISIBLE);
+            vh.ivAddDate.setBackgroundResource(R.drawable.add_large_unselected);
         } else {
+            vh.ivAddDate.setVisibility(View.GONE);
             vh.tvDate.setVisibility(View.GONE);
 //            tvDate.setText(data.get(postion).getDatePurchased().toString());
             vh.itemName.setVisibility(View.VISIBLE);
@@ -124,6 +132,7 @@ public class HistoryListAdapter extends BaseAdapter {
         itemName=vh.itemName;
         ivFavorit=vh.ivFavorit;
         ivAdd=vh.ivAdd;
+        ivAddDate=vh.ivAddDate;
 
         //}
         vh.ivFavorit.setOnClickListener(new View.OnClickListener() {
@@ -151,19 +160,60 @@ public class HistoryListAdapter extends BaseAdapter {
         vh.ivAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ivAdd.setImageResource(R.drawable.add_selected);
+                ivAdd.setBackgroundResource(R.drawable.add_selected);
                 db = new DatabaseHandler(mContext);
                 String title = db.getListName();
                 db = new DatabaseHandler(mContext);
-                db.addCurrentList(new CurrentListModel(1, itemName.getText().toString(), 0, null, title, 1));
+                int order = db.getMaxOrderNo();
+                order++;
+                db = new DatabaseHandler(mContext);
+                db.addCurrentList(new CurrentListModel(order, itemName.getText().toString(), 0, null, title, 1));
+            }
+        });
+        vh.ivAddDate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ivAddDate.setBackgroundResource(R.drawable.add_large_selected);
+
+                db = new DatabaseHandler(mContext);
+                boolean itemExist = false;
+                db = new DatabaseHandler(mContext);
+                List<CurrentListModel> currList = db.getCurrList();
+                List<HistoryChildModel> historyList = new ArrayList<HistoryChildModel>();
+                historyList=db.getHisChil(data.get(postion).getDatePurchased());
+                for (int i = 0; i <historyList.size(); i++) {
+                    String itemname = historyList.get(i).getHisChItemName().toString();
+                    db = new DatabaseHandler(mContext);
+                    String title = db.getListName();
+                    db = new DatabaseHandler(mContext);
+                    int order = db.getMaxOrderNo();
+                    order++;
+                    db = new DatabaseHandler(mContext);
+                    db.addCurrentList(new CurrentListModel(order, itemname, 0, null, title, 1));
+                    if(title==null||title.isEmpty())
+                        title="My First ShopNote";
+                    db = new DatabaseHandler(mContext);
+                    final boolean itemIsInList = db.isInList(historyList.get(i).getHisChItemName().toString());
+                    if (itemIsInList) {
+                        ivAdd.setBackgroundResource(R.drawable.add_selected);
+                        ivAdd.setOnClickListener(null);
+                    } else {
+                        db = new DatabaseHandler(mContext);
+                        int order_no = db.getMaxOrderNo();
+                        order_no++;
+                        db.addCurrentList(new CurrentListModel(order_no, itemname, 0, null, title, 1));
+                        ivAdd.setBackgroundResource(R.drawable.add_unselected);
+                        notifyDataSetChanged();
+                    }
+                }
+                notifyDataSetChanged();
             }
         });
         return vi;
     }
-
     public class ViewHolder {
         TextView itemName, tvDate;
-        ImageView ivFavorit, ivAdd;
+        ImageView ivFavorit, ivAdd,ivAddDate;
 
     }
 }

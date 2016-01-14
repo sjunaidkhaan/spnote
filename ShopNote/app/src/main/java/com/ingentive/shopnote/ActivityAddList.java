@@ -92,7 +92,6 @@ public class ActivityAddList extends AppCompatActivity {
         //db = new DatabaseHandler(getApplication());
         //addList = db.getFavItem();
 
-
         db = new DatabaseHandler(getApplication());
         favoritList = db.getFavItem();
         historyList = db.getHistoryItems();
@@ -125,7 +124,10 @@ public class ActivityAddList extends AppCompatActivity {
                 db = new DatabaseHandler(getApplication());
                 String title = db.getListName();
                 db = new DatabaseHandler(getApplication());
-                db.addCurrentList(new CurrentListModel(1, itemName, 0, null, title, 1));
+                int order = db.getMaxOrderNo();
+                order++;
+                db = new DatabaseHandler(getApplication());
+                db.addCurrentList(new CurrentListModel(order, itemName, 0, null, title, 1));
                 //Toast.makeText(getApplicationContext(), "itemName  "+itemName, Toast.LENGTH_LONG).show();
             }
         });
@@ -147,8 +149,11 @@ public class ActivityAddList extends AppCompatActivity {
                         if (!curritemExist) {
                             db = new DatabaseHandler(getApplication());
                             String title = db.getListName();
+                            db = new DatabaseHandler(getApplication());
+                            int order = db.getMaxOrderNo();
+                            order++;
                             db = new DatabaseHandler(ActivityAddList.this);
-                            db.addCurrentList(new CurrentListModel(1, etSerch.getText().toString(), 0, null, title, 1));
+                            db.addCurrentList(new CurrentListModel(order, etSerch.getText().toString(), 0, null, title, 1));
                         }
                         db = new DatabaseHandler(ActivityAddList.this);
                         List<DictionaryModel> dicList = db.getDicItems();
@@ -191,8 +196,11 @@ public class ActivityAddList extends AppCompatActivity {
                                     if (!curritemExist) {
                                         db = new DatabaseHandler(getApplication());
                                         String title = db.getListName();
+                                        db = new DatabaseHandler(getApplication());
+                                        int order = db.getMaxOrderNo();
+                                        order++;
                                         db = new DatabaseHandler(ActivityAddList.this);
-                                        db.addCurrentList(new CurrentListModel(1, etSerch.getText().toString(), 0, null,title, 1));
+                                        db.addCurrentList(new CurrentListModel(order, etSerch.getText().toString(), 0, null,title, 1));
                                     }
                                     db = new DatabaseHandler(ActivityAddList.this);
                                     List<DictionaryModel> dicList = db.getDicItems();

@@ -1,0 +1,25 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.ingentive.shopnote.fragments.ShopFragment">
+
+    <com.nhaarman.listviewanimations.itemmanipulation.DynamicListView
+        android:id="@+id/expandable_shop_list"
+        style="@style/MyListActivityDividerHeight"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:cacheColorHint="#00000000"
+        android:groupIndicator="@null"
+        android:listSelector="@color/colorTransparent" />
+
+    <Button
+        android:id="@+id/btn_finish_shopping"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/expandable_shop_list"
+        android:layout_marginTop="10dp"
+        android:background="#C2DFFF"
+        android:text="@string/BTN_FINISH_SHOPPING" />
+
+</RelativeLayout>

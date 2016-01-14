@@ -4,8 +4,8 @@
     android:layout_height="match_parent"
     tools:context="com.ingentive.shopnote.fragments.HistoryFragment">
 
-    <ExpandableListView
-        android:id="@+id/expandable_history_list"
+    <ListView
+        android:id="@+id/history_list_view"
         style="@style/MyListActivityDividerHeight"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"

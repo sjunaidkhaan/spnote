@@ -12,7 +12,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
 
-import com.ingentive.shopnote.adapters.HistoryListAdapter;
+import com.ingentive.shopnote.adapters.HistorySearchAdapter;
 import com.ingentive.shopnote.model.HistoryModel;
 import com.ingentive.shopnote.model.HistoryModelJk;
 
@@ -25,7 +25,7 @@ public class ActivityHistorySearch extends AppCompatActivity {
     private ListView mListView;
     private EditText etHistorySerch;
     private ImageView ivBack;
-    private HistoryListAdapter mAdapter;
+    private HistorySearchAdapter mAdapter;
     public DatabaseHandler db;
     List<HistoryModel> historyList;
     List<HistoryModel> searchItem;
@@ -79,7 +79,7 @@ public class ActivityHistorySearch extends AppCompatActivity {
     public void showData() {
         // db = new DatabaseHandler(getApplication());
         searchItem = new ArrayList<HistoryModel>();
-        mAdapter = new HistoryListAdapter(ActivityHistorySearch.this, searchItem, R.layout.custom_row_history);
+        mAdapter = new HistorySearchAdapter(ActivityHistorySearch.this, searchItem, R.layout.custom_row_history);
         mListView.setAdapter(mAdapter);
     }
 
@@ -130,7 +130,7 @@ public class ActivityHistorySearch extends AppCompatActivity {
                 }
             }
             mAdapter.notifyDataSetChanged();
-            mAdapter = new HistoryListAdapter(ActivityHistorySearch.this, searchItem, R.layout.custom_row_history);
+            mAdapter = new HistorySearchAdapter(ActivityHistorySearch.this, searchItem, R.layout.custom_row_history);
             mListView.setAdapter(mAdapter);
         }
     }

@@ -117,7 +117,10 @@ public class HistoryCustomAdapter extends BaseExpandableListAdapter {
                         db = new DatabaseHandler(mContext);
                         String title = db.getListName();
                         db = new DatabaseHandler(mContext);
-                        db.addCurrentList(new CurrentListModel(1, itemname, 0, null, title, 1));
+                        int order = db.getMaxOrderNo();
+                        order++;
+                        db = new DatabaseHandler(mContext);
+                        db.addCurrentList(new CurrentListModel(order, itemname, 0, null, title, 1));
                     }
                     //db.addCurrentList(new CurrentListModel(1, histParent.get(groupPosition).getArrayChildren().get(i).getHisChItemName(), 0, null, "My Firts Shopnote", 1));
                 }
@@ -205,7 +208,10 @@ public class HistoryCustomAdapter extends BaseExpandableListAdapter {
                         db = new DatabaseHandler(mContext);
                         String title = db.getListName();
                         db = new DatabaseHandler(mContext);
-                        db.addCurrentList(new CurrentListModel(1, childName, 0, null, title, 1));
+                        db = new DatabaseHandler(mContext);
+                        int order = db.getMaxOrderNo();
+                        order++;
+                        db.addCurrentList(new CurrentListModel(order, childName, 0, null, title, 1));
                     }
                 }
             }

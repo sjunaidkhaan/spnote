@@ -1,9 +1,6 @@
 package com.ingentive.shopnote.fragments;
 
-import android.content.ComponentName;
-import android.content.Intent;
 import android.content.pm.ApplicationInfo;
-import android.content.pm.ResolveInfo;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -148,37 +145,35 @@ public class ListFragment extends Fragment {
                 getResources().getDisplayMetrics());
     }
 
-    private void open(ApplicationInfo item) {
-        // open app
-        Intent resolveIntent = new Intent(Intent.ACTION_MAIN, null);
-        resolveIntent.addCategory(Intent.CATEGORY_LAUNCHER);
-        resolveIntent.setPackage(item.packageName);
-        List<ResolveInfo> resolveInfoList = getActivity().getPackageManager()
-                .queryIntentActivities(resolveIntent, 0);
-        if (resolveInfoList != null && resolveInfoList.size() > 0) {
-            ResolveInfo resolveInfo = resolveInfoList.get(0);
-            String activityPackageName = resolveInfo.activityInfo.packageName;
-            String className = resolveInfo.activityInfo.name;
-
-            Intent intent = new Intent(Intent.ACTION_MAIN);
-            intent.addCategory(Intent.CATEGORY_LAUNCHER);
-            ComponentName componentName = new ComponentName(
-                    activityPackageName, className);
-
-            intent.setComponent(componentName);
-            startActivity(intent);
-        }
-    }
+//    private void open(ApplicationInfo item) {
+//        // open app
+//        Intent resolveIntent = new Intent(Intent.ACTION_MAIN, null);
+//        resolveIntent.addCategory(Intent.CATEGORY_LAUNCHER);
+//        resolveIntent.setPackage(item.packageName);
+//        List<ResolveInfo> resolveInfoList = getActivity().getPackageManager()
+//                .queryIntentActivities(resolveIntent, 0);
+//        if (resolveInfoList != null && resolveInfoList.size() > 0) {
+//            ResolveInfo resolveInfo = resolveInfoList.get(0);
+//            String activityPackageName = resolveInfo.activityInfo.packageName;
+//            String className = resolveInfo.activityInfo.name;
+//
+//            Intent intent = new Intent(Intent.ACTION_MAIN);
+//            intent.addCategory(Intent.CATEGORY_LAUNCHER);
+//            ComponentName componentName = new ComponentName(
+//                    activityPackageName, className);
+//
+//            intent.setComponent(componentName);
+//            startActivity(intent);
+//        }
+//    }
 
     public boolean onCreateOptionsMenu(Menu menu) {
         getActivity().getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
     }
-
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
-
         //Toast.makeText(getActivity(), "id" + id, Toast.LENGTH_LONG).show();
         if (id == 1) {
             mListView.setSwipeDirection(SwipeMenuListView.DIRECTION_LEFT);
@@ -191,12 +186,11 @@ public class ListFragment extends Fragment {
 
         return super.onOptionsItemSelected(item);
     }
-
     @Override
     public void setMenuVisibility(boolean menuVisible) {
         super.setMenuVisibility(menuVisible);
-
         if ( menuVisible ){
+
         }
 
     }

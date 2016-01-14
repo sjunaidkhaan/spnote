@@ -13,7 +13,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ExpandableListView;
-import android.widget.Toast;
 
 import com.ingentive.shopnote.DatabaseHandler;
 import com.ingentive.shopnote.R;
@@ -74,6 +73,7 @@ public class ShopFragment extends Fragment {
         getData();
         mAdapter = new ShopCustomAdapter(getActivity(), shopList);
         mExpShopList.setAdapter(mAdapter);
+        shopParList = db.getShopParSection();
         //mAdapter.notifyDataSetChanged();
         return rootView;
     }
@@ -102,13 +102,11 @@ public class ShopFragment extends Fragment {
 
             public void onClick(DialogInterface arg0, int arg1) {
                 // do something when the Cancel button is clicked
-                Toast.makeText(getActivity(), "No button click", Toast.LENGTH_LONG).show();
             }
         });
         myAlertDialog.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface arg0, int arg1) {
                 // do something when the OK button is clicked
-                Toast.makeText(getActivity(), "yes button click", Toast.LENGTH_LONG).show();
                 db = new DatabaseHandler(getActivity());
                 List<CurrentListModel> currList = db.getCurrList();
                 Calendar c = Calendar.getInstance();

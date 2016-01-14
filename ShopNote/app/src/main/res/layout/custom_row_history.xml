@@ -10,7 +10,6 @@
         android:id="@+id/tv_date_history"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="16dp"
         android:layout_centerVertical="true"
         android:visibility="gone"
         android:textStyle="bold"
@@ -20,7 +19,7 @@
         android:id="@+id/tv_itemname_history"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="16dp"
+        android:textSize="18sp"
         android:layout_centerVertical="true"
         android:layout_alignParentLeft="true"
         android:textColor="@android:color/black" />
@@ -36,8 +35,14 @@
         android:id="@+id/iv_add_history"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginRight="12px"
         android:layout_centerVertical="true"
+        android:layout_alignParentRight="true" />
+    <ImageView
+        android:id="@+id/iv_add_history_date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:visibility="gone"
         android:layout_alignParentRight="true" />
 
 </RelativeLayout>

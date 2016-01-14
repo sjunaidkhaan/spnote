@@ -107,7 +107,10 @@ public class FavoritesListAdapter extends BaseAdapter {
                 db = new DatabaseHandler(mContext);
                 String title = db.getListName();
                 db = new DatabaseHandler(mContext);
-                db.addCurrentList(new CurrentListModel(1, itemName.getText().toString(), 0, null, title, 1));
+                int order = db.getMaxOrderNo();
+                order++;
+                db = new DatabaseHandler(mContext);
+                db.addCurrentList(new CurrentListModel(order, itemName.getText().toString(), 0, null, title, 1));
             }
         });
         return vi;

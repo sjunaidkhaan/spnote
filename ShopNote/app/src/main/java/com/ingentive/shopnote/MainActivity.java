@@ -58,6 +58,9 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        db = new DatabaseHandler(getApplication());
+        int order = db.getMaxOrderNo();
+        Toast.makeText(getApplication(),"max order no :"+order,Toast.LENGTH_LONG).show();
         //jk
         edToolbarTitle = (EditText) findViewById(R.id.edittext_toolbar_title);
         tvToolbarTitle = (TextView) findViewById(R.id.textview_title_toolbar);
@@ -246,6 +249,8 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
         //String title = getString(R.string.app_name);
         db = new DatabaseHandler(getApplication());
         title = db.getListName();
+        if(title==null || title.isEmpty())
+            title="My First Shopnote";
         //Toast.makeText(getApplication(),"title "+title,Toast.LENGTH_LONG).show();
         switch (position) {
             case 0:

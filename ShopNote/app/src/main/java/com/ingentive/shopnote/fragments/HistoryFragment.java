@@ -60,7 +60,7 @@ public class HistoryFragment extends Fragment {
             editor.putString(first_time_dialog, "success");
             editor.commit();
         }
-        mExpHistoryList = (ExpandableListView) rootView.findViewById(R.id.expandable_history_list);
+        //mExpHistoryList = (ExpandableListView) rootView.findViewById(R.id.expandable_history_list);
         db = new DatabaseHandler(getActivity());
         hisParList = db.getHisPar();
         for (int i = 0; i < hisParList.size(); i++) {

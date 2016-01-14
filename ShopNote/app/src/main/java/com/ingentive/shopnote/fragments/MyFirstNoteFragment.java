@@ -4,9 +4,7 @@ import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
-import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -130,11 +128,11 @@ public class MyFirstNoteFragment extends android.support.v4.app.Fragment {
                 case 0:
                     return new ListFragment();
                 case 1:
-                    return new ShopFragment();
+                    return new ShopFragmentSimpleListview();
                 case 2:
                     return new FavoritsFragment();
                 case 3:
-                    return new HistoryFragment();
+                    return new HistoryListFragment();
             }
             return null;
         }
