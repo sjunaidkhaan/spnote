@@ -29,8 +29,8 @@ public class FavoritsFragment extends Fragment {
     public static final String first_time_dialog = "first_time";
     public static SharedPreferences prefs;
     private ListView mListView;
-    DatabaseHandler db;
-    FavoritesListAdapter mAdapter;
+    private DatabaseHandler db;
+    private FavoritesListAdapter mAdapter;
 
     public FavoritsFragment() {
         // Required empty public constructor

@@ -15,7 +15,7 @@ public class MyFirstNoteFragment extends android.support.v4.app.Fragment {
 
     public static TabLayout tabLayout;
     public static CustomViewPager viewPager;
-    public static int int_items = 4 ;
+    public static int int_items = 4;
     public int[] tabIcons = {
             R.drawable.list_unselected,
             R.drawable.shop_unselected,
@@ -26,14 +26,11 @@ public class MyFirstNoteFragment extends android.support.v4.app.Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-
-
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View x =  inflater.inflate(R.layout.tab_layout,container,false);
+        View x = inflater.inflate(R.layout.tab_layout, container, false);
         tabLayout = (TabLayout) x.findViewById(R.id.tabs);
         viewPager = (CustomViewPager) x.findViewById(R.id.viewpager);
         viewPager.setAdapter(new MyAdapter(getChildFragmentManager()));
@@ -83,7 +80,6 @@ public class MyFirstNoteFragment extends android.support.v4.app.Fragment {
                             tab.getCustomView().setBackgroundResource(R.drawable.history_selectd_tab_icon);
                             viewPager.setCurrentItem(3);
                         }
-
                     }
 
                     @Override
@@ -106,12 +102,8 @@ public class MyFirstNoteFragment extends android.support.v4.app.Fragment {
 
                     }
                 });
-
-
             }
         });
-
-//                    tab.getCustomView().setBackgroundResource(R.drawable.list_selected);
         return x;
     }
 

@@ -42,6 +42,8 @@
             android:id="@+id/btn_add_manage_section"
             android:layout_width="0dp"
             android:layout_height="fill_parent"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
             android:layout_alignParentBottom="true"
             android:layout_below="@+id/lv_manage_section"
             android:layout_weight="1"

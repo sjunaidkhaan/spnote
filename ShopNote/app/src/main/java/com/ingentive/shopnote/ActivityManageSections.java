@@ -13,6 +13,7 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
@@ -202,6 +203,10 @@ public class ActivityManageSections extends AppCompatActivity {
                         actionId == EditorInfo.IME_ACTION_DONE ||
                         event.getAction() == KeyEvent.ACTION_DOWN &&
                                 event.getKeyCode() == KeyEvent.KEYCODE_ENTER) {
+//                    ((InputMethodManager) getApplication().getSystemService(Context.INPUT_METHOD_SERVICE))
+//                            .showSoftInput(etAddSection, InputMethodManager.SHOW_FORCED);
+                    ((InputMethodManager) getApplication().getSystemService(Context.INPUT_METHOD_SERVICE)).
+                            hideSoftInputFromWindow(etAddSection.getWindowToken(), 0);
                     if (!event.isShiftPressed()) {
                         if (etAddSection.getText().toString().replaceAll(" ", "").length() > 0) {
                             if (isSection(etAddSection.getText().toString().trim())) {
@@ -232,6 +237,8 @@ public class ActivityManageSections extends AppCompatActivity {
         btnAddSection.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                ((InputMethodManager) getApplication().getSystemService(Context.INPUT_METHOD_SERVICE)).
+                        hideSoftInputFromWindow(etAddSection.getWindowToken(), 0);
                 Toast.makeText(ActivityManageSections.this, "" + etAddSection.getText().toString(), Toast.LENGTH_SHORT).show();
                 if (isSection(etAddSection.getText().toString().trim())) {
                     warningDialog();

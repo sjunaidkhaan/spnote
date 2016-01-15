@@ -1,6 +1,7 @@
 package com.ingentive.shopnote;
 
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -10,11 +11,13 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -43,14 +46,14 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
     String fileName = "empty file";
     AlertDialog.Builder builder1;
     AlertDialog.Builder alertDialogBuilder;
-    public static SharedPreferences.Editor editor;
-    public static final String MyPREFERENCES = "MyPrefs";
-    public static final String dbCreated = "dbKey";
-    public static final String first_time_dialog = "first_time";
-    public static SharedPreferences prefs;
+    private static SharedPreferences.Editor editor;
+    private static final String MyPREFERENCES = "MyPrefs";
+    private static final String dbCreated = "dbKey";
+    private static final String first_time_dialog = "first_time";
+    private static SharedPreferences prefs;
     TextView tvToolbarTitle;
     EditText edToolbarTitle;
-    public String title;//= "My First Shopnote";
+    public static String title = "My First Shopnote";
 
 
     @Override
@@ -58,20 +61,22 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        db = new DatabaseHandler(getApplication());
-        int order = db.getMaxOrderNo();
-        Toast.makeText(getApplication(),"max order no :"+order,Toast.LENGTH_LONG).show();
         //jk
         edToolbarTitle = (EditText) findViewById(R.id.edittext_toolbar_title);
         tvToolbarTitle = (TextView) findViewById(R.id.textview_title_toolbar);
         tvToolbarTitle.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //Toast.makeText(MainActivity.this, "Clicked", Toast.LENGTH_SHORT).show();
                 tvToolbarTitle.setVisibility(View.GONE);
                 edToolbarTitle.setVisibility(View.VISIBLE);
                 edToolbarTitle.requestFocus();
-                edToolbarTitle.setSelection(edToolbarTitle.getText().toString().length());
+                ((InputMethodManager)getApplication().getSystemService(Context.INPUT_METHOD_SERVICE))
+                        .showSoftInput(edToolbarTitle, InputMethodManager.SHOW_FORCED);
+                //edToolbarTitle.setSelection(edToolbarTitle.getText().toString().length());
+                db = new DatabaseHandler(getApplication());
+                String listName = db.getListName();
+                //Toast.makeText(getApplication(),"listName :"+listName,Toast.LENGTH_LONG).show();
+                edToolbarTitle.setText(listName);
             }
         });
 
@@ -82,6 +87,8 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
             * has valid values.
             */
                 if (!hasFocus) {
+                    ((InputMethodManager) getApplication().getSystemService(Context.INPUT_METHOD_SERVICE))
+                            .hideSoftInputFromWindow(edToolbarTitle.getWindowToken(), 0);
                     if (edToolbarTitle.getText().toString().replaceAll(" ", "").length() > 0) {
                         CurrentListModel curr = new CurrentListModel();
                         curr.setListName(edToolbarTitle.getText().toString());
@@ -108,6 +115,8 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
                                 event.getAction() == KeyEvent.ACTION_DOWN &&
                                         event.getKeyCode() == KeyEvent.KEYCODE_ENTER) {
                             if (!event.isShiftPressed()) {
+                                ((InputMethodManager) getApplication().getSystemService(Context.INPUT_METHOD_SERVICE))
+                                        .hideSoftInputFromWindow(edToolbarTitle.getWindowToken(), 0);
                                 if (edToolbarTitle.getText().toString().replaceAll(" ", "").length() > 0) {
                                     CurrentListModel curr = new CurrentListModel();
                                     curr.setListName(edToolbarTitle.getText().toString());
@@ -125,24 +134,6 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
                     }
                 });
         try {
-           /* db = new DatabaseHandler(this);
-
-            db.addHistory(new HistoryModel("Sun,Nov 22", "Bananas",null));
-            db.addHistory(new HistoryModel("Sun,Nov 22", "Kleenex",null));
-            db.addHistory(new HistoryModel("Sun,Nov 22", "Onions",null));
-            db.addHistory(new HistoryModel("Sun,Nov 22", "Papers",null));
-            db.addHistory(new HistoryModel("Fri,Oct 23", "Kleenex",null));
-            db.addHistory(new HistoryModel("Fri,Oct 23", "Onions",null));
-            db.addHistory(new HistoryModel("Fri,Oct 23", "Jello",null));*/
-
-//            db = new DatabaseHandler(this);
-//            db.addHistory(new HistoryModel("2015-12-31", "Tshirt",null));
-//            db.addFavorit(new FavoritListModel("Jacket"));
-//            db.addHistory(new HistoryModel("2015-12-31", "Jeans",null));
-//            db.addHistory(new HistoryModel("2015-12-31", "Jello",null));
-//            db.addFavorit(new FavoritListModel("Jelly"));
-
-
             prefs = getSharedPreferences(MyPREFERENCES, MODE_PRIVATE);
             String restoredText = prefs.getString(dbCreated, null);
             if (restoredText == null) {
@@ -192,7 +183,6 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
             //MyFirstNoteFragment fragment = new MyFirstNoteFragment();
             //fragment.setTargetFragment(new FavoritsFragment(),2);
         }
-
         prefs = getSharedPreferences(MyPREFERENCES, MODE_PRIVATE);
         String restoredText = prefs.getString(first_time_dialog, null);
         if (restoredText == null) {
@@ -225,7 +215,7 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
         //AlertDialog.Builder
         alertDialogBuilder = new AlertDialog.Builder(this);
         alertDialogBuilder.setMessage("Once you're done creating yor list, click" +
-                "the 'Shop' button bellow. This will organize your list by the sections" +
+                "the 'Shop' button below. This will organize your list by the sections" +
                 "of the supermarket.");
 
         alertDialogBuilder.setPositiveButton("Got it", new DialogInterface.OnClickListener() {
@@ -410,4 +400,11 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
         return super.onOptionsItemSelected(item);
     }
 
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        Log.d("Activity", "List");
+    }
 }

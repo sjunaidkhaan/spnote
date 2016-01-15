@@ -193,7 +193,7 @@ public class ManageSectionAdapter extends BaseAdapter implements com.nhaarman.li
                     db.secAssignToItem(itemName, secId);
                 }
                 if (secId > 10) {
-                     //prefs.edit().remove(unknownSection).commit();
+                    //prefs.edit().remove(unknownSection).commit();
                     prefs = mContext.getSharedPreferences(MyPREFERENCES, mContext.MODE_PRIVATE);
                     editor = prefs.edit();
                     editor.putString(unknownSection, secId + "");
@@ -210,6 +210,7 @@ public class ManageSectionAdapter extends BaseAdapter implements com.nhaarman.li
                     //db.secAssignToItem(itemName, secId);
                     db.secAssignIcon(icon, Integer.parseInt(restoredText));
                     Toast.makeText(mContext, "icon " + icon, Toast.LENGTH_LONG).show();
+                    notifyDataSetChanged();
                     //prefs.edit().remove(unknownSection).commit();
                 }
                 //Toast.makeText(mContext, "section name " + sectionName.getText().toString(), Toast.LENGTH_LONG).show();

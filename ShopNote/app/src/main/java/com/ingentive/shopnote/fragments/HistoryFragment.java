@@ -32,22 +32,24 @@ public class HistoryFragment extends Fragment {
     public static SharedPreferences prefs;
     // private ListView mListView;
     private ExpandableListView mExpHistoryList;
-    DatabaseHandler db;
-    HistoryCustomAdapter mAdapter;
-    ArrayList<String> arrayPar = new ArrayList<String>();
-    HistoryParentModel parentModel = new HistoryParentModel();
-    List<HistoryParentModel> historyList = new ArrayList<HistoryParentModel>();
-    List<HistoryChildModel> hisChiList;
-    List<HistoryParentModel> hisParList;
+    private DatabaseHandler db;
+    private HistoryCustomAdapter mAdapter;
+    private ArrayList<String> arrayPar = new ArrayList<String>();
+    private HistoryParentModel parentModel = new HistoryParentModel();
+    private List<HistoryParentModel> historyList = new ArrayList<HistoryParentModel>();
+    private List<HistoryChildModel> hisChiList;
+    private List<HistoryParentModel> hisParList;
 
     public HistoryFragment() {
         // Required empty public constructor
     }
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
     }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -66,7 +68,7 @@ public class HistoryFragment extends Fragment {
         for (int i = 0; i < hisParList.size(); i++) {
             if (!arrayPar.contains(hisParList.get(i).getHisPaDatePurchased().toString())) {
                 arrayPar.add(hisParList.get(i).getHisPaDatePurchased().toString());
-               // Toast.makeText(getActivity(), "" + hisParList.get(i).getHisPaDatePurchased().toString(), Toast.LENGTH_LONG).show();
+                // Toast.makeText(getActivity(), "" + hisParList.get(i).getHisPaDatePurchased().toString(), Toast.LENGTH_LONG).show();
                 db = new DatabaseHandler(getActivity());
                 hisChiList = db.getHisChil(hisParList.get(i).getHisPaDatePurchased().toString());
                 parentModel = new HistoryParentModel();
@@ -79,6 +81,7 @@ public class HistoryFragment extends Fragment {
         mExpHistoryList.setAdapter(mAdapter);
         return rootView;
     }
+
     public void showDialog() {
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(getActivity())
                 .setMessage("Your history stores your completed purchased for your records." +
@@ -93,7 +96,6 @@ public class HistoryFragment extends Fragment {
         AlertDialog alertDialog = alertDialogBuilder.create();
         alertDialog.show();
     }
-
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         // TODO Add your menu entries here

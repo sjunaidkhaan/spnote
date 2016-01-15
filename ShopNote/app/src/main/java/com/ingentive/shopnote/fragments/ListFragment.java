@@ -5,6 +5,7 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -193,5 +194,16 @@ public class ListFragment extends Fragment {
 
         }
 
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        Log.d("Fragment", "List");
+        db = new DatabaseHandler(getActivity());
+        currList = db.getCurrList();
+        mAdapter = new CurrentListAdapter(getActivity(), currList, R.layout.custom_row_list);
+        mListView.setAdapter(mAdapter);
+        mAdapter.notifyDataSetChanged();
     }
 }

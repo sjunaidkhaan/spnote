@@ -32,16 +32,17 @@ public class ManageSectionsFragment extends Fragment {
     AlertDialog.Builder builder1;
     AlertDialog.Builder alertDialogBuilder;
     public static SharedPreferences.Editor editor;
-    public static final String MYPREFERENCES = "MyPrefs" ;
+    public static final String MYPREFERENCES = "MyPrefs";
     public static final String dbCreated = "dbKey";
     public static final String first_time_dialog = "first_time";
     public static SharedPreferences prefs;
-    ManageSectionAdapter mAdapter;
-    ListView mListView;
-    DatabaseHandler db;
-    EditText etAddSection;
-    Button btnAddSection;
-    List<ManageSectionModel> section;
+    private ManageSectionAdapter mAdapter;
+    private ListView mListView;
+    private DatabaseHandler db;
+    private EditText etAddSection;
+    private Button btnAddSection;
+    private List<ManageSectionModel> section;
+
     public ManageSectionsFragment() {
         // Required empty public constructor
     }
@@ -54,13 +55,13 @@ public class ManageSectionsFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View rootView =  inflater.inflate(R.layout.fragment_manage_sections, null);
+        View rootView = inflater.inflate(R.layout.fragment_manage_sections, null);
         prefs = this.getActivity().getSharedPreferences(MYPREFERENCES, Context.MODE_PRIVATE);
         String restoredText = prefs.getString(first_time_dialog, null);
         if (restoredText == null) {
             showDialog();
             editor = prefs.edit();
-            editor.putString(first_time_dialog,"success");
+            editor.putString(first_time_dialog, "success");
             editor.commit();
         }
         etAddSection = (EditText) rootView.findViewById(R.id.et_add_manage_section);
@@ -76,10 +77,10 @@ public class ManageSectionsFragment extends Fragment {
                         event.getAction() == KeyEvent.ACTION_DOWN &&
                                 event.getKeyCode() == KeyEvent.KEYCODE_ENTER) {
                     if (!event.isShiftPressed()) {
-                        Toast.makeText(getActivity(), ""+etAddSection.getText().toString() , Toast.LENGTH_SHORT).show();
-                        if (isSection(etAddSection.getText().toString().trim())){
+                        Toast.makeText(getActivity(), "" + etAddSection.getText().toString(), Toast.LENGTH_SHORT).show();
+                        if (isSection(etAddSection.getText().toString().trim())) {
                             warningDialog();
-                        } else{
+                        } else {
                             db = new DatabaseHandler(getActivity());
                             SectionModel addSection = new SectionModel();
                             addSection.setSectionOrderNo(99);
@@ -92,9 +93,6 @@ public class ManageSectionsFragment extends Fragment {
                             section = db.getSectionData();
                             showData();
                         }
-                        // the user is done typing.
-                        //db = new DatabaseHandler(getApplication());
-                        // db.addCurrentList(new CurrentListModel(1, etSerch.getText().toString(), 0, null, "My Firts Shopnote", 1));
                         return true;
                     }
                 }
@@ -124,57 +122,61 @@ public class ManageSectionsFragment extends Fragment {
         });
         return rootView;
     }
-    public boolean isSection(String name){
-        for(int i=0; i<section.size();i++){
-            if(section.get(i).getSectionName().toLowerCase().equals(name.toLowerCase())){
+
+    public boolean isSection(String name) {
+        for (int i = 0; i < section.size(); i++) {
+            if (section.get(i).getSectionName().toLowerCase().equals(name.toLowerCase())) {
                 return true;
             }
         }
         return false;
     }
-    public void showData(){
+
+    public void showData() {
         db = new DatabaseHandler(getActivity());
         section = db.getSectionData();
-        mAdapter  = new ManageSectionAdapter(getActivity(), section, R.layout.custom_row_manage_section);
+        mAdapter = new ManageSectionAdapter(getActivity(), section, R.layout.custom_row_manage_section);
         mListView.setAdapter(mAdapter);
     }
+
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
     }
+
     @Override
     public void onDetach() {
         super.onDetach();
     }
 
-    public void showDialog(){
+    public void showDialog() {
         //AlertDialog.Builder
         alertDialogBuilder = new AlertDialog.Builder(getActivity())
                 .setMessage("Reassign item on your list to new sections or" +
-                " add and delete sections. Rearrange these sections in the order that you shop.")
+                        " add and delete sections. Rearrange these sections in the order that you shop.")
                 .setPositiveButton("Got it", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface arg0, int arg1) {
-                // Toast.makeText(MainActivity.this, "You clicked yes button", Toast.LENGTH_LONG).show();
-            }
-        });
-        AlertDialog alertDialog = alertDialogBuilder.create();
-        alertDialog.show();
-    }
-    public void warningDialog(){
-        //AlertDialog.Builder
-       alertDialogBuilder = new AlertDialog.Builder(getActivity())
-               .setTitle("Section Already Exist!")
-               .setMessage("New Section must have a unique name.")
-               .setIcon(R.drawable.error)
-               .setPositiveButton("Got it", new DialogInterface.OnClickListener() {
-                   @Override
-                   public void onClick(DialogInterface arg0, int arg1) {
-                       // Toast.makeText(MainActivity.this, "You clicked yes button", Toast.LENGTH_LONG).show();
-                   }
-               });
+                    @Override
+                    public void onClick(DialogInterface arg0, int arg1) {
+                        // Toast.makeText(MainActivity.this, "You clicked yes button", Toast.LENGTH_LONG).show();
+                    }
+                });
         AlertDialog alertDialog = alertDialogBuilder.create();
         alertDialog.show();
     }
 
+    public void warningDialog() {
+        //AlertDialog.Builder
+        alertDialogBuilder = new AlertDialog.Builder(getActivity())
+                .setTitle("Section Already Exist!")
+                .setMessage("New Section must have a unique name.")
+                .setIcon(R.drawable.error)
+                .setPositiveButton("Got it", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface arg0, int arg1) {
+                        // Toast.makeText(MainActivity.this, "You clicked yes button", Toast.LENGTH_LONG).show();
+                    }
+                });
+        AlertDialog alertDialog = alertDialogBuilder.create();
+        alertDialog.show();
+    }
 }

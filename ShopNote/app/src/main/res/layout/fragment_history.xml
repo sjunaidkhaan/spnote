@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     tools:context="com.ingentive.shopnote.fragments.HistoryFragment">
 
-    <ListView
+    <com.baoyz.swipemenulistview.SwipeMenuListView
         android:id="@+id/history_list_view"
         style="@style/MyListActivityDividerHeight"
         android:layout_width="fill_parent"

@@ -13,6 +13,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -145,12 +146,13 @@ public class CurrentListAdapter extends ArrayAdapter<CurrentListModel> {
         etQuantity = vh.etQuantity;
         ivSection = vh.ivSection;
 
-        vh.ivOption.setOnClickListener(new View.OnClickListener() {
+        vh.itemName.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //if(data.get(postion).getQuantity())
                 etQuantity.setVisibility(View.VISIBLE);
                 etQuantity.requestFocus();
+                ((InputMethodManager) mContext.getSystemService(Context.INPUT_METHOD_SERVICE))
+                        .showSoftInput(etQuantity, InputMethodManager.SHOW_FORCED);
                 ivOption.setVisibility(View.GONE);
                 prefs = mContext.getSharedPreferences(MYPREFERENCES, Context.MODE_PRIVATE);
                 String restoredText = prefs.getString(first_time_dialog, null);
@@ -160,9 +162,29 @@ public class CurrentListAdapter extends ArrayAdapter<CurrentListModel> {
                     editor.putString(first_time_dialog, "success");
                     editor.commit();
                 }
-                //Toast.makeText(mContext, "getQuantity" + data.get(postion).getQuantity().toString(), Toast.LENGTH_SHORT).show();
+
             }
         });
+//        vh.ivOption.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                //if(data.get(postion).getQuantity())
+//                etQuantity.setVisibility(View.VISIBLE);
+//                etQuantity.requestFocus();
+//                ((InputMethodManager) mContext.getSystemService(Context.INPUT_METHOD_SERVICE))
+//                        .showSoftInput(etQuantity, InputMethodManager.SHOW_FORCED);
+//                ivOption.setVisibility(View.GONE);
+//                prefs = mContext.getSharedPreferences(MYPREFERENCES, Context.MODE_PRIVATE);
+//                String restoredText = prefs.getString(first_time_dialog, null);
+//                if (restoredText == null) {
+//                    showDialog();
+//                    editor = prefs.edit();
+//                    editor.putString(first_time_dialog, "success");
+//                    editor.commit();
+//                }
+//                //Toast.makeText(mContext, "getQuantity" + data.get(postion).getQuantity().toString(), Toast.LENGTH_SHORT).show();
+//            }
+//        });
         vh.ivSection.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -186,7 +208,9 @@ public class CurrentListAdapter extends ArrayAdapter<CurrentListModel> {
                                         event.getKeyCode() == KeyEvent.KEYCODE_ENTER) {
                             if (!event.isShiftPressed()) {
                                 db = new DatabaseHandler(mContext);
-                                etQuantity.requestFocus();
+                                //etQuantity.requestFocus();
+                                ((InputMethodManager) mContext.getSystemService(Context.INPUT_METHOD_SERVICE))
+                                        .hideSoftInputFromWindow(etQuantity.getWindowToken(), 0);
                                 if (!etQuantity.getText().toString().isEmpty() &&
                                         !etQuantity.getText().toString().equals(null) &&
                                         !etQuantity.getText().toString().equals("1")) {
@@ -220,8 +244,10 @@ public class CurrentListAdapter extends ArrayAdapter<CurrentListModel> {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
                 if (!hasFocus) {
+                    ((InputMethodManager) mContext.getSystemService(Context.INPUT_METHOD_SERVICE)).
+                            hideSoftInputFromWindow(etQuantity.getWindowToken(), 0);
                     db = new DatabaseHandler(mContext);
-                    etQuantity.requestFocus();
+                   // etQuantity.requestFocus();
                     if (!etQuantity.getText().toString().isEmpty() &&
                             !etQuantity.getText().toString().equals(null) &&
                             !etQuantity.getText().toString().equals("1")) {

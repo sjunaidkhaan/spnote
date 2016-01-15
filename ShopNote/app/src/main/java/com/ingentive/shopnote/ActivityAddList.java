@@ -65,7 +65,6 @@ public class ActivityAddList extends AppCompatActivity {
         ivFavorit = (ImageView) findViewById(R.id.iv_add_list_fav);
         ivHistory = (ImageView) findViewById(R.id.iv_add_list_history);
         tvPopulerItems = (TextView) findViewById(R.id.tv_populer_items);
-
         //jk
         mToolbar.setNavigationIcon(R.drawable.back);
         mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
@@ -78,7 +77,6 @@ public class ActivityAddList extends AppCompatActivity {
             }
         });
         //
-
         etSerch = (EditText) findViewById(R.id.etSearch);
         mListView = (ListView) findViewById(R.id.lv_add_list);
         mPrefs = getSharedPreferences(ActivityAddList.ADD_LIST_PREF, MODE_PRIVATE);
@@ -115,7 +113,6 @@ public class ActivityAddList extends AppCompatActivity {
         }
         //
         showData();
-
         mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -127,11 +124,10 @@ public class ActivityAddList extends AppCompatActivity {
                 int order = db.getMaxOrderNo();
                 order++;
                 db = new DatabaseHandler(getApplication());
-                db.addCurrentList(new CurrentListModel(order, itemName, 0, null, title, 1));
+                db.addCurrentList(new CurrentListModel(order, itemName, 0, null, MainActivity.title, 1));
                 //Toast.makeText(getApplicationContext(), "itemName  "+itemName, Toast.LENGTH_LONG).show();
             }
         });
-
 
         etSerch.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
@@ -153,7 +149,7 @@ public class ActivityAddList extends AppCompatActivity {
                             int order = db.getMaxOrderNo();
                             order++;
                             db = new DatabaseHandler(ActivityAddList.this);
-                            db.addCurrentList(new CurrentListModel(order, etSerch.getText().toString(), 0, null, title, 1));
+                            db.addCurrentList(new CurrentListModel(order, etSerch.getText().toString(), 0, null, MainActivity.title, 1));
                         }
                         db = new DatabaseHandler(ActivityAddList.this);
                         List<DictionaryModel> dicList = db.getDicItems();
@@ -200,7 +196,7 @@ public class ActivityAddList extends AppCompatActivity {
                                         int order = db.getMaxOrderNo();
                                         order++;
                                         db = new DatabaseHandler(ActivityAddList.this);
-                                        db.addCurrentList(new CurrentListModel(order, etSerch.getText().toString(), 0, null,title, 1));
+                                        db.addCurrentList(new CurrentListModel(order, etSerch.getText().toString(), 0, null,MainActivity.title, 1));
                                     }
                                     db = new DatabaseHandler(ActivityAddList.this);
                                     List<DictionaryModel> dicList = db.getDicItems();

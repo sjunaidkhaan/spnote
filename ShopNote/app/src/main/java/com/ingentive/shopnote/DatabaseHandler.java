@@ -120,7 +120,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         values.put(Const.NAME_LIST_NAME, curr.getListName());
         values.put(Const.NAME_LIST_NO, curr.getListNo());
         String sqlQuery = "SELECT * FROM " + Const.TABLE_CURRENT_LIST + " WHERE " + Const.NAME_ITEM
-                + " = " + "'" + curr.getItemName() + "'";
+                + " = " + "\"" + curr.getItemName() + "\"";
         Cursor cursor = db.rawQuery(sqlQuery, null);
         if (cursor != null && cursor.getCount() != 0) {
             Log.d("addCurrentList ", "item already exit ");
@@ -137,7 +137,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         values.put(Const.NAME_ITEM, dic.getItemName());
         values.put(Const.ID_SECTION_ORDER, dic.getSectionId());
         String sqlQuery = "SELECT * FROM " + Const.TABLE_DICTIONARY + " WHERE " + Const.NAME_ITEM
-                + " = " + "'" + dic.getItemName() + "'";
+                + " = "+"\""+ dic.getItemName()+"\"";
         Cursor c = db.rawQuery(sqlQuery, null);
         if (c != null && c.getCount() != 0) {
 
@@ -207,15 +207,36 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         db.insert(Const.TABLE_SETTING, null, values);
         db.close();
     }
-
     void makeFav(String itemName) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values;
         values = new ContentValues();
-        values.put(Const.NAME_ITEM, itemName);
+        values.put(Const.NAME_ITEM, "\""+itemName+"\"");
         db.insert(Const.TABLE_FAVORIT_LIST, null, values);
     }
+    public void updateCheckItem(CurrentListModel curr) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(Const.NAME_CHECKED, curr.getChecked());
+        db.update(Const.TABLE_CURRENT_LIST, values, Const.ID_PRIMARY_KEY + " = ?",
+                new String[]{String.valueOf(curr.getCurrListId())});
+        db.close();
+    }
 
+    public List<String> getHistoryItems() {
+        mList = new ArrayList<String>();
+        String selectQuery = "SELECT * FROM " + Const.TABLE_HISTORY + " ORDER BY " + Const.NAME_ITEM;
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(selectQuery, null);
+        if (cursor.moveToFirst()) {
+            do {
+                mList.add(cursor.getString(2));
+            } while (cursor.moveToNext());
+        }
+        cursor.close();
+        db.close();
+        return mList;
+    }
     public List<String> getFavItems() {
         mList = new ArrayList<String>();
         String selectQuery = "SELECT * FROM " + Const.TABLE_FAVORIT_LIST + " INNER JOIN " +
@@ -235,36 +256,11 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
     public void removeFavorit(FavoritListModel fav) {
         SQLiteDatabase db = this.getWritableDatabase();
-        String query = "DELETE from " + Const.TABLE_FAVORIT_LIST + " where " + Const.NAME_ITEM + "=" + "'" + fav.getItemName() + "'";
+        String query = "DELETE from " + Const.TABLE_FAVORIT_LIST + " where " + Const.NAME_ITEM + "=" +"'" +fav.getItemName() +"'";
         Log.d("QueryFavoriteDelete:", query);
         db.execSQL(query);
         db.close();
     }
-
-    public void updateCheckItem(CurrentListModel curr) {
-        SQLiteDatabase db = this.getWritableDatabase();
-        ContentValues values = new ContentValues();
-        values.put(Const.NAME_CHECKED, curr.getChecked());
-        db.update(Const.TABLE_CURRENT_LIST, values, Const.ID_PRIMARY_KEY + " = ?",
-                new String[]{String.valueOf(curr.getCurrListId())});
-        db.close();
-    }
-
-    public List<String> getHistoryItems() {
-        mList = new ArrayList<String>();
-        String selectQuery = "SELECT * FROM " + Const.TABLE_HISTORY + " ORDER BY "+Const.NAME_ITEM;
-        SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.rawQuery(selectQuery, null);
-        if (cursor.moveToFirst()) {
-            do {
-                mList.add(cursor.getString(2));
-            } while (cursor.moveToNext());
-        }
-        cursor.close();
-        db.close();
-        return mList;
-    }
-
     /*public List<String> getDicItems() {
         List<String> mList = new ArrayList<String>();
         String selectQuery = "SELECT * FROM " + Const.TABLE_DICTIONARY;
@@ -294,7 +290,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
     public List<DictionaryModel> getDicItems() {
         List<DictionaryModel> dicList = new ArrayList<DictionaryModel>();
-        String selectQuery = "SELECT * FROM " + Const.TABLE_DICTIONARY + " ORDER BY "+Const.NAME_ITEM;
+        String selectQuery = "SELECT * FROM " + Const.TABLE_DICTIONARY + " ORDER BY " + Const.NAME_ITEM;
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery(selectQuery, null);
         if (cursor.moveToFirst()) {
@@ -333,7 +329,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
     public List<String> getFavItem() {
         List<String> mList = new ArrayList<String>();
-        String selectQuery = "SELECT * FROM " + Const.TABLE_FAVORIT_LIST+ " ORDER BY "+Const.NAME_ITEM;
+        String selectQuery = "SELECT * FROM " + Const.TABLE_FAVORIT_LIST + " ORDER BY " + Const.NAME_ITEM;
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery(selectQuery, null);
         if (cursor.moveToFirst()) {
@@ -351,7 +347,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         ContentValues values = new ContentValues();
         Log.d("updateListName ", " getListName " + curr.getListName());
         values.put(Const.NAME_LIST_NAME, curr.getListName());
-        db.update(Const.TABLE_CURRENT_LIST, values, null, null);
+        int reows = db.update(Const.TABLE_CURRENT_LIST, values, null, null);
+        Log.d("effected rows ", "" + reows);
         db.close();
     }
 
@@ -364,12 +361,13 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         if (cursor.moveToFirst())
             if (cursor != null && cursor.getCount() != 0) {
                 title = cursor.getString(5).toString();
-            } else {
-                title = "My First Shopnote";
+                cursor.close();
+                db.close();
+                return title;
             }
         cursor.close();
         db.close();
-        return title;
+        return "My First Shopnote";
     }
 
     public List<ManageSectionModel> getSectionData() {
@@ -396,7 +394,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         String selectQuery = "SELECT * FROM " + Const.TABLE_SECTION_ORDER + " INNER JOIN " +
                 Const.TABLE_DICTIONARY + " ON " + Const.TABLE_SECTION_ORDER + "." +
                 Const.ID_PRIMARY_KEY + " = " + Const.TABLE_DICTIONARY + "." + Const.ID_SECTION_ORDER
-                + " WHERE " + Const.NAME_ITEM + "=" + "'" + itemName + "'";
+                + " WHERE " + Const.NAME_ITEM + "=" + "\"" + itemName + "\"";
         String iconName = "unknown.png";
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery(selectQuery, null);
@@ -413,7 +411,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     }
     public String getSectionIcon(String sectionName) {
         String selectQuery = "SELECT * FROM " + Const.TABLE_SECTION_ORDER
-                + " WHERE " + Const.NAME_SECTION_ORDER + "=" + "'" + sectionName + "'";
+                + " WHERE " + Const.NAME_SECTION_ORDER + "=" + "\"" + sectionName + "\"";
         String iconName = "unknown.png";
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery(selectQuery, null);
@@ -428,11 +426,9 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         db.close();
         return iconName;
     }
-
-
     public boolean isFavorit(String itemName) {
         String sqlQuery = "SELECT * FROM " + Const.TABLE_FAVORIT_LIST + " WHERE " + Const.NAME_ITEM
-                + " = " + "'" + itemName + "'";
+                + " = " + "\"" + itemName + "\"";
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery(sqlQuery, null);
         if (cursor != null && cursor.getCount() != 0) {
@@ -447,8 +443,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
     public int isChecked(String itemName) {
         String sqlQuery = "SELECT * FROM " + Const.TABLE_CURRENT_LIST + " WHERE " + Const.NAME_ITEM
-                + " = " + "'" + itemName + "'";
-        int check =0;
+                + " = " + "\"" + itemName + "\"";
+        int check = 0;
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery(sqlQuery, null);
         if (cursor != null && cursor.getCount() != 0) {
@@ -465,7 +461,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
     public boolean isInList(String itemName) {
         String sqlQuery = "SELECT * FROM " + Const.TABLE_CURRENT_LIST + " WHERE " + Const.NAME_ITEM
-                + " = " + "'" + itemName + "'";
+                + " = " + "\"" + itemName + "\"";
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery(sqlQuery, null);
         if (cursor != null && cursor.getCount() != 0) {
@@ -480,7 +476,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
     public boolean isExist(int secId, String itemName) {
         String sqlQuery = "SELECT * FROM " + Const.TABLE_DICTIONARY + " WHERE " + Const.NAME_ITEM
-                + " = " + "'" + itemName + "'" + " AND " + Const.ID_SECTION_ORDER + " = " + secId;
+                + " = " + "\"" + itemName + "\"" + " AND " + Const.ID_SECTION_ORDER + " = " + secId;
         Log.d("isExist ", "sqlQuery " + sqlQuery);
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery(sqlQuery, null);
@@ -496,7 +492,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
     public List<CurrentListModel> getCurrList() {
         List<CurrentListModel> mList = new ArrayList<CurrentListModel>();
-        String selectQuery = "SELECT  * FROM " + Const.TABLE_CURRENT_LIST + " ORDER BY "+Const.NAME_SECTION_ORDER_NO+" DESC";
+        String selectQuery = "SELECT  * FROM " + Const.TABLE_CURRENT_LIST + " ORDER BY " + Const.NAME_SECTION_ORDER_NO + " DESC";
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery(selectQuery, null);
         if (cursor.moveToFirst()) {
@@ -527,7 +523,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
     public List<FavoritListModel> getFavList() {
         List<FavoritListModel> favList = new ArrayList<FavoritListModel>();
-        String selectQuery = "SELECT  * FROM " + Const.TABLE_FAVORIT_LIST + " ORDER BY "+Const.NAME_ITEM;
+        String selectQuery = "SELECT  * FROM " + Const.TABLE_FAVORIT_LIST + " ORDER BY " + Const.NAME_ITEM;
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery(selectQuery, null);
         if (cursor.moveToFirst()) {
@@ -545,7 +541,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
     public List<HistoryModel> getHistory() {
         List<HistoryModel> histList = new ArrayList<HistoryModel>();
-        String selectQuery = "SELECT  * FROM " + Const.TABLE_HISTORY+ " ORDER BY id DESC";
+        String selectQuery = "SELECT  * FROM " + Const.TABLE_HISTORY + " ORDER BY id DESC";
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery(selectQuery, null);
         if (cursor.moveToFirst()) {
@@ -670,7 +666,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     public List<HistoryChildModel> getHisChil(String datePur) {
         List<HistoryChildModel> histChilList = new ArrayList<HistoryChildModel>();
         String selectQuery = "SELECT  * FROM " + Const.TABLE_HISTORY
-                + " WHERE " + Const.NAME_DATE_PURCHASED + "=" + "'" + datePur + "'";
+                + " WHERE " + Const.NAME_DATE_PURCHASED + "=" + "\"" + datePur + "\"";
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery(selectQuery, null);
         if (cursor != null && cursor.getCount() != 0) {
@@ -706,13 +702,12 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                 new String[]{String.valueOf(model.getManageSectionId())});
         db.close();
     }
-
-    public int getSectionId(String sectionName){
+    public int getSectionId(String sectionName) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
         int secId;
         String selectQuery = "SELECT  * FROM " + Const.TABLE_SECTION_ORDER
-                + " WHERE " + Const.NAME_SECTION_ORDER + "=" + "'" + sectionName + "'";
+                + " WHERE " + Const.NAME_SECTION_ORDER + "=" + "\"" + sectionName + "\"";
 
         Log.d("secAssignToItem ", "selectQuery " + selectQuery);
         Cursor cursor = db.rawQuery(selectQuery, null);
@@ -722,6 +717,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         db.close();
         return secId;
     }
+
     public void secAssignToItem(String itemName, int secId) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
@@ -732,17 +728,18 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         Log.d("Affectedrows; ", rows + "");
         db.close();
     }
+
     public int getMaxOrderNo() {
         SQLiteDatabase db = this.getReadableDatabase();
         ContentValues values = new ContentValues();
         int orderNo = 0;
-        String selectQuery = "SELECT  * FROM " + Const.TABLE_CURRENT_LIST+" ORDER BY "
-                +Const.NAME_SECTION_ORDER_NO +" DESC LIMIT 1";
+        String selectQuery = "SELECT  * FROM " + Const.TABLE_CURRENT_LIST + " ORDER BY "
+                + Const.NAME_SECTION_ORDER_NO + " DESC LIMIT 1";
         Log.d("secAssignToItem ", "selectQuery " + selectQuery);
         Cursor cursor = db.rawQuery(selectQuery, null);
         cursor.moveToFirst();
-        orderNo = Integer.parseInt(cursor.getString(1));
         if (cursor != null && cursor.getCount() != 0) {
+            orderNo = Integer.parseInt(cursor.getString(1));
             cursor.close();
             db.close();
             return orderNo;
@@ -762,94 +759,23 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         Log.d("unknownsecId; ", unknownsecId + "");
         db.close();
     }
+
     public void deleteItem(CurrentListModel curr) {
         SQLiteDatabase db = this.getWritableDatabase();
         db.delete(Const.TABLE_CURRENT_LIST, Const.ID_PRIMARY_KEY + " = ?",
                 new String[]{String.valueOf(curr.getCurrListId())});
         db.close();
     }
-    /*public List<AddListModel> getFavItem() {
-        List<AddListModel> mList = new ArrayList<AddListModel>();
-        String selectQuery = "SELECT * FROM " + Const.TABLE_FAVORIT_LIST + " LIMIT 3";
-        SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.rawQuery(selectQuery, null);
-        if (cursor.moveToFirst()) {
-            do {
-                AddListModel listModel = new AddListModel();
-                listModel.setItemName(cursor.getString(1));
-                mList.add(listModel);
-            } while (cursor.moveToNext());
-        }
-        return mList;
-    }*/
-
-   /* public List<ListModel> getAllContacts() {
-        List<ListModel> mList = new ArrayList<ListModel>();
-        String selectQuery = "SELECT  * FROM " + Const.TABLE_DICTIONARY;
-        SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.rawQuery(selectQuery, null);
-        if (cursor.moveToFirst()) {
-            do {
-                DictionaryModel dicModel = new DictionaryModel();
-                dicModel.setDicId(Integer.parseInt(cursor.getString(0)));
-                dicModel.setItemName(cursor.getString(1));
-                dicModel.setSectionId(Integer.parseInt(cursor.getString(2)));
-                dictList.add(dicModel);
-            } while (cursor.moveToNext());
-        }
-        return dictList;
-    }*/
-    /*
-    Contact getSection(int id) {
-        SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.query(TABLE_CONTACTS, new String[]{KEY_ID,
-                        KEY_NAME, KEY_PH_NO}, KEY_ID + "=?",
-                new String[]{String.valueOf(id)}, null, null, null, null);
-        if (cursor != null) {
-            cursor.moveToFirst();
-        }
-        Contact contact = new Contact(Integer.parseInt(cursor.getString(0)),
-                cursor.getString(1), cursor.getString(2));
-        return contact;
-    }
-
-    public List<Contact> getAllContacts() {
-        List<Contact> contactList = new ArrayList<Contact>();
-        String selectQuery = "SELECT  * FROM " + TABLE_CONTACTS;
-        SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.rawQuery(selectQuery, null);
-        if (cursor.moveToFirst()) {
-            do {
-                Contact contact = new Contact();
-                contact.setID(Integer.parseInt(cursor.getString(0)));
-                contact.setName(cursor.getString(1));
-                contact.setPhoneNumber(cursor.getString(2));
-                contactList.add(contact);
-            } while (cursor.moveToNext());
-        }
-        return contactList;
-    }
-
-    public int updateContact(Contact contact) {
+    public void deleteDateBaseFromHistory(String hisDate) {
         SQLiteDatabase db = this.getWritableDatabase();
-        ContentValues values = new ContentValues();
-        values.put(KEY_NAME, contact.getName());
-        values.put(KEY_PH_NO, contact.getPhoneNumber());
-        return db.update(TABLE_CONTACTS, values, KEY_ID + " = ?",
-                new String[]{String.valueOf(contact.getID())});
-    }
-
-    public void deleteContact(Contact contact) {
-        SQLiteDatabase db = this.getWritableDatabase();
-        db.delete(TABLE_CONTACTS, KEY_ID + " = ?",
-                new String[]{String.valueOf(contact.getID())});
+        db.delete(Const.TABLE_HISTORY, Const.NAME_DATE_PURCHASED + " = ?",
+                new String[]{String.valueOf(hisDate)});
         db.close();
     }
-    public int getContactsCount() {
-        String countQuery = "SELECT  * FROM " + TABLE_CONTACTS;
-        SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.rawQuery(countQuery, null);
-        cursor.close();
-        return cursor.getCount();
-    }*/
+    public void deleteItemBaseFromHistory(int itemId) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.delete(Const.TABLE_HISTORY, Const.ID_PRIMARY_KEY + " = ?",
+                new String[]{String.valueOf(itemId)});
+        db.close();
+    }
 }

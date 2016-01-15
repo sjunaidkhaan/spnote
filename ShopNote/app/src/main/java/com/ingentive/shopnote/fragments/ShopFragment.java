@@ -30,11 +30,10 @@ import java.util.List;
 
 public class ShopFragment extends Fragment {
 
-    public static SharedPreferences.Editor editor;
-    public static final String MYPREF = "MyPref";
-    public static final String dbCreated = "dbKey";
-    public static final String first_time_dialog = "first_time";
-    public static SharedPreferences prefs;
+    private static SharedPreferences.Editor editor;
+    private static final String ShopFragment = "ShopFragment";
+    private static final String shopfragment_dialog = "shopfragment_dialog";
+    private static SharedPreferences prefs;
     private ExpandableListView mExpShopList;
     DatabaseHandler db;
     ShopCustomAdapter mAdapter;
@@ -60,14 +59,7 @@ public class ShopFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_shop, null);
-        prefs = this.getActivity().getSharedPreferences(MYPREF, Context.MODE_PRIVATE);
-        String restoredText = prefs.getString(first_time_dialog, null);
-        if (restoredText == null) {
-            showDialog();
-            editor = prefs.edit();
-            editor.putString(first_time_dialog, "success");
-            editor.commit();
-        }
+
         mExpShopList = (ExpandableListView) rootView.findViewById(R.id.expandable_shop_list);
         btnFinishShopping = (Button) rootView.findViewById(R.id.btn_finish_shopping);
         getData();
@@ -91,7 +83,6 @@ public class ShopFragment extends Fragment {
         AlertDialog alertDialog = alertDialogBuilder.create();
         alertDialog.show();
     }
-
     public void finishDialog() {
         AlertDialog.Builder myAlertDialog = new AlertDialog.Builder(getActivity());
         myAlertDialog.setTitle("Finish Shopping?");
@@ -113,8 +104,6 @@ public class ShopFragment extends Fragment {
                 SimpleDateFormat df = new SimpleDateFormat("EEEE, MMMM dd");
                 String formattedDate = df.format(c.getTime());
                 System.out.println("day, month " + formattedDate);
-                // Toast.makeText(getActivity(), formattedDate, Toast.LENGTH_SHORT).show();
-
                 for (int i = 0; i < currList.size(); i++) {
                     if (currList.get(i).getChecked() == 1) {
                         HistoryModel historObj = new HistoryModel();
@@ -123,8 +112,8 @@ public class ShopFragment extends Fragment {
                         historObj.setQuantity(currList.get(i).getQuantity().toString());
                         db = new DatabaseHandler(getActivity());
                         db.addHistory(historObj);
-                        CurrentListModel currentListModel =new CurrentListModel();
-                        currentListModel= currList.get(i);
+                        CurrentListModel currentListModel = new CurrentListModel();
+                        currentListModel = currList.get(i);
                         db = new DatabaseHandler(getActivity());
                         db.deleteItem(currentListModel);
                         getData();
@@ -134,10 +123,9 @@ public class ShopFragment extends Fragment {
                 }
             }
         });
-
         myAlertDialog.show();
     }
-    public void getData(){
+    public void getData() {
         db = new DatabaseHandler(getActivity());
         shopParList = db.getShopParSection();
         btnFinishShopping.setOnClickListener(new View.OnClickListener() {
@@ -163,23 +151,30 @@ public class ShopFragment extends Fragment {
                 //Toast.makeText(getActivity(), " " + shopChiList.size(), Toast.LENGTH_LONG).show();
             }
         }
-        if(shopList.size()==0){
+        if (shopList.size() == 0) {
             btnFinishShopping.setVisibility(View.GONE);
-        }else{
+        } else {
             btnFinishShopping.setVisibility(View.VISIBLE);
         }
     }
     @Override
     public void setMenuVisibility(boolean menuVisible) {
         super.setMenuVisibility(menuVisible);
-
-        if ( menuVisible ){
+        if (menuVisible) {
             Log.d("I am fragment", "2");
             shopList = new ArrayList<ShopParentModel>();
             getData();
             mAdapter = new ShopCustomAdapter(getActivity(), shopList);
             mExpShopList.setAdapter(mAdapter);
-        }
 
+            prefs = this.getActivity().getSharedPreferences(ShopFragment, Context.MODE_PRIVATE);
+            String restoredText = prefs.getString(shopfragment_dialog, null);
+            if (restoredText == null) {
+                showDialog();
+                editor = prefs.edit();
+                editor.putString(shopfragment_dialog, "success");
+                editor.commit();
+            }
+        }
     }
 }

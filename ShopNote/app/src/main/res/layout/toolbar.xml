@@ -11,17 +11,12 @@
     local:popupTheme="@style/ThemeOverlay.AppCompat.Light"
     local:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
 
-    <!--<ImageView-->
-        <!--android:background="@drawable/meat"-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content" />-->
-
     <TextView
         android:id="@+id/textview_title_toolbar"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:text="My First Note"
         android:textSize="18sp"
+        android:textStyle="bold"
         android:textColor="#ffffff"
         android:gravity="center_horizontal"
         />
@@ -31,7 +26,6 @@
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:visibility="gone"
-        android:text="My First Note"
         android:focusable="true"
         android:focusableInTouchMode="true"
         />

@@ -16,6 +16,8 @@
     <Button
         android:id="@+id/btn_finish_shopping"
         android:layout_width="fill_parent"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
         android:layout_height="wrap_content"
         android:layout_below="@+id/expandable_shop_list"
         android:layout_marginTop="10dp"

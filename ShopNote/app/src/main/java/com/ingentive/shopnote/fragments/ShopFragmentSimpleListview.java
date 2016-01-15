@@ -34,11 +34,10 @@ import java.util.List;
 
 public class ShopFragmentSimpleListview extends Fragment {
 
-    public static SharedPreferences.Editor editor;
-    public static final String MYPREF = "MyPref";
-    public static final String dbCreated = "dbKey";
-    public static final String first_time_dialog = "first_time";
-    public static SharedPreferences prefs;
+    private static SharedPreferences.Editor editor;
+    private static final String ShopFragment = "ShopFragment";
+    private static final String shopfragment_dialog = "shopfragment_dialog";
+    private static SharedPreferences prefs;
     private DynamicListView mExpShopList;
     DatabaseHandler db;
     ShopCustomAdapterSimpleListview mAdapter;
@@ -66,14 +65,7 @@ public class ShopFragmentSimpleListview extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_shop_simple_listview, null);
-        prefs = this.getActivity().getSharedPreferences(MYPREF, Context.MODE_PRIVATE);
-        String restoredText = prefs.getString(first_time_dialog, null);
-        if (restoredText == null) {
-            showDialog();
-            editor = prefs.edit();
-            editor.putString(first_time_dialog, "success");
-            editor.commit();
-        }
+
         mExpShopList = (DynamicListView) rootView.findViewById(R.id.expandable_shop_list);
         btnFinishShopping = (Button) rootView.findViewById(R.id.btn_finish_shopping);
         getData();
@@ -86,51 +78,41 @@ public class ShopFragmentSimpleListview extends Fragment {
                     @Override
                     public boolean onItemLongClick(final AdapterView<?> parent, final View view,
                                                    final int position, final long id) {
-                        if (!finalList.get(position).isParent()){
+                        if (!finalList.get(position).isParent()) {
                             mExpShopList.startDragging(position);
                             Log.d("Drag Position:", position + "");
                             return true;
-                        }else{
-                            Toast.makeText(getActivity(),"Can't drag a parent", Toast.LENGTH_LONG).show();
+                        } else {
+                            Toast.makeText(getActivity(), "Can't drag a parent", Toast.LENGTH_LONG).show();
                             return false;
                         }
                     }
                 }
         );
-
         mExpShopList.setOnItemMovedListener(new OnItemMovedListener() {
             @Override
             public void onItemMoved(int originalPosition, int newPosition) {
-
-                int from = finalList.get(originalPosition-1).getShopPaId();
-                int to = finalList.get(newPosition-1).getShopPaId();
+                int from = finalList.get(originalPosition - 1).getShopPaId();
+                int to = finalList.get(newPosition - 1).getShopPaId();
                 Log.d("from:" + originalPosition + "|||" + finalList.get(originalPosition - 1).getShopPaId(), "to:" + newPosition + "|||" + finalList.get(newPosition - 1).getShopPaId());
-
-
-//               Log.d("originalPosition "+originalPosition,"parent id "+finalList.get(originalPosition).getShopPaId());
-//                Log.d("newPosition "+newPosition,"parent id "+finalList.get(newPosition).getShopPaId());
-
-
-                if ( to != from ){
-                    Log.d("Section Changed","True");
+                if (to != from) {
+                    Log.d("Section Changed", "True");
                     String itemName = finalList.get(newPosition).getShop_chil_item_name();
                     int secId = finalList.get(originalPosition).getShopPaId();
 
-                    Toast.makeText(getActivity(),"id  "+to,Toast.LENGTH_LONG).show();
+                    Toast.makeText(getActivity(), "id  " + to, Toast.LENGTH_LONG).show();
                     Toast.makeText(getActivity(), "itemName  " + itemName, Toast.LENGTH_LONG).show();
                     finalList.get(newPosition).getShop_chil_id(); //isko jaker tumne TO dedeina
                     db = new DatabaseHandler(getActivity());
                     db.secAssignToItem(itemName, to);
                     getData();
-                    mExpShopList.setAdapter(new ShopCustomAdapterSimpleListview(getActivity(),finalList,shopList));
+                    mExpShopList.setAdapter(new ShopCustomAdapterSimpleListview(getActivity(), finalList, shopList));
 
-                }else{
-                    Log.d("Section Changed","False");
+                } else {
+                    Log.d("Section Changed", "False");
                 }
             }
         });
-
-        //mAdapter.notifyDataSetChanged();
         return rootView;
     }
 
@@ -171,8 +153,6 @@ public class ShopFragmentSimpleListview extends Fragment {
                 SimpleDateFormat df = new SimpleDateFormat("EEEE, MMMM dd");
                 String formattedDate = df.format(c.getTime());
                 System.out.println("day, month " + formattedDate);
-                // Toast.makeText(getActivity(), formattedDate, Toast.LENGTH_SHORT).show();
-
                 for (int i = 0; i < currList.size(); i++) {
                     if (currList.get(i).getChecked() == 1) {
                         HistoryModel historObj = new HistoryModel();
@@ -192,7 +172,6 @@ public class ShopFragmentSimpleListview extends Fragment {
                 }
             }
         });
-
         myAlertDialog.show();
     }
 
@@ -229,7 +208,6 @@ public class ShopFragmentSimpleListview extends Fragment {
             btnFinishShopping.setVisibility(View.VISIBLE);
         }
 
-
         finalList.clear();
 
         for (int i = 0; i < shopList.size(); ++i) {
@@ -256,7 +234,6 @@ public class ShopFragmentSimpleListview extends Fragment {
                 tChild.setShop_selec_icon(shopList.get(i).getArrayChildren().get(j).getShopChSectionId());
 
                 finalList.add(tChild);
-
             }
         }
     }
@@ -271,6 +248,15 @@ public class ShopFragmentSimpleListview extends Fragment {
             getData();
             mAdapter = new ShopCustomAdapterSimpleListview(getActivity(), finalList, shopList);
             mExpShopList.setAdapter(mAdapter);
+
+            prefs = this.getActivity().getSharedPreferences(ShopFragment, Context.MODE_PRIVATE);
+            String restoredText = prefs.getString(shopfragment_dialog, null);
+            if (restoredText == null) {
+                showDialog();
+                editor = prefs.edit();
+                editor.putString(shopfragment_dialog, "success");
+                editor.commit();
+            }
         }
     }
 }
