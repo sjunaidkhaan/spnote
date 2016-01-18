@@ -177,4 +177,13 @@ public class ShopFragment extends Fragment {
             }
         }
     }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        shopList = new ArrayList<ShopParentModel>();
+        getData();
+        mAdapter = new ShopCustomAdapter(getActivity(), shopList);
+        mExpShopList.setAdapter(mAdapter);
+    }
 }

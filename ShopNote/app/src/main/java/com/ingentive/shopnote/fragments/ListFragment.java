@@ -192,6 +192,15 @@ public class ListFragment extends Fragment {
         super.setMenuVisibility(menuVisible);
         if ( menuVisible ){
 
+            if ( getActivity() != null ){
+                Log.d("Fragment", "visible list fragment");
+                db = new DatabaseHandler(getActivity());
+                currList = db.getCurrList();
+                mAdapter = new CurrentListAdapter(getActivity(), currList, R.layout.custom_row_list);
+                mListView.setAdapter(mAdapter);
+                mAdapter.notifyDataSetChanged();
+            }
+
         }
 
     }

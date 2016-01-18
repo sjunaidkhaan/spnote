@@ -161,7 +161,7 @@ public class ActivityAddList extends AppCompatActivity {
                         }
                         if (!dicitemExist) {
                             db = new DatabaseHandler(getApplication());
-                            db.addDictionaryNewItem(new DictionaryModel(etSerch.getText().toString(), 11));
+                            db.addDictionaryNewItem(new DictionaryModel(etSerch.getText().toString(), 99));
                         }
                     }
 
@@ -190,7 +190,9 @@ public class ActivityAddList extends AppCompatActivity {
                                         }
                                     }
                                     if (!curritemExist) {
-                                        db = new DatabaseHandler(getApplication());
+                                        db = new
+
+                                                DatabaseHandler(getApplication());
                                         String title = db.getListName();
                                         db = new DatabaseHandler(getApplication());
                                         int order = db.getMaxOrderNo();
@@ -208,7 +210,7 @@ public class ActivityAddList extends AppCompatActivity {
                                     }
                                     if (!dicitemExist) {
                                         db = new DatabaseHandler(getApplication());
-                                        db.addDictionaryNewItem(new DictionaryModel(etSerch.getText().toString(), 11));
+                                        db.addDictionaryNewItem(new DictionaryModel(etSerch.getText().toString(), 99));
                                     }
                                 }
 //                                db = new DatabaseHandler(getApplication());

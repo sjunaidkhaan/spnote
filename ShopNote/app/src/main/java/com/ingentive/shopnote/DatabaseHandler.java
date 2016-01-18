@@ -579,7 +579,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
     public List<ShopParentModel> getShopParSection() {
         List<ShopParentModel> shopParList = new ArrayList<ShopParentModel>();
-        String selectQuery = "SELECT  * FROM " + Const.TABLE_SECTION_ORDER;
+        String selectQuery = "SELECT  * FROM " + Const.TABLE_SECTION_ORDER + " ORDER BY " + Const.NAME_SECTION_ORDER_NO;
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery(selectQuery, null);
         if (cursor.moveToFirst()) {
