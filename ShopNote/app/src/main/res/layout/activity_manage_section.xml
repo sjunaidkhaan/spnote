@@ -30,7 +30,9 @@
         <EditText
             android:layout_marginLeft="5dp"
             android:id="@+id/et_add_manage_section"
+            android:inputType="textCapSentences"
             android:layout_width="0dp"
+            android:digits=" abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
             android:layout_height="wrap_content"
             android:layout_below="@+id/lv_manage_section"
             android:layout_gravity="center_vertical"

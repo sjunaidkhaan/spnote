@@ -97,41 +97,157 @@ public class ShopCustomAdapterSimpleListview extends BaseAdapter implements Swap
             vhp.tvShopSecNamePar.setText(data.get(position).getShopPaSectionName().toString());
 
 
+//            switch (data.get(position).getShopPaSectionIcon().toString()) {
+//                case "clothing.png":
+//                    vhp.ivShopSecIcon.setBackgroundResource(R.drawable.clothing);
+//                    break;
+//                case "house.png":
+//                    vhp.ivShopSecIcon.setBackgroundResource(R.drawable.house);
+//                    break;
+//                case "pharmacy.png":
+//                    vhp.ivShopSecIcon.setBackgroundResource(R.drawable.pharmacy);
+//                    break;
+//                case "produce.png":
+//                    vhp.ivShopSecIcon.setBackgroundResource(R.drawable.produce);
+//                    break;
+//                case "bakery.png":
+//                    vhp.ivShopSecIcon.setBackgroundResource(R.drawable.bakery);
+//                    break;
+//                case "dry_goods.png":
+//                    vhp.ivShopSecIcon.setBackgroundResource(R.drawable.dry_goods);
+//                    break;
+//                case "beverages.png":
+//                    vhp.ivShopSecIcon.setBackgroundResource(R.drawable.beverages);
+//                    break;
+//                case "freezer.png":
+//                    vhp.ivShopSecIcon.setBackgroundResource(R.drawable.freezer);
+//                    break;
+//                case "dairy.png":
+//                    vhp.ivShopSecIcon.setBackgroundResource(R.drawable.dairy);
+//                    break;
+//                case "meat.png":
+//                    vhp.ivShopSecIcon.setBackgroundResource(R.drawable.meat);
+//                    break;
+//            }
 
-            switch (data.get(position).getShopPaSectionIcon().toString()) {
-                case "clothing.png":
-                    vhp.ivShopSecIcon.setBackgroundResource(R.drawable.clothing);
-                    break;
-                case "house.png":
-                    vhp.ivShopSecIcon.setBackgroundResource(R.drawable.house);
-                    break;
-                case "pharmacy.png":
-                    vhp.ivShopSecIcon.setBackgroundResource(R.drawable.pharmacy);
-                    break;
-                case "produce.png":
-                    vhp.ivShopSecIcon.setBackgroundResource(R.drawable.produce);
-                    break;
-                case "bakery.png":
-                    vhp.ivShopSecIcon.setBackgroundResource(R.drawable.bakery);
-                    break;
-                case "dry_goods.png":
-                    vhp.ivShopSecIcon.setBackgroundResource(R.drawable.dry_goods);
-                    break;
-                case "beverages.png":
-                    vhp.ivShopSecIcon.setBackgroundResource(R.drawable.beverages);
-                    break;
-                case "freezer.png":
-                    vhp.ivShopSecIcon.setBackgroundResource(R.drawable.freezer);
-                    break;
-                case "dairy.png":
-                    vhp.ivShopSecIcon.setBackgroundResource(R.drawable.dairy);
-                    break;
-                case "meat.png":
-                    vhp.ivShopSecIcon.setBackgroundResource(R.drawable.meat);
-                    break;
-                default:
-                    vhp.ivShopSecIcon.setBackgroundResource(R.drawable.unknown);
-                    break;
+            if (data.get(position).getShopPaId() <= 10) {
+                switch (data.get(position).getShopPaSectionName()) {
+                    case "Clothing":
+                        vhp.ivShopSecIcon.setBackgroundResource(R.drawable.clothing);
+                        break;
+                    case "Household and Specialty":
+                        vhp.ivShopSecIcon.setBackgroundResource(R.drawable.house);
+                        break;
+                    case "Pharmacy":
+                        vhp.ivShopSecIcon.setBackgroundResource(R.drawable.pharmacy);
+                        break;
+                    case "Produce":
+                        vhp.ivShopSecIcon.setBackgroundResource(R.drawable.produce);
+                        break;
+                    case "Bakery":
+                        vhp.ivShopSecIcon.setBackgroundResource(R.drawable.bakery);
+                        break;
+                    case "Packaged Foodstuff":
+                        vhp.ivShopSecIcon.setBackgroundResource(R.drawable.dry_goods);
+                        break;
+                    case "Beverages":
+                        vhp.ivShopSecIcon.setBackgroundResource(R.drawable.beverages);
+                        break;
+                    case "Frozen Food":
+                        vhp.ivShopSecIcon.setBackgroundResource(R.drawable.freezer);
+                        break;
+                    case "Dairy and Refridgerated":
+                        vhp.ivShopSecIcon.setBackgroundResource(R.drawable.dairy);
+                        break;
+                    case "Meat and Seafood":
+                        vhp.ivShopSecIcon.setBackgroundResource(R.drawable.meat);
+                        break;
+                }
+            } else {
+                if (!data.get(position).getShopPaSectionName().equals("Unknown")) {
+                    switch (data.get(position).getShopPaSectionName().toLowerCase().charAt(0)) {
+                        case 'a':
+                            vhp.ivShopSecIcon.setBackgroundResource(R.drawable.a);
+                            break;
+                        case 'b':
+                            vhp.ivShopSecIcon.setBackgroundResource(R.drawable.b);
+                            break;
+                        case 'c':
+                            vhp.ivShopSecIcon.setBackgroundResource(R.drawable.c);
+                            break;
+                        case 'd':
+                            vhp.ivShopSecIcon.setBackgroundResource(R.drawable.d);
+                            break;
+                        case 'e':
+                            vhp.ivShopSecIcon.setBackgroundResource(R.drawable.e);
+                            break;
+                        case 'f':
+                            vhp.ivShopSecIcon.setBackgroundResource(R.drawable.f);
+                            break;
+                        case 'g':
+                            vhp.ivShopSecIcon.setBackgroundResource(R.drawable.g);
+                            break;
+                        case 'h':
+                            vhp.ivShopSecIcon.setBackgroundResource(R.drawable.h);
+                            break;
+                        case 'i':
+                            vhp.ivShopSecIcon.setBackgroundResource(R.drawable.i);
+                            break;
+                        case 'j':
+                            vhp.ivShopSecIcon.setBackgroundResource(R.drawable.j);
+                            break;
+                        case 'k':
+                            vhp.ivShopSecIcon.setBackgroundResource(R.drawable.k);
+                            break;
+                        case 'l':
+                            vhp.ivShopSecIcon.setBackgroundResource(R.drawable.l);
+                            break;
+                        case 'm':
+                            vhp.ivShopSecIcon.setBackgroundResource(R.drawable.m);
+                            break;
+                        case 'n':
+                            vhp.ivShopSecIcon.setBackgroundResource(R.drawable.n);
+                            break;
+                        case 'o':
+                            vhp.ivShopSecIcon.setBackgroundResource(R.drawable.o);
+                            break;
+                        case 'p':
+                            vhp.ivShopSecIcon.setBackgroundResource(R.drawable.p);
+                            break;
+                        case 'q':
+                            vhp.ivShopSecIcon.setBackgroundResource(R.drawable.q);
+                            break;
+                        case 'r':
+                            vhp.ivShopSecIcon.setBackgroundResource(R.drawable.r);
+                            break;
+                        case 's':
+                            vhp.ivShopSecIcon.setBackgroundResource(R.drawable.s);
+                            break;
+                        case 't':
+                            vhp.ivShopSecIcon.setBackgroundResource(R.drawable.t);
+                            break;
+                        case 'u':
+                            vhp.ivShopSecIcon.setBackgroundResource(R.drawable.u);
+                            break;
+                        case 'v':
+                            vhp.ivShopSecIcon.setBackgroundResource(R.drawable.v);
+                            break;
+                        case 'w':
+                            vhp.ivShopSecIcon.setBackgroundResource(R.drawable.w);
+                            break;
+                        case 'x':
+                            vhp.ivShopSecIcon.setBackgroundResource(R.drawable.x);
+                            break;
+                        case 'y':
+                            vhp.ivShopSecIcon.setBackgroundResource(R.drawable.y);
+                            break;
+                        case 'z':
+                            vhp.ivShopSecIcon.setBackgroundResource(R.drawable.z);
+                            break;
+                        default:
+                            break;
+                    }
+                }
             }
 
             ivArrow = vhp.ivArrow;
@@ -269,7 +385,6 @@ public class ShopCustomAdapterSimpleListview extends BaseAdapter implements Swap
         List<ShopParentModelMerger> dataTemp = new ArrayList<>();
 
         for ( int i = 0; i <this.oData.size(); ++i){
-
                 if ( ignoreList.contains(this.oData.get(i).getShopPaId()) ){
                     ShopParentModelMerger tParent = new ShopParentModelMerger();
                     tParent.setIsParent(true);
@@ -290,7 +405,6 @@ public class ShopCustomAdapterSimpleListview extends BaseAdapter implements Swap
                     dataTemp.add(tParent);
 
                     for ( int j = 0; j < oData.get(i).getArrayChildren().size(); ++j){
-
                         ShopParentModelMerger tChild = new ShopParentModelMerger();
                         tChild.setIsParent(false);
                         tChild.setIsClick(false);
@@ -304,10 +418,7 @@ public class ShopCustomAdapterSimpleListview extends BaseAdapter implements Swap
                         tChild.setShop_selec_icon(oData.get(i).getArrayChildren().get(j).getShopChSectionId());
 
                         dataTemp.add(tChild);
-
                     }
-
-
                 }
         }
         return dataTemp;

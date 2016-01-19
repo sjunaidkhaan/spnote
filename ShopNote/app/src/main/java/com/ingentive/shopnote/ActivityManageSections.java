@@ -35,13 +35,12 @@ public class ActivityManageSections extends AppCompatActivity {
 
     private Toolbar mToolbar;
     private ImageView ivBack;
-    AlertDialog.Builder builder1;
-    AlertDialog.Builder alertDialogBuilder;
-    public static SharedPreferences.Editor editor;
-    public static final String MYPREFERENCES = "MyPrefs";
-    public static final String dbCreated = "dbKey";
-    public static final String first_time_dialog = "first_time";
-    public static SharedPreferences prefs;
+    private AlertDialog.Builder builder1;
+    private AlertDialog.Builder alertDialogBuilder;
+    private SharedPreferences.Editor editor;
+    private String MANAGESECTION = "ManageSectionMyPrefs";
+    private String manage_section_dialog = "first_time";
+    private SharedPreferences prefs;
     ManageSectionAdapter mAdapter;
     DynamicListView mListView;
     DatabaseHandler db;
@@ -51,25 +50,22 @@ public class ActivityManageSections extends AppCompatActivity {
     SimpleSwipeUndoAdapter swipeUndoAdapter;
     ManageSectionModel model;
     public static String itemNameUseInAdapter="";
+    public static String sectionName="";
     public View row;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_manage_section);
-
-
         mToolbar = (Toolbar) findViewById(R.id.toolbar_manage_section);
         setSupportActionBar(mToolbar);
         mToolbar.setNavigationIcon(R.drawable.back);
-
         mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 finish();
             }
         });
-
         //ivBack = (ImageView) findViewById(R.id.back);
         etAddSection = (EditText) findViewById(R.id.et_add_manage_section);
         btnAddSection = (Button) findViewById(R.id.btn_add_manage_section);
@@ -128,7 +124,6 @@ public class ActivityManageSections extends AppCompatActivity {
                 }
         );
 
-
         mListView.setOnItemMovedListener(new OnItemMovedListener() {
             @Override
             public void onItemMoved(int originalPosition, int newPosition) {
@@ -156,12 +151,12 @@ public class ActivityManageSections extends AppCompatActivity {
 //        });
 
 
-        prefs = ActivityManageSections.this.getSharedPreferences(MYPREFERENCES, Context.MODE_PRIVATE);
-        String restoredText = prefs.getString(first_time_dialog, null);
+        prefs = ActivityManageSections.this.getSharedPreferences(MANAGESECTION, Context.MODE_PRIVATE);
+        String restoredText = prefs.getString(manage_section_dialog, null);
         if (restoredText == null) {
             showDialog();
             editor = prefs.edit();
-            editor.putString(first_time_dialog, "success");
+            editor.putString(manage_section_dialog, "success");
             editor.commit();
         }
         showData();
@@ -170,17 +165,20 @@ public class ActivityManageSections extends AppCompatActivity {
         Intent intent = getIntent();
         String itemName  = intent.getStringExtra("item_name");
         itemNameUseInAdapter = itemName;
-        //Toast.makeText(getApplication(), "item name " + itemName, Toast.LENGTH_LONG).show();
+        //sectionId = sectionData.get();
+        Toast.makeText(getApplication(), "item name " + itemName, Toast.LENGTH_LONG).show();
         for(int i=0; i<sectionData.size();i++){
             db = new DatabaseHandler(ActivityManageSections.this);
             boolean exist = db.isExist(sectionData.get(i).getManageSectionId(),itemName);
             if(exist){
+                sectionName = sectionData.get(i).getSectionName();
+                //Toast.makeText(getApplication(), "sectionName " + sectionName, Toast.LENGTH_LONG).show();
                 //row = mListView.getChildAt(i - mListView .getFirstVisiblePosition());
                 //row.setBackgroundColor(Color.BLACK);
                 //mListView.getChildAt(i).setBackgroundColor(Color.BLACK);
                 //mListView.getCount();
 
-                Toast.makeText(getApplication(), itemName+" already assigned", Toast.LENGTH_LONG).show();
+                //Toast.makeText(getApplication(), itemName+" already assigned", Toast.LENGTH_LONG).show();
 //                final int firstListItemPosition = mListView.getFirstVisiblePosition();
 //                final int lastListItemPosition = firstListItemPosition + mListView.getChildCount() - 1;
 //
@@ -207,7 +205,7 @@ public class ActivityManageSections extends AppCompatActivity {
 //                            .showSoftInput(etAddSection, InputMethodManager.SHOW_FORCED);
                     ((InputMethodManager) getApplication().getSystemService(Context.INPUT_METHOD_SERVICE)).
                             hideSoftInputFromWindow(etAddSection.getWindowToken(), 0);
-                    if (!event.isShiftPressed()) {
+                   // if (!event.isShiftPressed()) {
                         if (etAddSection.getText().toString().replaceAll(" ", "").length() > 0) {
                             if (isSection(etAddSection.getText().toString().trim())) {
                                 warningDialog();
@@ -215,8 +213,11 @@ public class ActivityManageSections extends AppCompatActivity {
                                 db = new DatabaseHandler(ActivityManageSections.this);
                                 SectionModel addSection = new SectionModel();
                                 addSection.setSectionOrderNo(99);
-                                addSection.setSectionName(etAddSection.getText().toString());
-                                addSection.setSectionImage("unknown.png");
+                                String str = etAddSection.getText().toString();
+                                str = str.trim();
+                                String cap = str.substring(0, 1).toUpperCase() + str.substring(1);
+                                addSection.setSectionName(cap);
+                                addSection.setSectionImage(str.substring(0, 1).toLowerCase()+".png");
                                 addSection.setDefaultSection(1);
                                 db.addNewSection(addSection);
                                 etAddSection.setText("");
@@ -229,7 +230,7 @@ public class ActivityManageSections extends AppCompatActivity {
                         //db = new DatabaseHandler(getApplication());
                         // db.addCurrentList(new CurrentListModel(1, etSerch.getText().toString(), 0, null, "My Firts Shopnote", 1));
                         return true;
-                    }
+                    //}
                 }
                 return false;
             }
@@ -246,8 +247,11 @@ public class ActivityManageSections extends AppCompatActivity {
                     db = new DatabaseHandler(ActivityManageSections.this);
                     SectionModel addSection = new SectionModel();
                     addSection.setSectionOrderNo(99);
-                    addSection.setSectionName(etAddSection.getText().toString());
-                    addSection.setSectionImage("unknown.png");
+                    String str = etAddSection.getText().toString();
+                    str = str.trim();
+                    String cap = str.substring(0, 1).toUpperCase() + str.substring(1);
+                    addSection.setSectionName(cap);
+                    addSection.setSectionImage(str.substring(0, 1).toLowerCase()+".png");
                     addSection.setDefaultSection(1);
                     db.addNewSection(addSection);
                     etAddSection.setText("");
@@ -287,13 +291,8 @@ public class ActivityManageSections extends AppCompatActivity {
         swipeUndoAdapter.setAbsListView(mListView);
         mListView.setAdapter(swipeUndoAdapter);
         mListView.enableSimpleSwipeUndo();
-
-
-
         //mListView.setAdapter(mAdapter);
-
     }
-
     public void showDialog() {
         //AlertDialog.Builder
         alertDialogBuilder = new AlertDialog.Builder(ActivityManageSections.this)
@@ -308,7 +307,6 @@ public class ActivityManageSections extends AppCompatActivity {
         AlertDialog alertDialog = alertDialogBuilder.create();
         alertDialog.show();
     }
-
     public void warningDialog() {
         //AlertDialog.Builder
         alertDialogBuilder = new AlertDialog.Builder(ActivityManageSections.this)

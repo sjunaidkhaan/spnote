@@ -1,8 +1,6 @@
 package com.ingentive.shopnote;
 
-import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -44,8 +42,7 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
     public DatabaseHandler db;
     public static String LOG_MSG = "MAINACTIVITY";
     String fileName = "empty file";
-    AlertDialog.Builder builder1;
-    AlertDialog.Builder alertDialogBuilder;
+
     private static SharedPreferences.Editor editor;
     private static final String MyPREFERENCES = "MyPrefs";
     private static final String dbCreated = "dbKey";
@@ -183,50 +180,8 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
             //MyFirstNoteFragment fragment = new MyFirstNoteFragment();
             //fragment.setTargetFragment(new FavoritsFragment(),2);
         }
-        prefs = getSharedPreferences(MyPREFERENCES, MODE_PRIVATE);
-        String restoredText = prefs.getString(first_time_dialog, null);
-        if (restoredText == null) {
-            firstDialog();
-            editor = prefs.edit();
-            editor.putString(first_time_dialog, "success");
-            editor.commit();
-        }
     }
 
-    public void firstDialog() {
-        //AlertDialog.Builder
-        alertDialogBuilder = new AlertDialog.Builder(this);
-        alertDialogBuilder.setMessage("Welcome to Shopnote We've started you on your " +
-                "first shopping list. Click on the + icon to add to more items or swipe " +
-                "left to delete items.");
-
-        alertDialogBuilder.setPositiveButton("Got it", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface arg0, int arg1) {
-                // Toast.makeText(MainActivity.this, "You clicked yes button", Toast.LENGTH_LONG).show();
-                secondDialog();
-            }
-        });
-        AlertDialog alertDialog = alertDialogBuilder.create();
-        alertDialog.show();
-    }
-
-    public void secondDialog() {
-        //AlertDialog.Builder
-        alertDialogBuilder = new AlertDialog.Builder(this);
-        alertDialogBuilder.setMessage("Once you're done creating yor list, click" +
-                "the 'Shop' button below. This will organize your list by the sections" +
-                "of the supermarket.");
-
-        alertDialogBuilder.setPositiveButton("Got it", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface arg0, int arg1) {
-                // Toast.makeText(MainActivity.this, "You clicked yes button", Toast.LENGTH_LONG).show();
-            }
-        });
-        AlertDialog alertDialog = alertDialogBuilder.create();
-        alertDialog.show();
-    }
 
     @Override
     public void onDrawerItemSelected(View view, int position) {

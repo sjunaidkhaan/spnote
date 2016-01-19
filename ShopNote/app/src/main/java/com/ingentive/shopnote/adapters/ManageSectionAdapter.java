@@ -1,12 +1,14 @@
 package com.ingentive.shopnote.adapters;
 
 import android.annotation.TargetApi;
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Build;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -115,7 +117,7 @@ public class ManageSectionAdapter extends BaseAdapter implements com.nhaarman.li
             vh.sectionName = (TextView) vi.findViewById(R.id.tvSectionName_ms);
             vh.ivOption = (ImageView) vi.findViewById(R.id.ivOpt_ms);
             vh.ivSection = (ImageView) vi.findViewById(R.id.ivSection_ms);
-            vh.rl_root = (RelativeLayout)vi.findViewById(R.id.custom_row_list);
+            vh.rl_root = (RelativeLayout) vi.findViewById(R.id.custom_row_list);
             SharedPreferences sharedpreferences = mContext.getSharedPreferences("unknown_section", Context.MODE_PRIVATE);
 
             int id = vi.generateViewId();
@@ -136,87 +138,192 @@ public class ManageSectionAdapter extends BaseAdapter implements com.nhaarman.li
        /* db = new DatabaseHandler(mContext);
         String iconSecton = db.getIconSection(data.get(postion).getItemName().toString());
         db = new DatabaseHandler(mContext);*/
-        if (!data.get(postion).getSectionName().equals("Unknown")) {
-            switch (data.get(postion).getOptionIcon()) {
-                case "clothing.png":
+        if (data.get(postion).getManageSectionId() <= 10) {
+            switch (data.get(postion).getSectionName()) {
+                case "Clothing":
                     vh.ivSection.setBackgroundResource(R.drawable.clothing);
                     break;
-                case "house.png":
+                case "Household and Specialty":
                     vh.ivSection.setBackgroundResource(R.drawable.house);
                     break;
-                case "pharmacy.png":
+                case "Pharmacy":
                     vh.ivSection.setBackgroundResource(R.drawable.pharmacy);
                     break;
-                case "produce.png":
+                case "Produce":
                     vh.ivSection.setBackgroundResource(R.drawable.produce);
                     break;
-                case "bakery.png":
+                case "Bakery":
                     vh.ivSection.setBackgroundResource(R.drawable.bakery);
                     break;
-                case "dry_goods.png":
+                case "Packaged Foodstuff":
                     vh.ivSection.setBackgroundResource(R.drawable.dry_goods);
                     break;
-                case "beverages.png":
+                case "Beverages":
                     vh.ivSection.setBackgroundResource(R.drawable.beverages);
                     break;
-                case "freezer.png":
+                case "Frozen Food":
                     vh.ivSection.setBackgroundResource(R.drawable.freezer);
                     break;
-                case "dairy.png":
+                case "Dairy and Refridgerated":
                     vh.ivSection.setBackgroundResource(R.drawable.dairy);
                     break;
-                case "meat.png":
+                case "Meat and Seafood":
                     vh.ivSection.setBackgroundResource(R.drawable.meat);
                     break;
-                default:
-                    vh.ivSection.setBackgroundResource(R.drawable.unknown);
-                    break;
+            }
+        } else {
+            if (!data.get(postion).getSectionName().equals("Unknown")) {
+                switch (data.get(postion).getSectionName().toLowerCase().charAt(0)) {
+                    case 'a':
+                        vh.ivSection.setBackgroundResource(R.drawable.a);
+                        break;
+                    case 'b':
+                        vh.ivSection.setBackgroundResource(R.drawable.b);
+                        break;
+                    case 'c':
+                        vh.ivSection.setBackgroundResource(R.drawable.c);
+                        break;
+                    case 'd':
+                        vh.ivSection.setBackgroundResource(R.drawable.d);
+                        break;
+                    case 'e':
+                        vh.ivSection.setBackgroundResource(R.drawable.e);
+                        break;
+                    case 'f':
+                        vh.ivSection.setBackgroundResource(R.drawable.f);
+                        break;
+                    case 'g':
+                        vh.ivSection.setBackgroundResource(R.drawable.g);
+                        break;
+                    case 'h':
+                        vh.ivSection.setBackgroundResource(R.drawable.h);
+                        break;
+                    case 'i':
+                        vh.ivSection.setBackgroundResource(R.drawable.i);
+                        break;
+                    case 'j':
+                        vh.ivSection.setBackgroundResource(R.drawable.j);
+                        break;
+                    case 'k':
+                        vh.ivSection.setBackgroundResource(R.drawable.k);
+                        break;
+                    case 'l':
+                        vh.ivSection.setBackgroundResource(R.drawable.l);
+                        break;
+                    case 'm':
+                        vh.ivSection.setBackgroundResource(R.drawable.m);
+                        break;
+                    case 'n':
+                        vh.ivSection.setBackgroundResource(R.drawable.n);
+                        break;
+                    case 'o':
+                        vh.ivSection.setBackgroundResource(R.drawable.o);
+                        break;
+                    case 'p':
+                        vh.ivSection.setBackgroundResource(R.drawable.p);
+                        break;
+                    case 'q':
+                        vh.ivSection.setBackgroundResource(R.drawable.q);
+                        break;
+                    case 'r':
+                        vh.ivSection.setBackgroundResource(R.drawable.r);
+                        break;
+                    case 's':
+                        vh.ivSection.setBackgroundResource(R.drawable.s);
+                        break;
+                    case 't':
+                        vh.ivSection.setBackgroundResource(R.drawable.t);
+                        break;
+                    case 'u':
+                        vh.ivSection.setBackgroundResource(R.drawable.u);
+                        break;
+                    case 'v':
+                        vh.ivSection.setBackgroundResource(R.drawable.v);
+                        break;
+                    case 'w':
+                        vh.ivSection.setBackgroundResource(R.drawable.w);
+                        break;
+                    case 'x':
+                        vh.ivSection.setBackgroundResource(R.drawable.x);
+                        break;
+                    case 'y':
+                        vh.ivSection.setBackgroundResource(R.drawable.y);
+                        break;
+                    case 'z':
+                        vh.ivSection.setBackgroundResource(R.drawable.z);
+                        break;
+                    default:
+                        break;
+                }
             }
         }
+
+
         sectionName = vh.sectionName;
         ivOption = vh.ivOption;
         ivSection = vh.ivSection;
 
         final RelativeLayout tRl = vh.rl_root;
-        vh.ivSection.setOnClickListener(new View.OnClickListener() {
+//        Toast.makeText(mContext, " sectionname " + sectionName, Toast.LENGTH_LONG).show();
+        if (sectionName.getText().toString().equals(ActivityManageSections.sectionName)) {
+            tRl.setBackgroundColor(Color.GRAY);
+            //Toast.makeText(mContext, " sectionname " + sectionName.getText().toString(), Toast.LENGTH_LONG).show();
+        } else {
+            tRl.setBackgroundColor(Color.TRANSPARENT);
+        }
+        vh.sectionName.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                tRl.setBackgroundColor(Color.GRAY);
                 String itemName = "";
                 db = new DatabaseHandler(mContext);
                 int secId = db.getSectionId(sectionName.getText().toString());
+                //Toast.makeText(mContext, "section Id " + sectionName.getText().toString(), Toast.LENGTH_LONG).show();
                 itemName = ActivityManageSections.itemNameUseInAdapter;
+                Toast.makeText(mContext, sectionName.getText().toString() + " Assign to  " + itemName, Toast.LENGTH_LONG).show();
                 if (itemName != null && !itemName.isEmpty()) {
-                    Toast.makeText(mContext, itemName + " item assign to " + sectionName.getText().toString(), Toast.LENGTH_LONG).show();
                     db = new DatabaseHandler(mContext);
                     db.getSectionData();
                     db.secAssignToItem(itemName, secId);
-                }
-                if (secId > 10) {
-                    //prefs.edit().remove(unknownSection).commit();
-                    prefs = mContext.getSharedPreferences(MyPREFERENCES, mContext.MODE_PRIVATE);
-                    editor = prefs.edit();
-                    editor.putString(unknownSection, secId + "");
-                    editor.commit();
-                    iconChangeDialog();
-//                    Toast.makeText(mContext, "restoredText " + restoredText, Toast.LENGTH_LONG).show();
-                }
-                prefs = mContext.getSharedPreferences(MyPREFERENCES, mContext.MODE_PRIVATE);
-                String restoredText = prefs.getString(unknownSection, null);
+                    Toast.makeText(mContext, sectionName.getText().toString() + " Assign to  " + itemName, Toast.LENGTH_LONG).show();
+                    //((Activity)mContext).finish();
 
-                if (restoredText != null && !restoredText.isEmpty()) {
-                    db = new DatabaseHandler(mContext);
-                    String icon = db.getSectionIcon(sectionName.getText().toString());
-                    //db.secAssignToItem(itemName, secId);
-                    db.secAssignIcon(icon, Integer.parseInt(restoredText));
-                    Toast.makeText(mContext, "icon " + icon, Toast.LENGTH_LONG).show();
-                    notifyDataSetChanged();
-                    //prefs.edit().remove(unknownSection).commit();
+                    Handler handler = new Handler();
+                    Runnable r = new Runnable() {
+                        public void run() {
+                            tRl.setBackgroundColor(Color.GRAY);
+                            ((Activity) mContext).finish();
+                        }
+                    };
+                    handler.postDelayed(r, 2000);
                 }
+//                if (secId > 10) {
+//                    //prefs.edit().remove(unknownSection).commit();
+//                    prefs = mContext.getSharedPreferences(MyPREFERENCES, mContext.MODE_PRIVATE);
+//                    editor = prefs.edit();
+//                    editor.putString(unknownSection, secId + "");
+//                    editor.commit();
+//                    iconChangeDialog();
+////                    Toast.makeText(mContext, "restoredText " + restoredText, Toast.LENGTH_LONG).show();
+//                }
+//                prefs = mContext.getSharedPreferences(MyPREFERENCES, mContext.MODE_PRIVATE);
+//                String restoredText = prefs.getString(unknownSection, null);
+//
+//                if (restoredText != null && !restoredText.isEmpty()) {
+//                    db = new DatabaseHandler(mContext);
+//                    String icon = db.getSectionIcon(sectionName.getText().toString());
+//                    //db.secAssignToItem(itemName, secId);
+//                    db.secAssignIcon(icon, Integer.parseInt(restoredText));
+//                    //Toast.makeText(mContext, "icon " + icon, Toast.LENGTH_LONG).show();
+//                    notifyDataSetChanged();
+//                    //prefs.edit().remove(unknownSection).commit();
+//                }
                 //Toast.makeText(mContext, "section name " + sectionName.getText().toString(), Toast.LENGTH_LONG).show();
             }
         });
         return vi;
+    }
+
+    private void showIcon(String optionIcon) {
     }
 
     public class ViewHolder {
@@ -241,11 +348,17 @@ public class ManageSectionAdapter extends BaseAdapter implements com.nhaarman.li
         AlertDialog.Builder myAlertDialog = new AlertDialog.Builder(mContext);
         myAlertDialog.setMessage("if you change user define section icon" +
                 " click assigning icon");
-        myAlertDialog.setNegativeButton("OK", new DialogInterface.OnClickListener() {
+        myAlertDialog.setNegativeButton("Yes", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface arg0, int arg1) {
                 // do something when the Cancel button is clicked
             }
         });
+        myAlertDialog.setNegativeButton("No", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface arg0, int arg1) {
+                // do something when the Cancel button is clicked
+            }
+        });
+
         myAlertDialog.show();
     }
 }

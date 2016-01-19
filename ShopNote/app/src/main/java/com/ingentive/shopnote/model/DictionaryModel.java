@@ -13,6 +13,15 @@ public class DictionaryModel {
     int historyItem;
     String itemName;
 
+    public boolean isPopular() {
+        return isPopular;
+    }
+
+    public void setIsPopular(boolean isPopular) {
+        this.isPopular = isPopular;
+    }
+
+    boolean isPopular=false;
     public int getFavIcon() {
         return favIcon;
     }
@@ -57,6 +66,7 @@ public class DictionaryModel {
     public DictionaryModel(String itemName, int sectionId) {
         this.itemName = itemName;
         this.sectionId = sectionId;
+        this.isPopular =false;
     }
 
     public DictionaryModel(String itemName, int favIcon, int historyIcon) {

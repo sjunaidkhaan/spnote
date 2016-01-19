@@ -12,17 +12,20 @@
         />
     <TextView
         android:id="@+id/tv_populer_items"
+        android:background="@drawable/row_border_blue"
+        android:paddingLeft="16sp"
         android:textColor="@android:color/black"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/toolbar_listadd"
+        android:layout_width="fill_parent"
+        android:layout_height="35sp"
+        android:layout_below="@id/toolbar_listadd"
         android:visibility="gone"
-        android:text="Popular Items"
-        android:layout_marginLeft="16dp"/>
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:text="Popular Items" />
     <ListView
         style="@style/MyListActivityDividerHeight"
         android:id="@+id/lv_add_list"
-        android:layout_below="@+id/tv_populer_items"
+        android:layout_below="@id/tv_populer_items"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"/>
 

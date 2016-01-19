@@ -9,7 +9,6 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.ingentive.shopnote.R;
@@ -20,7 +19,7 @@ import java.util.List;
 /**
  * Created by PC on 12/22/2015.
  */
-public class DectionaryAdapter extends BaseAdapter {
+public class FavoritesHistoryAdapter extends BaseAdapter {
 
     public List<DictionaryModel> data;
     public int res;
@@ -28,7 +27,7 @@ public class DectionaryAdapter extends BaseAdapter {
     ListView lv;
     private static LayoutInflater inflater=null;
 
-    public DectionaryAdapter(Context context, List<DictionaryModel> dataC, int rowId) {
+    public FavoritesHistoryAdapter(Context context, List<DictionaryModel> dataC, int rowId) {
 
         this.context = context;
         this.res = rowId;
@@ -89,32 +88,12 @@ public class DectionaryAdapter extends BaseAdapter {
 //            vh.tvItemName.setText("Popular Items");
 //        }
         vh.tvItemName.setText(data.get(postion).getItemName());
-//        if ( data.get(postion).getHistoryItem()==1 && data.get(postion).getFavItem()==1){
-//            vh.ivFavIcon.setVisibility(View.VISIBLE);
-//            vh.ivHistIcon.setVisibility(View.VISIBLE);
-//
-//            vh.ivFavIcon.setBackgroundResource(data.get(postion).getFavIcon());
-//            vh.ivHistIcon.setBackgroundResource(data.get(postion).getHistoryIcon());
-//        }else
-
-        if (data.get(postion).getFavItem()==1 ){
+        if ( data.get(postion).getHistoryItem()==1 && data.get(postion).getFavItem()==1){
             vh.ivFavIcon.setVisibility(View.VISIBLE);
-            vh.ivHistIcon.setVisibility(View.GONE);
-
-            //setting gravity
-            RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams)vh.ivFavIcon.getLayoutParams();
-            params.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
-            vh.ivFavIcon.setLayoutParams(params);
+            vh.ivHistIcon.setVisibility(View.VISIBLE);
 
             vh.ivFavIcon.setBackgroundResource(data.get(postion).getFavIcon());
-        }
-        else if ( data.get(postion).getHistoryItem() == 1) {
-            vh.ivFavIcon.setVisibility(View.GONE);
-            vh.ivHistIcon.setVisibility(View.VISIBLE);
             vh.ivHistIcon.setBackgroundResource(data.get(postion).getHistoryIcon());
-        } else{
-            vh.ivFavIcon.setVisibility(View.GONE);
-            vh.ivHistIcon.setVisibility(View.GONE);
         }
         tvItemName = vh.tvItemName;
         ivFavIcon = vh.ivFavIcon;

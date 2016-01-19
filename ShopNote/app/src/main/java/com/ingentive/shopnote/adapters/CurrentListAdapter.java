@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.KeyEvent;
@@ -78,12 +79,9 @@ public class CurrentListAdapter extends ArrayAdapter<CurrentListModel> {
         } else {
             vh = (ViewHolder) vi.getTag();
         }
-
-
         final TextView itemName, tvQuantity;
         final ImageView ivOption, ivFavorit_selected, ivSection;
         final EditText etQuantity;
-
 
         vh.itemName.setText(data.get(postion).getItemName());
         vh.ivOption.setBackgroundResource(R.drawable.grab_notgrabbed);
@@ -95,13 +93,21 @@ public class CurrentListAdapter extends ArrayAdapter<CurrentListModel> {
         } else {
             vh.tvQuantity.setVisibility(View.GONE);
         }
+        if(data.get(postion).getChecked()==1){
+            vh.itemName.setTextColor(Color.GRAY);
+            vh.tvQuantity.setTextColor(Color.GRAY);
+        }else {
+            vh.itemName.setTextColor(Color.BLACK);
+            vh.tvQuantity.setTextColor(Color.BLACK);
+        }
+
         db = new DatabaseHandler(mContext);
         boolean isFav = db.isFavorit(vh.itemName.getText().toString());
         if (isFav) {
             vh.ivFavorit_selected.setBackgroundResource(R.drawable.favorite_unselected);
         }
         String iconSecton = db.getIconSection(data.get(postion).getItemName().toString());
-
+        //Toast.makeText(mContext,"iconSecton :"+iconSecton, Toast.LENGTH_LONG).show();
         switch (iconSecton) {
             case "clothing.png":
                 vh.ivSection.setBackgroundResource(R.drawable.clothing);
@@ -133,11 +139,88 @@ public class CurrentListAdapter extends ArrayAdapter<CurrentListModel> {
             case "meat.png":
                 vh.ivSection.setBackgroundResource(R.drawable.meat);
                 break;
+            case "a.png":
+                vh.ivSection.setBackgroundResource(R.drawable.a);
+                break;
+            case "b.png":
+                vh.ivSection.setBackgroundResource(R.drawable.b);
+                break;
+            case "c.png":
+                vh.ivSection.setBackgroundResource(R.drawable.c);
+                break;
+            case "d.png":
+                vh.ivSection.setBackgroundResource(R.drawable.d);
+                break;
+            case "e.png":
+                vh.ivSection.setBackgroundResource(R.drawable.e);
+                break;
+            case "f.png":
+                vh.ivSection.setBackgroundResource(R.drawable.f);
+                break;
+            case "g.png":
+                vh.ivSection.setBackgroundResource(R.drawable.g);
+                break;
+            case "h.png":
+                vh.ivSection.setBackgroundResource(R.drawable.h);
+                break;
+            case "i.png":
+                vh.ivSection.setBackgroundResource(R.drawable.i);
+                break;
+            case "j.png":
+                vh.ivSection.setBackgroundResource(R.drawable.j);
+                break;
+            case "k.png":
+                vh.ivSection.setBackgroundResource(R.drawable.k);
+                break;
+            case "l.png":
+                vh.ivSection.setBackgroundResource(R.drawable.l);
+                break;
+            case "m.png":
+                vh.ivSection.setBackgroundResource(R.drawable.m);
+                break;
+            case "n.png":
+                vh.ivSection.setBackgroundResource(R.drawable.n);
+                break;
+            case "o.png":
+                vh.ivSection.setBackgroundResource(R.drawable.o);
+                break;
+            case "p.png":
+                vh.ivSection.setBackgroundResource(R.drawable.p);
+                break;
+            case "q.png":
+                vh.ivSection.setBackgroundResource(R.drawable.q);
+                break;
+            case "r.png":
+                vh.ivSection.setBackgroundResource(R.drawable.r);
+                break;
+            case "s.png":
+                vh.ivSection.setBackgroundResource(R.drawable.s);
+                break;
+            case "t.png":
+                vh.ivSection.setBackgroundResource(R.drawable.t);
+                break;
+            case "u.png":
+                vh.ivSection.setBackgroundResource(R.drawable.u);
+                break;
+            case "v.png":
+                vh.ivSection.setBackgroundResource(R.drawable.v);
+                break;
+            case "w.png":
+                vh.ivSection.setBackgroundResource(R.drawable.w);
+                break;
+            case "x.png":
+                vh.ivSection.setBackgroundResource(R.drawable.x);
+                break;
+            case "y.png":
+                vh.ivSection.setBackgroundResource(R.drawable.y);
+                break;
+            case "z.png":
+                vh.ivSection.setBackgroundResource(R.drawable.z);
+                break;
             default:
                 vh.ivSection.setBackgroundResource(R.drawable.unknown);
                 break;
         }
-
 
         tvQuantity = vh.tvQuantity;
         itemName = vh.itemName;
@@ -190,10 +273,9 @@ public class CurrentListAdapter extends ArrayAdapter<CurrentListModel> {
             public void onClick(View v) {
 
                 Bundle bundle = new Bundle();
-
                 Intent i = new Intent(mContext, ActivityManageSections.class);
-                String keyIdentifer  = data.get(postion).getItemName().toString();
-                i.putExtra("item_name", keyIdentifer);
+                //i.putExtra("item_name", data.get(postion).getItemName().toString());
+                i.putExtra("item_name", data.get(postion).getItemName().toString());
                 mContext.startActivity(i);
                //Toast.makeText(mContext, "section image click  " + data.get(postion).getItemName().toString(), Toast.LENGTH_SHORT).show();
             }

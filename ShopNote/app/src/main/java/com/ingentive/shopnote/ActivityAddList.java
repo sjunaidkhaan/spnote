@@ -20,6 +20,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.ingentive.shopnote.adapters.DectionaryAdapter;
+import com.ingentive.shopnote.adapters.FavoritesHistoryAdapter;
 import com.ingentive.shopnote.model.AddListModel;
 import com.ingentive.shopnote.model.CurrentListModel;
 import com.ingentive.shopnote.model.DictionaryModel;
@@ -31,7 +32,7 @@ public class ActivityAddList extends AppCompatActivity {
 
     private Toolbar mToolbar;
     private ListView mListView;
-    private EditText etSerch;
+    private EditText etSearch;
     private TextView tvPopulerItems;
     private ImageView ivFavorit, ivHistory;
     private AlertDialog.Builder builder1;
@@ -77,7 +78,7 @@ public class ActivityAddList extends AppCompatActivity {
             }
         });
         //
-        etSerch = (EditText) findViewById(R.id.etSearch);
+        etSearch = (EditText) findViewById(R.id.etSearch);
         mListView = (ListView) findViewById(R.id.lv_add_list);
         mPrefs = getSharedPreferences(ActivityAddList.ADD_LIST_PREF, MODE_PRIVATE);
         String restoredText = mPrefs.getString(list_add_intro_dialog, null);
@@ -90,6 +91,7 @@ public class ActivityAddList extends AppCompatActivity {
         //db = new DatabaseHandler(getApplication());
         //addList = db.getFavItem();
 
+        //showFav();
         db = new DatabaseHandler(getApplication());
         favoritList = db.getFavItem();
         historyList = db.getHistoryItems();
@@ -125,20 +127,21 @@ public class ActivityAddList extends AppCompatActivity {
                 order++;
                 db = new DatabaseHandler(getApplication());
                 db.addCurrentList(new CurrentListModel(order, itemName, 0, null, MainActivity.title, 1));
+                finish();
                 //Toast.makeText(getApplicationContext(), "itemName  "+itemName, Toast.LENGTH_LONG).show();
             }
         });
 
-        etSerch.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+        etSearch.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
                 if (!hasFocus) {
-                    if (etSerch.getText().toString().replaceAll(" ", "").length() > 0) {
+                    if (etSearch.getText().toString().replaceAll(" ", "").length() > 0) {
                         db = new DatabaseHandler(ActivityAddList.this);
                         List<CurrentListModel> currList = db.getCurrList();
                         boolean curritemExist = false;
                         for (int i = 0; i < currList.size(); i++) {
-                            if (currList.get(i).getItemName().toLowerCase().equals(etSerch.getText().toString().toLowerCase())) {
+                            if (currList.get(i).getItemName().toLowerCase().equals(etSearch.getText().toString().toLowerCase())) {
                                 curritemExist = true;
                             }
                         }
@@ -149,69 +152,70 @@ public class ActivityAddList extends AppCompatActivity {
                             int order = db.getMaxOrderNo();
                             order++;
                             db = new DatabaseHandler(ActivityAddList.this);
-                            db.addCurrentList(new CurrentListModel(order, etSerch.getText().toString(), 0, null, MainActivity.title, 1));
+                            db.addCurrentList(new CurrentListModel(order, etSearch.getText().toString(), 0, null, MainActivity.title, 1));
                         }
                         db = new DatabaseHandler(ActivityAddList.this);
                         List<DictionaryModel> dicList = db.getDicItems();
                         boolean dicitemExist = false;
                         for (int i = 0; i < dicList.size(); i++) {
-                            if (dicList.get(i).getItemName().toLowerCase().equals(etSerch.getText().toString().toLowerCase())) {
+                            if (dicList.get(i).getItemName().toLowerCase().equals(etSearch.getText().toString().toLowerCase())) {
                                 dicitemExist = true;
                             }
                         }
                         if (!dicitemExist) {
                             db = new DatabaseHandler(getApplication());
-                            db.addDictionaryNewItem(new DictionaryModel(etSerch.getText().toString(), 99));
+                            db.addDictionaryNewItem(new DictionaryModel(etSearch.getText().toString(), 99));
                         }
                     }
+                    finish();
 
                     // db = new DatabaseHandler(getApplication());
                     //db.addCurrentList(new CurrentListModel(1, etSerch.getText().toString(), 0, null, "My Firts Shopnote", 1));
                 }
             }
         });
-        etSerch.setOnEditorActionListener(
+        etSearch.setOnEditorActionListener(
                 new EditText.OnEditorActionListener() {
                     @Override
                     public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                        if (actionId == EditorInfo.IME_ACTION_SEARCH ||
-                                actionId == EditorInfo.IME_ACTION_DONE ||
-                                event.getAction() == KeyEvent.ACTION_DOWN &&
-                                        event.getKeyCode() == KeyEvent.KEYCODE_ENTER) {
-                            if (!event.isShiftPressed()) {
-                                // the user is done typing.
-                                if (etSerch.getText().toString().replaceAll(" ", "").length() > 0) {
+                        if (etSearch.getText().toString().replaceAll(" ", "").length() > 0 || !etSearch.getText().toString().isEmpty()) {
+                            if (actionId == EditorInfo.IME_ACTION_SEARCH ||
+                                    actionId == EditorInfo.IME_ACTION_DONE ||
+                                    event.getAction() == KeyEvent.ACTION_DOWN &&
+                                            event.getKeyCode() == KeyEvent.KEYCODE_ENTER) {
+                               // if (!event.isShiftPressed()) {
+                                    // the user is done typing.
+
                                     db = new DatabaseHandler(ActivityAddList.this);
                                     List<CurrentListModel> currList = db.getCurrList();
                                     boolean curritemExist = false;
                                     for (int i = 0; i < currList.size(); i++) {
-                                        if (currList.get(i).getItemName().toLowerCase().equals(etSerch.getText().toString().toLowerCase())) {
+                                        if (currList.get(i).getItemName().toLowerCase().equals(etSearch.getText().toString().toLowerCase())) {
                                             curritemExist = true;
                                         }
                                     }
                                     if (!curritemExist) {
-                                        db = new
-
-                                                DatabaseHandler(getApplication());
+                                        db = new DatabaseHandler(getApplication());
                                         String title = db.getListName();
                                         db = new DatabaseHandler(getApplication());
                                         int order = db.getMaxOrderNo();
                                         order++;
                                         db = new DatabaseHandler(ActivityAddList.this);
-                                        db.addCurrentList(new CurrentListModel(order, etSerch.getText().toString(), 0, null,MainActivity.title, 1));
+                                        db.addCurrentList(new CurrentListModel(order, etSearch.getText().toString(), 0, null, MainActivity.title, 1));
                                     }
                                     db = new DatabaseHandler(ActivityAddList.this);
                                     List<DictionaryModel> dicList = db.getDicItems();
                                     boolean dicitemExist = false;
                                     for (int i = 0; i < dicList.size(); i++) {
-                                        if (dicList.get(i).getItemName().toLowerCase().equals(etSerch.getText().toString().toLowerCase())) {
+                                        if (dicList.get(i).getItemName().toLowerCase().equals(etSearch.getText().toString().toLowerCase())) {
                                             dicitemExist = true;
                                         }
                                     }
                                     if (!dicitemExist) {
                                         db = new DatabaseHandler(getApplication());
-                                        db.addDictionaryNewItem(new DictionaryModel(etSerch.getText().toString(), 99));
+                                        db.addDictionaryNewItem(new DictionaryModel(etSearch.getText().toString(), 99));
                                     }
+                                    finish();
                                 }
 //                                db = new DatabaseHandler(getApplication());
 //                                db.addCurrentList(new CurrentListModel(1, etSerch.getText().toString(), 0, null, "My Firts Shopnote", 1));
@@ -219,13 +223,13 @@ public class ActivityAddList extends AppCompatActivity {
 //                                db.addDictionaryNewItem(new DictionaryModel(etSerch.getText().toString(), 11));
 //                                Toast.makeText(ActivityAddList.this, "in Editor " + etSerch.getText().toString(), Toast.LENGTH_SHORT).show();
                                 return true; // consume.
-                            }
+                           // }
                         }
                         return false; // pass on to other listeners.
                     }
                 });
 
-        etSerch.addTextChangedListener(new TextWatcher() {
+        etSearch.addTextChangedListener(new TextWatcher() {
             // As the user types in the search field, the list is
             @Override
             public void onTextChanged(CharSequence arg0, int arg1, int arg2, int arg3) {
@@ -244,16 +248,7 @@ public class ActivityAddList extends AppCompatActivity {
                 // TODO Auto-generated method stub
             }
         });
-        //Toast.makeText(getApplication(),""+dicSearchList,Toast.LENGTH_LONG).show();
-        //Toast.makeText(getApplication(),""+data,Toast.LENGTH_LONG).show();
-        //Log.d("Items Names ",""+data);
-        /*db = new DatabaseHandler(getApplication());
-        List<ListAddBasicModel> basicList = db.getItemName();
-        ListAddBasicAdapter lda = new ListAddBasicAdapter(ActivityAddList.this, R.layout.custom_row_list_add_basic,basicList);
-        mAutoComptv.setAdapter(lda);*/
-
     }
-
     public void showData() {
         DictionaryModel dictionaryModel = new DictionaryModel();
         dicCurrentList = new ArrayList<DictionaryModel>();
@@ -264,14 +259,17 @@ public class ActivityAddList extends AppCompatActivity {
                 //jk
             }
         }
-        mAdapter = new DectionaryAdapter(ActivityAddList.this, dicCurrentList, R.layout.custom_row_list_add_basic);
-        mListView.setAdapter(mAdapter);
-        //tvPopulerItems.setVisibility(View.VISIBLE);
+        if(dicCurrentList.size()!=0){
+            tvPopulerItems.setVisibility(View.VISIBLE);
+        }
+
+        FavoritesHistoryAdapter mFavHistAdapter = new FavoritesHistoryAdapter(ActivityAddList.this, dicCurrentList, R.layout.custom_row_list_add_basic);
+        mListView.setAdapter(mFavHistAdapter);
     }
 
     // Filters list of contacts based on user search criteria. If no information is filled in, contact list will be blank.
     private void AlterAdapter() {
-        if (etSerch.getText().toString().isEmpty()) {
+        if (etSearch.getText().toString().isEmpty()) {
             dicCurrentList.clear();
             mAdapter.notifyDataSetChanged();
             showData();
@@ -283,10 +281,10 @@ public class ActivityAddList extends AppCompatActivity {
             tempHis.clear();
             tempDictionary.clear();
             for (int i = 0; i < dicSearchList.size(); i++) {
-                if (dicSearchList.get(i).getItemName().toString().toLowerCase().startsWith(etSerch.getText().toString().toLowerCase())) {
+                if (dicSearchList.get(i).getItemName().toString().toLowerCase().startsWith(etSearch.getText().toString().toLowerCase())) {
                     //jk
 
-                    if (etSerch.getText().toString().length() == 1) {
+                    if (etSearch.getText().toString().length() == 1) {
 
                         if (dicSearchList.get(i).getFavItem() == 1) {
                             tempFav.add(dicSearchList.get(i));
@@ -296,7 +294,7 @@ public class ActivityAddList extends AppCompatActivity {
                             tempHis.add(dicSearchList.get(i));
                             //dicCurrentList.add(dicSearchList.get(i));
                         }
-                    } else if (etSerch.getText().toString().length() == 2) {
+                    } else if (etSearch.getText().toString().length() == 2) {
                         if (dicSearchList.get(i).getFavItem() == 1) {
                             tempFav.add(dicSearchList.get(i));
                             //dicCurrentList.add(dicSearchList.get(i));
@@ -308,7 +306,7 @@ public class ActivityAddList extends AppCompatActivity {
                         if (!(dicSearchList.get(i).getHistoryItem() == 1) && !(dicSearchList.get(i).getFavItem() == 1)) {
                             tempDictionary.add(dicSearchList.get(i));
                         }
-                    } else if (etSerch.getText().toString().length() > 2) {
+                    } else if (etSearch.getText().toString().length() > 2) {
                         tempDictionary.add(dicSearchList.get(i));
                     }
                 }
@@ -325,7 +323,7 @@ public class ActivityAddList extends AppCompatActivity {
                 dicCurrentList.add(tempDictionary.get(i));
             }
 
-            mAdapter.notifyDataSetChanged();
+            //mAdapter.notifyDataSetChanged();
             mAdapter = new DectionaryAdapter(ActivityAddList.this, dicCurrentList, R.layout.custom_row_list_add_basic);
             mListView.setAdapter(mAdapter);
             //
