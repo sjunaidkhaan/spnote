@@ -25,6 +25,7 @@
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:visibility="gone"
+        android:paddingLeft="5dp"
         android:textSize="18sp"
         android:textStyle="bold"
         android:focusable="true"

@@ -5,7 +5,6 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -14,12 +13,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
-import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.ingentive.shopnote.DatabaseHandler;
 import com.ingentive.shopnote.R;
-import com.ingentive.shopnote.adapters.ShopCustomAdapter;
 import com.ingentive.shopnote.adapters.ShopCustomAdapterSimpleListview;
 import com.ingentive.shopnote.model.CurrentListModel;
 import com.ingentive.shopnote.model.HistoryModel;
@@ -50,8 +47,8 @@ public class ShopFragmentSimpleListview extends Fragment {
     List<ShopChildModel> shopChiList = new ArrayList<ShopChildModel>();
     List<ShopParentModel> shopParList;
     Button btnFinishShopping;
-
     ArrayList<ShopParentModelMerger> finalList = new ArrayList<ShopParentModelMerger>();
+    int from = -100;
 
 
     public ShopFragmentSimpleListview() {
@@ -83,6 +80,7 @@ public class ShopFragmentSimpleListview extends Fragment {
                                                    final int position, final long id) {
                         if (!finalList.get(position).isParent()) {
                             mExpShopList.startDragging(position);
+                            from = finalList.get(position).getShopPaId();
                             Log.d("Drag Position:", position + "");
                             return true;
                         } else {
@@ -95,7 +93,7 @@ public class ShopFragmentSimpleListview extends Fragment {
         mExpShopList.setOnItemMovedListener(new OnItemMovedListener() {
             @Override
             public void onItemMoved(int originalPosition, int newPosition) {
-                int from = finalList.get(originalPosition - 1).getShopPaId();
+                //int from = finalList.get(originalPosition - 1).getShopPaId();
                 int to = finalList.get(newPosition - 1).getShopPaId();
                 Log.d("from:" + originalPosition + "|||" + finalList.get(originalPosition - 1).getShopPaId(), "to:" + newPosition + "|||" + finalList.get(newPosition - 1).getShopPaId());
                 if (to != from) {
@@ -143,13 +141,13 @@ public class ShopFragmentSimpleListview extends Fragment {
 
             public void onClick(DialogInterface arg0, int arg1) {
                 // do something when the Cancel button is clicked
-                Toast.makeText(getActivity(), "No button click", Toast.LENGTH_LONG).show();
+                //Toast.makeText(getActivity(), "No button click", Toast.LENGTH_LONG).show();
             }
         });
         myAlertDialog.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface arg0, int arg1) {
                 // do something when the OK button is clicked
-                Toast.makeText(getActivity(), "yes button click", Toast.LENGTH_LONG).show();
+                //Toast.makeText(getActivity(), "yes button click", Toast.LENGTH_LONG).show();
                 db = new DatabaseHandler(getActivity());
                 List<CurrentListModel> currList = db.getCurrList();
                 Calendar c = Calendar.getInstance();
@@ -224,6 +222,7 @@ public class ShopFragmentSimpleListview extends Fragment {
             finalList.add(tParent);
 
             for (int j = 0; j < shopList.get(i).getArrayChildren().size(); ++j) {
+
                 ShopParentModelMerger tChild = new ShopParentModelMerger();
                 tChild.setIsParent(false);
                 tChild.setIsClick(false);

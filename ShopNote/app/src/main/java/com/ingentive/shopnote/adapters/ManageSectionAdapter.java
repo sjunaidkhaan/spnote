@@ -265,7 +265,7 @@ public class ManageSectionAdapter extends BaseAdapter implements com.nhaarman.li
 
         final RelativeLayout tRl = vh.rl_root;
 //        Toast.makeText(mContext, " sectionname " + sectionName, Toast.LENGTH_LONG).show();
-        if (sectionName.getText().toString().equals(ActivityManageSections.sectionName)) {
+        if (sectionName.getText().toString().equals(ActivityManageSections.sectionName)&& ActivityManageSections.itemNameUseInAdapter!=null && !ActivityManageSections.itemNameUseInAdapter.isEmpty()) {
             tRl.setBackgroundColor(Color.GRAY);
             //Toast.makeText(mContext, " sectionname " + sectionName.getText().toString(), Toast.LENGTH_LONG).show();
         } else {

@@ -6,27 +6,28 @@
     android:layout_height="wrap_content"
     android:background="@drawable/tool_bar_background"
     local:popupTheme="@style/ThemeOverlay.AppCompat.Light"
-    local:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar" >
+    local:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
 
     <EditText
-       android:id="@+id/etSearch"
-        android:inputType="textCapSentences"
-       android:layout_width="fill_parent"
-       android:layout_marginLeft="16dp"
-       android:layout_marginRight="16dp"
-       android:textColor="@android:color/black"
-       android:layout_height="fill_parent"
+        android:id="@+id/etSearch"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:background="@android:color/white"
+        android:completionThreshold="1"
         android:gravity="left"
-       android:completionThreshold="1"
-       android:background="@android:color/white"
-       >
-   <requestFocus />
-   </EditText>
+        android:inputType="textCapSentences"
+        android:paddingLeft="5dp"
+        android:textColor="@android:color/black">
+
+        <requestFocus />
+    </EditText>
+
     <ImageView
-        android:layout_alignParentLeft="true"
-        android:background="@drawable/add_menu"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        />
+        android:layout_alignParentLeft="true"
+        android:background="@drawable/add_menu" />
 
-    </android.support.v7.widget.Toolbar>
+</android.support.v7.widget.Toolbar>

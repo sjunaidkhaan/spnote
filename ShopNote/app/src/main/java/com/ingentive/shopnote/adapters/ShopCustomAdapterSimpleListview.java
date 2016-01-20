@@ -33,7 +33,7 @@ public class ShopCustomAdapterSimpleListview extends BaseAdapter implements Swap
     public DatabaseHandler db;
     public ArrayList<Integer> ignoreList = new ArrayList<>();
 
-    public ShopCustomAdapterSimpleListview(Context context, List<ShopParentModelMerger> data,List<ShopParentModel> oData ) {
+    public ShopCustomAdapterSimpleListview(Context context, List<ShopParentModelMerger> data, List<ShopParentModel> oData) {
         this.data = data;
         this.oData = oData;
         this.mContext = context;
@@ -58,78 +58,60 @@ public class ShopCustomAdapterSimpleListview extends BaseAdapter implements Swap
 
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
     @Override
-    public View getView(final int position, View convertView, ViewGroup parent) {
-        ViewHolderParent vhp = new ViewHolderParent();
+    public View getView(final int position, View convertView, final ViewGroup parent) {
+         ViewHolderParent vhp = new ViewHolderParent();
 
         final ImageView ivArrow;
 
-        if ( convertView == null){
-            convertView = inflater.inflate(R.layout.custom_row_shop_parent_merge,null);
+        View vi = convertView;
+        if (convertView == null) {
+            convertView = inflater.inflate(R.layout.custom_row_shop_parent_merge, null);
             vhp.tvShopSecNamePar = (TextView) convertView.findViewById(R.id.tv_section_name_par);
             vhp.ivShopSecIcon = (ImageView) convertView.findViewById(R.id.iv_section_shop_par);
             vhp.ivArrow = (ImageView) convertView.findViewById(R.id.iv_grab_shop_par);
             vhp.ivShopChilCheckBox = (ImageView) convertView.findViewById(R.id.iv_checkbox_shop_child);
-            vhp.ivHamburger = (ImageView)convertView.findViewById(R.id.iv_grab_shop_ex);
-            vhp.tvShopChilItemName = (TextView)convertView.findViewById(R.id.tv_section_name_child);
+            vhp.ivHamburger = (ImageView) convertView.findViewById(R.id.iv_grab_shop_ex);
+            vhp.tvShopChilItemName = (TextView) convertView.findViewById(R.id.tv_section_name_child);
 
             int id = convertView.generateViewId();
             convertView.setId(id);
             convertView.setTag(vhp);
 
-        }else{
-            vhp = (ViewHolderParent)convertView.getTag();
+        } else {
+            vhp = (ViewHolderParent) convertView.getTag();
         }
 
-
-        if ( data.get(position).isParent()){
+        final TextView tvShopSecNamePar;
+        if (data.get(position).isParent()) {
             vhp.ivArrow.setVisibility(View.VISIBLE);
             vhp.ivShopSecIcon.setVisibility(View.VISIBLE);
             vhp.ivHamburger.setVisibility(View.VISIBLE);
             vhp.tvShopSecNamePar.setVisibility(View.VISIBLE);
             vhp.tvShopChilItemName.setVisibility(View.GONE);
             vhp.ivShopChilCheckBox.setVisibility(View.GONE);
-            if (data.get(position).isClick()){
+            if (data.get(position).isClick()) {
                 vhp.ivArrow.setBackgroundResource(R.drawable.minimize);
-            }else{
+            } else {
                 vhp.ivArrow.setBackgroundResource(R.drawable.maximize);
             }
 
+
             vhp.tvShopSecNamePar.setText(data.get(position).getShopPaSectionName().toString());
-
-
-//            switch (data.get(position).getShopPaSectionIcon().toString()) {
-//                case "clothing.png":
-//                    vhp.ivShopSecIcon.setBackgroundResource(R.drawable.clothing);
-//                    break;
-//                case "house.png":
-//                    vhp.ivShopSecIcon.setBackgroundResource(R.drawable.house);
-//                    break;
-//                case "pharmacy.png":
-//                    vhp.ivShopSecIcon.setBackgroundResource(R.drawable.pharmacy);
-//                    break;
-//                case "produce.png":
-//                    vhp.ivShopSecIcon.setBackgroundResource(R.drawable.produce);
-//                    break;
-//                case "bakery.png":
-//                    vhp.ivShopSecIcon.setBackgroundResource(R.drawable.bakery);
-//                    break;
-//                case "dry_goods.png":
-//                    vhp.ivShopSecIcon.setBackgroundResource(R.drawable.dry_goods);
-//                    break;
-//                case "beverages.png":
-//                    vhp.ivShopSecIcon.setBackgroundResource(R.drawable.beverages);
-//                    break;
-//                case "freezer.png":
-//                    vhp.ivShopSecIcon.setBackgroundResource(R.drawable.freezer);
-//                    break;
-//                case "dairy.png":
-//                    vhp.ivShopSecIcon.setBackgroundResource(R.drawable.dairy);
-//                    break;
-//                case "meat.png":
-//                    vhp.ivShopSecIcon.setBackgroundResource(R.drawable.meat);
-//                    break;
+//            db = new DatabaseHandler(mContext);
+//            int childeCount = db.shopChildCount(data.get(position).getShopPaId());
+//
+//            db = new DatabaseHandler(mContext);
+//            int shopChildCheckedCount = db.shopChildCheckedCount(data.get(position).getShopPaId());
+//
+//            if (childeCount ==shopChildCheckedCount) {
+//                vhp.tvShopSecNamePar.setTextColor(Color.GRAY);
+//                data = getData(ignoreList);
+//                notifyDataSetChanged();
+//            } else {
+//                vhp.tvShopSecNamePar.setTextColor(Color.BLACK);
+//                data = getData(ignoreList);
+//                notifyDataSetChanged();
 //            }
-
             if (data.get(position).getShopPaId() <= 10) {
                 switch (data.get(position).getShopPaSectionName()) {
                     case "Clothing":
@@ -249,17 +231,17 @@ public class ShopCustomAdapterSimpleListview extends BaseAdapter implements Swap
                     }
                 }
             }
-
             ivArrow = vhp.ivArrow;
             vhp.ivArrow.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     //tvShopSecNamePar.setTextColor(Color.GRAY);
+                    //Toast.makeText(mContext,"arrow click ",Toast.LENGTH_LONG).show();
                     if (!data.get(position).isClick()) {
                         data.get(position).setIsClick(true);
                         ivArrow.setBackgroundResource(R.drawable.minimize);
-                        for( int i = 0; i < ignoreList.size(); ++i ){
-                            if ( data.get(position).getShopPaId() == ignoreList.get(i) ){
+                        for (int i = 0; i < ignoreList.size(); ++i) {
+                            if (data.get(position).getShopPaId() == ignoreList.get(i)) {
                                 ignoreList.remove(i);
                                 data = getData(ignoreList);
                                 notifyDataSetChanged();
@@ -272,11 +254,10 @@ public class ShopCustomAdapterSimpleListview extends BaseAdapter implements Swap
                         ignoreList.add(data.get(position).getShopPaId());
                         data = getData(ignoreList);
                         notifyDataSetChanged();
-
                     }
                 }
             });
-        }else{
+        } else {
             vhp.ivArrow.setVisibility(View.GONE);
             vhp.ivShopSecIcon.setVisibility(View.GONE);
             vhp.ivHamburger.setVisibility(View.GONE);
@@ -284,7 +265,17 @@ public class ShopCustomAdapterSimpleListview extends BaseAdapter implements Swap
             vhp.ivShopChilCheckBox.setVisibility(View.VISIBLE);
             vhp.tvShopChilItemName.setVisibility(View.VISIBLE);
 
-            vhp.tvShopChilItemName.setText(data.get(position).getShop_chil_quantity() + " " + data.get(position).getShop_chil_item_name());
+            String quantity = "";
+            if (data.get(position).getShop_chil_quantity().equals("1") ||
+                    data.get(position).getShop_chil_quantity().isEmpty() ||
+                    data.get(position).getShop_chil_quantity() == null) {
+                quantity = "";
+
+            } else {
+                quantity = data.get(position).getShop_chil_quantity();
+            }
+
+            vhp.tvShopChilItemName.setText(quantity + " " + data.get(position).getShop_chil_item_name());
             db = new DatabaseHandler(mContext);
             int isChecked = db.isChecked(data.get(position).getShop_chil_item_name());
             db.close();
@@ -298,7 +289,8 @@ public class ShopCustomAdapterSimpleListview extends BaseAdapter implements Swap
 
             final ImageView ivShopChilCheckBox = vhp.ivShopChilCheckBox;
             final TextView tvShopChilItemName = vhp.tvShopChilItemName;
-            vhp.ivShopChilCheckBox.setOnClickListener(new View.OnClickListener() {
+            final TextView tvSectionName =(TextView)vhp.tvShopSecNamePar;
+                vhp.ivShopChilCheckBox.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     db = new DatabaseHandler(mContext);
@@ -312,8 +304,6 @@ public class ShopCustomAdapterSimpleListview extends BaseAdapter implements Swap
                         ivShopChilCheckBox.setBackgroundResource(R.drawable.checkbox_unchecked);
                         tvShopChilItemName.setTextColor(Color.BLACK);
                         data.get(position).setCheckBox(0);
-
-
                     } else {
                         CurrentListModel currCheck = new CurrentListModel();
                         currCheck.setChecked(1);
@@ -323,7 +313,30 @@ public class ShopCustomAdapterSimpleListview extends BaseAdapter implements Swap
                         tvShopChilItemName.setTextColor(Color.GRAY);
                         db.updateCheckItem(currCheck);
                         data.get(position).setCheckBox(1);
+
                     }
+
+//                    db = new DatabaseHandler(mContext);
+//                    int childeCount = db.shopChildCount(data.get(position).getShopPaId());
+//
+//                    db = new DatabaseHandler(mContext);
+//                    int shopChildCheckedCount = db.shopChildCheckedCount(data.get(position).getShopPaId());
+//
+//                    if (childeCount ==shopChildCheckedCount) {
+//                        tvSectionName.setTextColor(Color.GRAY);
+//                        data = getData(ignoreList);
+//                        notifyDataSetChanged();
+//                    } else {
+//                        tvSectionName.setTextColor(Color.BLACK);
+//                        data = getData(ignoreList);
+//                        notifyDataSetChanged();
+//                    }
+
+//                    if(counter==oData.get(position).getArrayChildren().size()){
+//                        ignoreList.add(oData.get(position).getShopPaId());
+//                        data = getData(ignoreList);
+//                        notifyDataSetChanged();
+//                    }
                     db.close();
 //                if (shopParent.get(groupPosition).getArrayChildren().get(childPosition).getCheckBox() == 0) {
 //                    shopParent.get(groupPosition).getArrayChildren().get(childPosition).setCheckBox(1);
@@ -370,60 +383,64 @@ public class ShopCustomAdapterSimpleListview extends BaseAdapter implements Swap
     }
 
 
-    public class ViewHolderParent
-    {
+    public class ViewHolderParent {
         TextView tvShopSecNamePar;
         ImageView ivShopSecIcon;
         ImageView ivArrow;
-        TextView tvShopChilItemName,tvShopChilQuantity;
+        TextView tvShopChilItemName, tvShopChilQuantity;
         ImageView ivShopChilCheckBox;
         ImageView ivHamburger;
     }
 
-    public List<ShopParentModelMerger> getData(ArrayList toIgnore){
+    public List<ShopParentModelMerger> getData(ArrayList toIgnore) {
 
         List<ShopParentModelMerger> dataTemp = new ArrayList<>();
 
-        for ( int i = 0; i <this.oData.size(); ++i){
-                if ( ignoreList.contains(this.oData.get(i).getShopPaId()) ){
-                    ShopParentModelMerger tParent = new ShopParentModelMerger();
-                    tParent.setIsParent(true);
-                    tParent.setIsClick(false);
-                    tParent.setShopPaId(this.oData.get(i).getShopPaId());
-                    tParent.setShopPaSectionName(this.oData.get(i).getShopPaSectionName().toString());
-                    tParent.setShopPaSectionIcon(this.oData.get(i).getShopPaSectionIcon().toString());
-                    dataTemp.add(tParent);
-                }else{
+        for (int i = 0; i < this.oData.size(); ++i) {
+            if (ignoreList.contains(this.oData.get(i).getShopPaId())) {
+                ShopParentModelMerger tParent = new ShopParentModelMerger();
+                tParent.setIsParent(true);
+                tParent.setIsClick(false);
+                tParent.setShopPaId(this.oData.get(i).getShopPaId());
+                tParent.setShopPaSectionName(this.oData.get(i).getShopPaSectionName().toString());
+                tParent.setShopPaSectionIcon(this.oData.get(i).getShopPaSectionIcon().toString());
+                dataTemp.add(tParent);
+            } else {
+                ShopParentModelMerger tParent = new ShopParentModelMerger();
+                tParent.setIsParent(true);
+                tParent.setIsClick(true);
+                tParent.setShopPaId(this.oData.get(i).getShopPaId());
+                tParent.setShopPaSectionName(this.oData.get(i).getShopPaSectionName().toString());
+                tParent.setShopPaSectionIcon(this.oData.get(i).getShopPaSectionIcon().toString());
 
-                    ShopParentModelMerger tParent = new ShopParentModelMerger();
-                    tParent.setIsParent(true);
-                    tParent.setIsClick(true);
-                    tParent.setShopPaId(this.oData.get(i).getShopPaId());
-                    tParent.setShopPaSectionName(this.oData.get(i).getShopPaSectionName().toString());
-                    tParent.setShopPaSectionIcon(this.oData.get(i).getShopPaSectionIcon().toString());
+                dataTemp.add(tParent);
 
-                    dataTemp.add(tParent);
-
-                    for ( int j = 0; j < oData.get(i).getArrayChildren().size(); ++j){
-                        ShopParentModelMerger tChild = new ShopParentModelMerger();
-                        tChild.setIsParent(false);
-                        tChild.setIsClick(false);
-                        tChild.setShopPaId(oData.get(i).getShopPaId());
-                        tChild.setShopPaSectionName(oData.get(i).getShopPaSectionName().toString());
-                        tChild.setShopPaSectionIcon(oData.get(i).getShopPaSectionIcon().toString());
-                        tChild.setShop_chil_id(oData.get(i).getArrayChildren().get(j).getShopChId());
-                        tChild.setShop_chil_item_name(oData.get(i).getArrayChildren().get(j).getShopChItemName());
-                        tChild.setCheckBox(oData.get(i).getArrayChildren().get(j).getCheckBox());
-                        tChild.setShop_chil_quantity(oData.get(i).getArrayChildren().get(j).getShopChQuantity());
-                        tChild.setShop_selec_icon(oData.get(i).getArrayChildren().get(j).getShopChSectionId());
-
-                        dataTemp.add(tChild);
+                int counter = 0;
+                for (int k = 0; k < oData.get(i).getArrayChildren().size(); ++k) {
+                    if (oData.get(i).getArrayChildren().get(k).getCheckBox() == 1) {
+                        counter++;
                     }
                 }
+                for (int j = 0; j < oData.get(i).getArrayChildren().size(); ++j) {
+                    ShopParentModelMerger tChild = new ShopParentModelMerger();
+                    tChild.setIsParent(false);
+                    tChild.setIsClick(false);
+                    tChild.setShopPaId(oData.get(i).getShopPaId());
+                    tChild.setShopPaSectionName(oData.get(i).getShopPaSectionName().toString());
+                    tChild.setShopPaSectionIcon(oData.get(i).getShopPaSectionIcon().toString());
+                    tChild.setShop_chil_id(oData.get(i).getArrayChildren().get(j).getShopChId());
+                    tChild.setShop_chil_item_name(oData.get(i).getArrayChildren().get(j).getShopChItemName());
+                    tChild.setCheckBox(oData.get(i).getArrayChildren().get(j).getCheckBox());
+                    tChild.setShop_chil_quantity(oData.get(i).getArrayChildren().get(j).getShopChQuantity());
+                    tChild.setShop_selec_icon(oData.get(i).getArrayChildren().get(j).getShopChSectionId());
+
+                    dataTemp.add(tChild);
+                }
+            }
         }
         return dataTemp;
-
     }
+
     @Override
     public boolean hasStableIds() {
         return true;

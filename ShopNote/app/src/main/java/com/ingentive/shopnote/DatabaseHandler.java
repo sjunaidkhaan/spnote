@@ -647,6 +647,31 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         return shopChilList;
     }
 
+    public int shopChildCount(int secId) {
+        String selectQuery = "SELECT  * FROM " + Const.TABLE_CURRENT_LIST + " INNER JOIN " +
+                Const.TABLE_DICTIONARY + " ON " + Const.TABLE_CURRENT_LIST + "." +
+                Const.NAME_ITEM + " = " + Const.TABLE_DICTIONARY + "." + Const.NAME_ITEM +
+                " WHERE " + Const.ID_SECTION_ORDER + " = " + secId;
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(selectQuery, null);
+        int count=cursor.getCount();
+        cursor.close();
+        db.close();
+        return count;
+    }
+    public int shopChildCheckedCount(int secId) {
+        String selectQuery = "SELECT * FROM " + Const.TABLE_CURRENT_LIST + " INNER JOIN " +
+                Const.TABLE_DICTIONARY + " ON " + Const.TABLE_CURRENT_LIST + "." +
+                Const.NAME_ITEM + " = " + Const.TABLE_DICTIONARY + "." + Const.NAME_ITEM +
+                " WHERE " + Const.ID_SECTION_ORDER + " = " + secId +" AND "+Const.NAME_CHECKED +"="+1;
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(selectQuery, null);
+        int count=cursor.getCount();
+        cursor.close();
+        db.close();
+        return count;
+    }
+
     /*public List<HistoryChildModel>getHisChil(){
         List<HistoryChildModel> histChilList = new ArrayList<HistoryChildModel>();
         String selectQuery = "SELECT  * FROM " + Const.TABLE_HISTORY;
