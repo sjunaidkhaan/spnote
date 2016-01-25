@@ -177,7 +177,6 @@ public class ListFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-
         prefs = getActivity().getSharedPreferences(MyPREFERENCES, getActivity().MODE_PRIVATE);
         String restoredText = prefs.getString(first_time_dialog, null);
         if (restoredText == null) {

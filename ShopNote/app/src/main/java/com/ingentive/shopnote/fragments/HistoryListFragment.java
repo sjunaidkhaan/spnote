@@ -162,7 +162,6 @@ public class HistoryListFragment extends Fragment {
         }
         return super.onOptionsItemSelected(item);
     }
-
     public void showDialog() {
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(getActivity())
                 .setMessage("Your history stores your completed purchased for your records." +
@@ -227,7 +226,6 @@ public class HistoryListFragment extends Fragment {
         super.setMenuVisibility(menuVisible);
         if (menuVisible) {
             if (getActivity() != null) {
-
                 getData();
                 mAdapter = new HistoryListAdapter(getActivity(), searchItem, R.layout.custom_row_history);
                 mListView.setAdapter(mAdapter);
@@ -240,7 +238,6 @@ public class HistoryListFragment extends Fragment {
         getData();
         mAdapter = new HistoryListAdapter(getActivity(), searchItem, R.layout.custom_row_history);
         mListView.setAdapter(mAdapter);
-
         prefs = this.getActivity().getSharedPreferences(HISTORYPREFERENCES, Context.MODE_PRIVATE);
         String restoredText = prefs.getString(history_dialog, null);
         if (restoredText == null) {
