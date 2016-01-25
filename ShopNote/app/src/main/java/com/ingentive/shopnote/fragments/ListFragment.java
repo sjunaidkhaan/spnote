@@ -3,12 +3,10 @@ package com.ingentive.shopnote.fragments;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
-import android.content.pm.ApplicationInfo;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -32,18 +30,14 @@ import java.util.List;
 //jk
 public class ListFragment extends Fragment {
 
-    AlertDialog.Builder builder1;
-    AlertDialog.Builder alertDialogBuilder;
-    SwipeMenuListView mListView;
-    DatabaseHandler db;
-    CurrentListAdapter mAdapter;
-    List<CurrentListModel> currList;
-    private static final String MyPREFERENCES = "MyPrefs";
-    private static final String dbCreated = "dbKey";
-    private static final String first_time_dialog = "first_time";
-    private static SharedPreferences prefs;
-    private List<ApplicationInfo> mAppList;
-    private static SharedPreferences.Editor editor;
+    private AlertDialog.Builder alertDialogBuilder;
+    private SwipeMenuListView mListView;
+    private CurrentListAdapter mAdapter;
+    private List<CurrentListModel> currList;
+    private final String MyPREFERENCES = "MyPrefs";
+    private final String first_time_dialog = "first_time";
+    private SharedPreferences prefs;
+    private SharedPreferences.Editor editor;
 
     public ListFragment() {
         // Required empty public constructor
@@ -52,7 +46,6 @@ public class ListFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //Toast.makeText(getActivity(),"ListFragment onCreate ",Toast.LENGTH_LONG).show();
     }
 
     @Override
@@ -60,8 +53,7 @@ public class ListFragment extends Fragment {
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_list, null);
         mListView = (SwipeMenuListView) rootView.findViewById(R.id.lv_list);
-        db = new DatabaseHandler(getActivity());
-        currList = db.getCurrList();
+        currList = DatabaseHandler.getInstance(getActivity()).getCurrList();
         mAdapter = new CurrentListAdapter(getActivity(), currList, R.layout.custom_row_list);
         mListView.setAdapter(mAdapter);
 
@@ -91,14 +83,10 @@ public class ListFragment extends Fragment {
             public boolean onMenuItemClick(int position, SwipeMenu menu, int index) {
 
                 switch (index) {
-
                     case 0:
-                        // delete
-//					delete(item);
-                        db = new DatabaseHandler(getActivity());
                         CurrentListModel model = new CurrentListModel();
                         model.setCurrListId(mAdapter.getItem(position).getCurrListId());
-                        db.deleteItem(model);
+                        DatabaseHandler.getInstance(getActivity()).deleteItem(model);
                         currList.remove(position);
                         mAdapter.notifyDataSetChanged();
                         break;
@@ -127,12 +115,10 @@ public class ListFragment extends Fragment {
         mListView.setOnMenuStateChangeListener(new SwipeMenuListView.OnMenuStateChangeListener() {
             @Override
             public void onMenuOpen(int position) {
-                //Toast.makeText(getActivity(), position + " OPEN", Toast.LENGTH_SHORT).show();
             }
 
             @Override
             public void onMenuClose(int position) {
-                //Toast.makeText(getActivity(), position + " CLOSE", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -141,16 +127,11 @@ public class ListFragment extends Fragment {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view,
                                            int position, long id) {
-                //Toast.makeText(getActivity(), position + " long click", Toast.LENGTH_SHORT).show();
                 return false;
             }
         });
 
-        ///
-
         mListView.setSwipeDirection(SwipeMenuListView.DIRECTION_LEFT);
-
-        //Toast.makeText(getActivity(),"size "+currList.size(), Toast.LENGTH_SHORT).show();
         return rootView;
     }
 
@@ -158,28 +139,6 @@ public class ListFragment extends Fragment {
         return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp,
                 getResources().getDisplayMetrics());
     }
-
-//    private void open(ApplicationInfo item) {
-//        // open app
-//        Intent resolveIntent = new Intent(Intent.ACTION_MAIN, null);
-//        resolveIntent.addCategory(Intent.CATEGORY_LAUNCHER);
-//        resolveIntent.setPackage(item.packageName);
-//        List<ResolveInfo> resolveInfoList = getActivity().getPackageManager()
-//                .queryIntentActivities(resolveIntent, 0);
-//        if (resolveInfoList != null && resolveInfoList.size() > 0) {
-//            ResolveInfo resolveInfo = resolveInfoList.get(0);
-//            String activityPackageName = resolveInfo.activityInfo.packageName;
-//            String className = resolveInfo.activityInfo.name;
-//
-//            Intent intent = new Intent(Intent.ACTION_MAIN);
-//            intent.addCategory(Intent.CATEGORY_LAUNCHER);
-//            ComponentName componentName = new ComponentName(
-//                    activityPackageName, className);
-//
-//            intent.setComponent(componentName);
-//            startActivity(intent);
-//        }
-//    }
 
     public boolean onCreateOptionsMenu(Menu menu) {
         getActivity().getMenuInflater().inflate(R.menu.menu_main, menu);
@@ -189,7 +148,6 @@ public class ListFragment extends Fragment {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
-        //Toast.makeText(getActivity(), "id" + id, Toast.LENGTH_LONG).show();
         if (id == 1) {
             mListView.setSwipeDirection(SwipeMenuListView.DIRECTION_LEFT);
             return true;
@@ -208,9 +166,7 @@ public class ListFragment extends Fragment {
         if (menuVisible) {
 
             if (getActivity() != null) {
-                Log.d("Fragment", "visible list fragment");
-                db = new DatabaseHandler(getActivity());
-                currList = db.getCurrList();
+                currList = DatabaseHandler.getInstance(getActivity()).getCurrList();
                 mAdapter = new CurrentListAdapter(getActivity(), currList, R.layout.custom_row_list);
                 mListView.setAdapter(mAdapter);
                 mAdapter.notifyDataSetChanged();
@@ -236,7 +192,6 @@ public class ListFragment extends Fragment {
             currModel.setOrderNo(1);
             currModel.setItemName("Bread");
             currModel.setQuantity("1");
-            //currModel.setChecked(Integer.parseInt(cursor.getString(3)));
             currModel.setFavSelectedIcon(R.drawable.favorite_selected);
             tempList.add(currModel);
             currModel = new CurrentListModel();
@@ -244,7 +199,6 @@ public class ListFragment extends Fragment {
             currModel.setOrderNo(2);
             currModel.setItemName("Milk");
             currModel.setQuantity("1");
-            //currModel.setChecked(Integer.parseInt(cursor.getString(3)));
             currModel.setFavSelectedIcon(R.drawable.favorite_selected);
             tempList.add(currModel);
             currModel = new CurrentListModel();
@@ -259,8 +213,7 @@ public class ListFragment extends Fragment {
             mListView.setAdapter(mAdapter);
             mAdapter.notifyDataSetChanged();
         } else {
-            db = new DatabaseHandler(getActivity());
-            currList = db.getCurrList();
+            currList = DatabaseHandler.getInstance(getActivity()).getCurrList();
             mAdapter = new CurrentListAdapter(getActivity(), currList, R.layout.custom_row_list);
             mListView.setAdapter(mAdapter);
             mAdapter.notifyDataSetChanged();
@@ -278,7 +231,6 @@ public class ListFragment extends Fragment {
         alertDialogBuilder.setPositiveButton("Got it", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface arg0, int arg1) {
-                // Toast.makeText(MainActivity.this, "You clicked yes button", Toast.LENGTH_LONG).show();
                 secondDialog();
             }
         });
@@ -296,7 +248,6 @@ public class ListFragment extends Fragment {
         alertDialogBuilder.setPositiveButton("Got it", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface arg0, int arg1) {
-                // Toast.makeText(MainActivity.this, "You clicked yes button", Toast.LENGTH_LONG).show();
             }
         });
         AlertDialog alertDialog = alertDialogBuilder.create();

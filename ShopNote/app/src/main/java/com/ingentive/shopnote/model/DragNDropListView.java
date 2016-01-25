@@ -21,7 +21,6 @@ import android.graphics.Bitmap;
 import android.graphics.PixelFormat;
 import android.os.Handler;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.Display;
 import android.view.Gravity;
 import android.view.MotionEvent;
@@ -86,7 +85,7 @@ public class DragNDropListView extends ExpandableListView {
 		if (prevY < 0) {
 			prevY = y;
 		}
-		Log.d(TAG, "Motion event " + event.getAction());
+		//Log.d(TAG, "Motion event " + event.getAction());
 		int flatPosition = pointToPosition(x, y);
 		dragRatio = getHeight() / screenHeight;
 		long packagedPosition = getExpandableListPosition(flatPosition);

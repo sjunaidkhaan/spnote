@@ -15,11 +15,8 @@ import com.ingentive.shopnote.model.HistoryChildModel;
 import com.ingentive.shopnote.model.HistoryModel;
 import com.ingentive.shopnote.model.HistoryParentModel;
 import com.ingentive.shopnote.model.InventoryModel;
-import com.ingentive.shopnote.model.ListAddBasicModel;
 import com.ingentive.shopnote.model.ManageSectionModel;
-import com.ingentive.shopnote.model.ScreenTextModel;
 import com.ingentive.shopnote.model.SectionModel;
-import com.ingentive.shopnote.model.SettingModel;
 import com.ingentive.shopnote.model.ShopChildModel;
 import com.ingentive.shopnote.model.ShopParentModel;
 
@@ -33,15 +30,21 @@ import java.util.List;
 public class DatabaseHandler extends SQLiteOpenHelper {
 
     List<String> mList;
+    private static DatabaseHandler mInstance;
+
+    public static synchronized DatabaseHandler getInstance(Context context) {
+        if (mInstance == null|| mInstance.equals("")) {
+            mInstance = new DatabaseHandler(context.getApplicationContext());
+        }
+        return mInstance;
+    }
 
     public DatabaseHandler(Context context) {
         super(context, Const.DATABASE_NAME, null, Const.DATABASE_VERSION);
-        //Log.d("DbHandler", "Constructor"+TABLE_DICTIONARY);
     }
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        //Log.d("DbHandler", "OnCreate()"+TABLE_DICTIONARY);
         db.execSQL(Const.CREATE_TABLE_DICTIONARY);
         db.execSQL(Const.CREATE_TABLE_SECTION_ORDER);
         db.execSQL(Const.CREATE_TABLE_CURRENT_LIST);
@@ -65,15 +68,6 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         onCreate(db);
     }
 
-    void addScreenText(ScreenTextModel screen) {
-        SQLiteDatabase db = this.getWritableDatabase();
-        ContentValues values;
-        values = new ContentValues();
-        values.put(Const.NAME_NAME, screen.getmName());
-        values.put(Const.NAME_TEXT, screen.getmTxt());
-        db.insert(Const.TABLE_SCREEN_TEXT, null, values);
-        db.close();
-    }
 
     void addDictionary(DictionaryModel dictionaryModel) {
         SQLiteDatabase db = this.getWritableDatabase();
@@ -82,6 +76,18 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         values.put(Const.NAME_ITEM, dictionaryModel.getItemName());
         values.put(Const.ID_SECTION_ORDER, dictionaryModel.getSectionId());
         db.insert(Const.TABLE_DICTIONARY, null, values);
+        db.close();
+    }
+
+    void addDictionary(List<DictionaryModel> dicList) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values;
+        for (int i = 0; i < dicList.size(); i++) {
+            values = new ContentValues();
+            values.put(Const.NAME_ITEM, dicList.get(i).getItemName());
+            values.put(Const.ID_SECTION_ORDER, dicList.get(i).getSectionId());
+            db.insert(Const.TABLE_DICTIONARY, null, values);
+        }
         db.close();
     }
 
@@ -94,6 +100,20 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         values.put(Const.IMAGE_SECTION_ORDER, sectionModel.getSectionImage());
         values.put(Const.DEFAULT_SECTION_ORDER, sectionModel.getDefaultSection());
         db.insert(Const.TABLE_SECTION_ORDER, null, values);
+        db.close();
+    }
+
+    void addSection(List<SectionModel> secList) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values;
+        for (int i = 0; i < secList.size(); i++) {
+            values = new ContentValues();
+            values.put(Const.NAME_SECTION_ORDER_NO, secList.get(i).getSectionOrderNo());
+            values.put(Const.NAME_SECTION_ORDER, secList.get(i).getSectionName());
+            values.put(Const.IMAGE_SECTION_ORDER, secList.get(i).getSectionImage());
+            values.put(Const.DEFAULT_SECTION_ORDER, secList.get(i).getDefaultSection());
+            db.insert(Const.TABLE_SECTION_ORDER, null, values);
+        }
         db.close();
     }
 
@@ -123,7 +143,6 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                 + " = " + "\"" + curr.getItemName() + "\"";
         Cursor cursor = db.rawQuery(sqlQuery, null);
         if (cursor != null && cursor.getCount() != 0) {
-            Log.d("addCurrentList ", "item already exit ");
         } else {
             db.insert(Const.TABLE_CURRENT_LIST, null, values);
         }
@@ -137,7 +156,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         values.put(Const.NAME_ITEM, dic.getItemName());
         values.put(Const.ID_SECTION_ORDER, dic.getSectionId());
         String sqlQuery = "SELECT * FROM " + Const.TABLE_DICTIONARY + " WHERE " + Const.NAME_ITEM
-                + " = "+"\""+ dic.getItemName()+"\"";
+                + " = " + "\"" + dic.getItemName() + "\"";
         Cursor c = db.rawQuery(sqlQuery, null);
         if (c != null && c.getCount() != 0) {
 
@@ -188,32 +207,15 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         db.close();
     }
 
-    void addSetting(SettingModel setting) {
-        SQLiteDatabase db = this.getWritableDatabase();
-        ContentValues values;
-        values = new ContentValues();
-        values.put(Const.NAME_REGISTERED_EMAIL, setting.getRegEmail());
-        values.put(Const.NAME_FAVORIES_BY_SECTION, setting.getFavBySection());
-        values.put(Const.NAME_SHOP_BY_SECTION, setting.getShopBySection());
-        values.put(Const.NAME_LIST_INTRO, setting.getListIntro());
-        values.put(Const.NAME_SHOP_INTRO, setting.getShopIntro());
-        values.put(Const.NAME_FAVORIT_INTRO, setting.getFavIntro());
-        values.put(Const.NAME_HISTORY_INTRO, setting.getHistoryIntro());
-        values.put(Const.NAME_LIST_EDIT_INTRO, setting.getListEditIntro());
-        values.put(Const.NAME_SECTIONS_INTRO, setting.getSectionIntro());
-        values.put(Const.NAME_SEARCH_INTRO, setting.getSearchIntro());
-        values.put(Const.NAME_ADD_INTRO, setting.getAddIntro());
-        values.put(Const.NAME_USER_RATED, setting.getUserRated());
-        db.insert(Const.TABLE_SETTING, null, values);
-        db.close();
-    }
+
     void makeFav(String itemName) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values;
         values = new ContentValues();
-        values.put(Const.NAME_ITEM, "\""+itemName+"\"");
+        values.put(Const.NAME_ITEM, "\"" + itemName + "\"");
         db.insert(Const.TABLE_FAVORIT_LIST, null, values);
     }
+
     public void updateCheckItem(CurrentListModel curr) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
@@ -237,6 +239,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         db.close();
         return mList;
     }
+
     public List<String> getFavItems() {
         mList = new ArrayList<String>();
         String selectQuery = "SELECT * FROM " + Const.TABLE_FAVORIT_LIST + " INNER JOIN " +
@@ -256,7 +259,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
     public void removeFavorit(FavoritListModel fav) {
         SQLiteDatabase db = this.getWritableDatabase();
-        String query = "DELETE from " + Const.TABLE_FAVORIT_LIST + " where " + Const.NAME_ITEM + "=" +"'" +fav.getItemName() +"'";
+        String query = "DELETE from " + Const.TABLE_FAVORIT_LIST + " where " + Const.NAME_ITEM + "=" + "'" + fav.getItemName() + "'";
         Log.d("QueryFavoriteDelete:", query);
         db.execSQL(query);
         db.close();
@@ -308,23 +311,6 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         cursor.close();
         db.close();
         return dicList;
-    }
-
-    public List<ListAddBasicModel> getItemName() {
-        List<ListAddBasicModel> mList = new ArrayList<ListAddBasicModel>();
-        String selectQuery = "SELECT * FROM " + Const.TABLE_DICTIONARY;
-        SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.rawQuery(selectQuery, null);
-        if (cursor.moveToFirst()) {
-            do {
-                ListAddBasicModel listModel = new ListAddBasicModel();
-                listModel.setItemName(cursor.getString(1));
-                mList.add(listModel);
-            } while (cursor.moveToNext());
-        }
-        cursor.close();
-        db.close();
-        return mList;
     }
 
     public List<String> getFavItem() {
@@ -409,6 +395,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         db.close();
         return iconName;
     }
+
     public String getSectionIcon(String sectionName) {
         String selectQuery = "SELECT * FROM " + Const.TABLE_SECTION_ORDER
                 + " WHERE " + Const.NAME_SECTION_ORDER + "=" + "\"" + sectionName + "\"";
@@ -426,6 +413,38 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         db.close();
         return iconName;
     }
+
+    public String getSectionIconWithItemName(String itemName) {
+        List<CurrentListModel> currList = new ArrayList<CurrentListModel>();
+        String selectQuery = "SELECT  * FROM " + Const.TABLE_DICTIONARY +
+                " WHERE " + Const.NAME_ITEM + " = " + "\"" + itemName + "\"";
+        int secId = 0;
+        String secIcon = "unknown.png";
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(selectQuery, null);
+        if (cursor != null && cursor.getCount() != 0) {
+            cursor.moveToFirst();
+            secId = Integer.parseInt(cursor.getString(2));
+
+            selectQuery = "SELECT  * FROM " + Const.TABLE_SECTION_ORDER +
+                    " WHERE " + Const.ID_PRIMARY_KEY + " = " + secId;
+
+            db = this.getReadableDatabase();
+            cursor = db.rawQuery(selectQuery, null);
+            if (cursor != null && cursor.getCount() != 0) {
+                cursor.moveToFirst();
+
+                secIcon = cursor.getString(3);
+            }
+            cursor.close();
+            db.close();
+            return secIcon;
+        }
+        cursor.close();
+        db.close();
+        return secIcon;
+    }
+
     public boolean isFavorit(String itemName) {
         String sqlQuery = "SELECT * FROM " + Const.TABLE_FAVORIT_LIST + " WHERE " + Const.NAME_ITEM
                 + " = " + "\"" + itemName + "\"";
@@ -477,7 +496,6 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     public boolean isExist(int secId, String itemName) {
         String sqlQuery = "SELECT * FROM " + Const.TABLE_DICTIONARY + " WHERE " + Const.NAME_ITEM
                 + " = " + "\"" + itemName + "\"" + " AND " + Const.ID_SECTION_ORDER + " = " + secId;
-        Log.d("isExist ", "sqlQuery " + sqlQuery);
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery(sqlQuery, null);
         if (cursor != null && cursor.getCount() != 0) {
@@ -559,6 +577,28 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         return histList;
     }
 
+    public List<CurrentListModel> getShoppingData(int secId) {
+        List<CurrentListModel> currList = new ArrayList<CurrentListModel>();
+        String selectQuery = "SELECT  * FROM " + Const.TABLE_CURRENT_LIST + " INNER JOIN " +
+                Const.TABLE_DICTIONARY + " ON " + Const.TABLE_CURRENT_LIST + "." +
+                Const.NAME_ITEM + " = " + Const.TABLE_DICTIONARY + "." + Const.NAME_ITEM +
+                " WHERE " + Const.ID_SECTION_ORDER + " = " + secId;
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(selectQuery, null);
+        if (cursor.moveToFirst()) {
+            do {
+                CurrentListModel currModel = new CurrentListModel();
+                currModel.setCurrListId(Integer.parseInt(cursor.getString(0)));
+                currModel.setItemName(cursor.getString(2));
+                currModel.setQuantity(cursor.getString(4));
+                currList.add(currModel);
+            } while (cursor.moveToNext());
+        }
+        cursor.close();
+        db.close();
+        return currList;
+    }
+
     public List<HistoryParentModel> getHisPar() {
         List<HistoryParentModel> histParList = new ArrayList<HistoryParentModel>();
         String selectQuery = "SELECT  * FROM " + Const.TABLE_HISTORY;
@@ -636,7 +676,6 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                     shopChilModel.setShopChQuantity("1");
                     Log.d("ShopChildModel ", "if quantity  " + shopChilModel.getShopChQuantity());
                 } else {
-                    Log.d("ShopChildModel ", "else quantity  " + str);
                     shopChilModel.setShopChQuantity(cursor.getString(4));
                 }
                 shopChilList.add(shopChilModel);
@@ -654,19 +693,20 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                 " WHERE " + Const.ID_SECTION_ORDER + " = " + secId;
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery(selectQuery, null);
-        int count=cursor.getCount();
+        int count = cursor.getCount();
         cursor.close();
         db.close();
         return count;
     }
+
     public int shopChildCheckedCount(int secId) {
         String selectQuery = "SELECT * FROM " + Const.TABLE_CURRENT_LIST + " INNER JOIN " +
                 Const.TABLE_DICTIONARY + " ON " + Const.TABLE_CURRENT_LIST + "." +
                 Const.NAME_ITEM + " = " + Const.TABLE_DICTIONARY + "." + Const.NAME_ITEM +
-                " WHERE " + Const.ID_SECTION_ORDER + " = " + secId +" AND "+Const.NAME_CHECKED +"="+1;
+                " WHERE " + Const.ID_SECTION_ORDER + " = " + secId + " AND " + Const.NAME_CHECKED + "=" + 1;
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery(selectQuery, null);
-        int count=cursor.getCount();
+        int count = cursor.getCount();
         cursor.close();
         db.close();
         return count;
@@ -727,6 +767,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                 new String[]{String.valueOf(model.getManageSectionId())});
         db.close();
     }
+
     public int getSectionId(String sectionName) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
@@ -750,7 +791,6 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         values.put(Const.ID_SECTION_ORDER, secId);
         int rows = db.update(Const.TABLE_DICTIONARY, values, Const.NAME_ITEM + " = ?",
                 new String[]{String.valueOf(itemName)});
-        Log.d("Affectedrows; ", rows + "");
         db.close();
     }
 
@@ -760,7 +800,6 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         int orderNo = 0;
         String selectQuery = "SELECT  * FROM " + Const.TABLE_CURRENT_LIST + " ORDER BY "
                 + Const.NAME_SECTION_ORDER_NO + " DESC LIMIT 1";
-        Log.d("secAssignToItem ", "selectQuery " + selectQuery);
         Cursor cursor = db.rawQuery(selectQuery, null);
         cursor.moveToFirst();
         if (cursor != null && cursor.getCount() != 0) {
@@ -773,15 +812,14 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         db.close();
         return orderNo;
     }
+
     public void secAssignIcon(String newIcon, int unknownsecId) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
         values = new ContentValues();
         values.put(Const.IMAGE_SECTION_ORDER, newIcon);
-        int rows = db.update(Const.TABLE_SECTION_ORDER, values, Const.ID_PRIMARY_KEY + " = ?",
+        db.update(Const.TABLE_SECTION_ORDER, values, Const.ID_PRIMARY_KEY + " = ?",
                 new String[]{String.valueOf(unknownsecId)});
-        Log.d("newIcon; ", newIcon + "");
-        Log.d("unknownsecId; ", unknownsecId + "");
         db.close();
     }
 
@@ -791,12 +829,14 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                 new String[]{String.valueOf(curr.getCurrListId())});
         db.close();
     }
+
     public void deleteDateBaseFromHistory(String hisDate) {
         SQLiteDatabase db = this.getWritableDatabase();
         db.delete(Const.TABLE_HISTORY, Const.NAME_DATE_PURCHASED + " = ?",
                 new String[]{String.valueOf(hisDate)});
         db.close();
     }
+
     public void deleteItemBaseFromHistory(int itemId) {
         SQLiteDatabase db = this.getWritableDatabase();
         db.delete(Const.TABLE_HISTORY, Const.ID_PRIMARY_KEY + " = ?",

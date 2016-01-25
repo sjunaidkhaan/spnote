@@ -25,14 +25,11 @@ import java.util.List;
 
 public class HistoryFragment extends Fragment {
 
-    public static SharedPreferences.Editor editor;
-    public static final String MYPREFERENCES = "MyPrefs";
-    public static final String dbCreated = "dbKey";
-    public static final String first_time_dialog = "first_time";
-    public static SharedPreferences prefs;
-    // private ListView mListView;
+    private SharedPreferences.Editor editor;
+    private final String MYPREFERENCES = "MyPrefs";
+    private final String first_time_dialog = "first_time";
+    private SharedPreferences prefs;
     private ExpandableListView mExpHistoryList;
-    private DatabaseHandler db;
     private HistoryCustomAdapter mAdapter;
     private ArrayList<String> arrayPar = new ArrayList<String>();
     private HistoryParentModel parentModel = new HistoryParentModel();
@@ -62,15 +59,11 @@ public class HistoryFragment extends Fragment {
             editor.putString(first_time_dialog, "success");
             editor.commit();
         }
-        //mExpHistoryList = (ExpandableListView) rootView.findViewById(R.id.expandable_history_list);
-        db = new DatabaseHandler(getActivity());
-        hisParList = db.getHisPar();
+        hisParList = DatabaseHandler.getInstance(getActivity()).getHisPar();
         for (int i = 0; i < hisParList.size(); i++) {
             if (!arrayPar.contains(hisParList.get(i).getHisPaDatePurchased().toString())) {
                 arrayPar.add(hisParList.get(i).getHisPaDatePurchased().toString());
-                // Toast.makeText(getActivity(), "" + hisParList.get(i).getHisPaDatePurchased().toString(), Toast.LENGTH_LONG).show();
-                db = new DatabaseHandler(getActivity());
-                hisChiList = db.getHisChil(hisParList.get(i).getHisPaDatePurchased().toString());
+                hisChiList = DatabaseHandler.getInstance(getActivity()).getHisChil(hisParList.get(i).getHisPaDatePurchased().toString());
                 parentModel = new HistoryParentModel();
                 parentModel.setHisPaDatePurchased(hisParList.get(i).getHisPaDatePurchased().toString());
                 parentModel.setArrayChildren(hisChiList);
@@ -90,12 +83,12 @@ public class HistoryFragment extends Fragment {
                 .setPositiveButton("Got it", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface arg0, int arg1) {
-                        // Toast.makeText(MainActivity.this, "You clicked yes button", Toast.LENGTH_LONG).show();
                     }
                 });
         AlertDialog alertDialog = alertDialogBuilder.create();
         alertDialog.show();
     }
+
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         // TODO Add your menu entries here

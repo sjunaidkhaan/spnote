@@ -1,15 +1,16 @@
 package com.ingentive.shopnote;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -23,42 +24,47 @@ import android.widget.Toast;
 import com.ingentive.shopnote.fragments.MyFirstNoteFragment;
 import com.ingentive.shopnote.model.CurrentListModel;
 import com.ingentive.shopnote.model.DictionaryModel;
-import com.ingentive.shopnote.model.FavoritListModel;
-import com.ingentive.shopnote.model.HistoryModel;
-import com.ingentive.shopnote.model.InventoryModel;
-import com.ingentive.shopnote.model.ScreenTextModel;
 import com.ingentive.shopnote.model.SectionModel;
-import com.ingentive.shopnote.model.SettingModel;
 
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements FragmentDrawer.FragmentDrawerListener {
 
     private Toolbar mToolbar;
     private FragmentDrawer drawerFragment;
-    public DatabaseHandler db;
-    public static String LOG_MSG = "MAINACTIVITY";
-    String fileName = "empty file";
-
-    private static SharedPreferences.Editor editor;
-    private static final String MyPREFERENCES = "MyPrefs";
-    private static final String dbCreated = "dbKey";
-    private static final String first_time_dialog = "first_time";
-    private static SharedPreferences prefs;
-    TextView tvToolbarTitle;
-    EditText edToolbarTitle;
+    private SharedPreferences.Editor editor;
+    private final String MyPREFERENCES = "MyPrefs";
+    private final String dbCreated = "dbKey";
+    private SharedPreferences prefs;
+    private TextView tvToolbarTitle;
+    private EditText edToolbarTitle;
     public static String title = "My First Shopnote";
-
+    public boolean dbCreate = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        //jk
+        try {
+            prefs = getSharedPreferences(MyPREFERENCES, MODE_PRIVATE);
+            String restoredText = prefs.getString(dbCreated, null);
+            if (restoredText == null) {
+                editor = prefs.edit();
+                editor.putString(dbCreated, "success");
+                editor.commit();
+                BackgroundTask task = new BackgroundTask(MainActivity.this);
+                task.execute();
+            } else {
+                dbCreate = true;
+            }
+        } catch (Exception e) {
+            Toast.makeText(getApplicationContext(),
+                    "Problems: " + e.getMessage(), Toast.LENGTH_LONG).show();
+        }
         edToolbarTitle = (EditText) findViewById(R.id.edittext_toolbar_title);
         tvToolbarTitle = (TextView) findViewById(R.id.textview_title_toolbar);
         tvToolbarTitle.setOnClickListener(new View.OnClickListener() {
@@ -67,12 +73,9 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
                 tvToolbarTitle.setVisibility(View.GONE);
                 edToolbarTitle.setVisibility(View.VISIBLE);
                 edToolbarTitle.requestFocus();
-                ((InputMethodManager)getApplication().getSystemService(Context.INPUT_METHOD_SERVICE))
+                ((InputMethodManager) getApplication().getSystemService(Context.INPUT_METHOD_SERVICE))
                         .showSoftInput(edToolbarTitle, InputMethodManager.SHOW_FORCED);
-                //edToolbarTitle.setSelection(edToolbarTitle.getText().toString().length());
-                db = new DatabaseHandler(getApplication());
-                String listName = db.getListName();
-                //Toast.makeText(getApplication(),"listName :"+listName,Toast.LENGTH_LONG).show();
+                String listName = DatabaseHandler.getInstance(MainActivity.this).getListName();
                 edToolbarTitle.setText(listName);
             }
         });
@@ -80,25 +83,18 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
         edToolbarTitle.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
-            /* When focus is lost check that the text field
-            * has valid values.
-            */
                 if (!hasFocus) {
                     ((InputMethodManager) getApplication().getSystemService(Context.INPUT_METHOD_SERVICE))
                             .hideSoftInputFromWindow(edToolbarTitle.getWindowToken(), 0);
                     if (edToolbarTitle.getText().toString().replaceAll(" ", "").length() > 0) {
                         CurrentListModel curr = new CurrentListModel();
                         curr.setListName(edToolbarTitle.getText().toString());
-                        db.updateListName(curr);
+                        DatabaseHandler.getInstance(MainActivity.this).updateListName(curr);
                         tvToolbarTitle.setText(edToolbarTitle.getText().toString());
                         title = edToolbarTitle.getText().toString();
                         tvToolbarTitle.setVisibility(View.VISIBLE);
                         edToolbarTitle.setVisibility(View.GONE);
                     }
-//                    Toast.makeText(MainActivity.this, "in Focus "+edToolbarTitle.getText().toString(), Toast.LENGTH_SHORT).show();
-//                    tvToolbarTitle.setText(edToolbarTitle.getText().toString());
-//                    tvToolbarTitle.setVisibility(View.VISIBLE);
-//                    edToolbarTitle.setVisibility(View.GONE);
                 }
             }
         });
@@ -117,8 +113,7 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
                                 if (edToolbarTitle.getText().toString().replaceAll(" ", "").length() > 0) {
                                     CurrentListModel curr = new CurrentListModel();
                                     curr.setListName(edToolbarTitle.getText().toString());
-                                    db.updateListName(curr);
-                                    //db.changeListName(edToolbarTitle.getText().toString());
+                                    DatabaseHandler.getInstance(MainActivity.this).updateListName(curr);
                                     tvToolbarTitle.setText(edToolbarTitle.getText().toString());
                                     title = edToolbarTitle.getText().toString();
                                     tvToolbarTitle.setVisibility(View.VISIBLE);
@@ -130,35 +125,7 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
                         return false;
                     }
                 });
-        try {
-            prefs = getSharedPreferences(MyPREFERENCES, MODE_PRIVATE);
-            String restoredText = prefs.getString(dbCreated, null);
-            if (restoredText == null) {
-                editor = prefs.edit();
-                editor.putString(dbCreated, "success");
-                editor.commit();
-                fileName = "dictionary";
-                PlayWithRawFiles(fileName);
-                fileName = "sectionorder";
-                PlayWithRawFiles(fileName);
-                //fileName = "currentlist";
-                //PlayWithRawFiles(fileName);
-                //fileName = "favoritlist";
-                //PlayWithRawFiles(fileName);
-                fileName = "inventrylist";
-                PlayWithRawFiles(fileName);
-                fileName = "settinglist";
-                PlayWithRawFiles(fileName);
-                // fileName = "historylist";
-                //PlayWithRawFiles(fileName);
-                fileName = "screentextlist";
-                PlayWithRawFiles(fileName);
-            }
-        } catch (IOException e) {
-            Toast.makeText(getApplicationContext(),
-                    "Problems: " + e.getMessage(), Toast.LENGTH_LONG).show();
-        }
-        prefs = getSharedPreferences(MyPREFERENCES, getApplication().MODE_PRIVATE);
+
         mToolbar = (Toolbar) findViewById(R.id.app_bar);
         setSupportActionBar(mToolbar);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
@@ -166,22 +133,13 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
                 getSupportFragmentManager().findFragmentById(R.id.fragment_navigation_drawer);
 
         drawerFragment.setUp(R.id.fragment_navigation_drawer, (DrawerLayout) findViewById(R.id.drawer_layout), mToolbar);
-//        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
-//        getSupportActionBar().setHomeAsUpIndicator(R.drawable.meat);
         drawerFragment.setDrawerListener(this);
-        //getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
-        if (!ActivityFavoritesSearch.fromFavoriteBackHit) {
+        if (dbCreate == true) {
             displayView(3);
-            //MyFirstNoteFragment fragment = new MyFirstNoteFragment();
-
-        } else {
-            //MyFirstNoteFragment fragment = new MyFirstNoteFragment();
-            //fragment.setTargetFragment(new FavoritsFragment(),2);
+            //MyFirstNoteFragment fragment = new MyFirstNoteFragment()
         }
     }
-
 
     @Override
     public void onDrawerItemSelected(View view, int position) {
@@ -191,41 +149,26 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
     private void displayView(int position) {
         Intent intent;
         android.support.v4.app.Fragment fragment = null;
-        //String title = getString(R.string.app_name);
-        db = new DatabaseHandler(getApplication());
-        title = db.getListName();
-        if(title==null || title.isEmpty())
-            title="My First Shopnote";
-        //Toast.makeText(getApplication(),"title "+title,Toast.LENGTH_LONG).show();
+        //displayView(3);
+        title = DatabaseHandler.getInstance(MainActivity.this).getListName();
+        if (title == null || title.isEmpty())
+            title = "My First Shopnote";
         switch (position) {
             case 0:
-                //fragment = new ShareListFragment();
-                // title = getString(R.string.title_share_list);
-                //tvToolbarTitle.setText(title);
-                //intent = new Intent(getApplication(),ActivityAddList.class);
-                //startActivity(intent);
+                intent = new Intent(getApplication(), ActivityShareList.class);
+                startActivity(intent);
                 break;
             case 1:
-                //fragment = new ManageSectionsFragment();
-                //title = getString(R.string.title_manage_sections);
-                //tvToolbarTitle.setText(title);
                 intent = new Intent(getApplication(), ActivityManageSections.class);
                 startActivity(intent);
                 break;
             case 2:
-                //fragment = new FeedbackFragment();
-                //title = getString(R.string.title_send_feedback);
-                //tvToolbarTitle.setText(title);
+                intent = new Intent(getApplication(), ActivityFeedBack.class);
+                startActivity(intent);
                 break;
             case 3:
                 fragment = new MyFirstNoteFragment();
-                //title = getString(R.string.title_first_note);
                 break;
-            /*case 4:
-                Intent intent = new Intent(MainActivity.this,MainTestNavigation.class);
-                startActivity(intent);
-                title = getString(R.string.title_activity_nav);
-                break;*/
             default:
                 break;
         }
@@ -235,88 +178,8 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
             fragmentTransaction.replace(R.id.container_body, fragment);
             fragmentTransaction.commit();
-
-            // set the toolbar title
-//          getSupportActionBar().setTitle(title);
-            //jk
             tvToolbarTitle.setText(title);
-            //
         }
-    }
-
-    public void PlayWithRawFiles(String filname) throws IOException {
-        String str = "";
-        String[] separated;
-        //StringBuffer buf = new StringBuffer();
-        InputStream file_Name = this.getAssets().open(filname);
-        BufferedReader reader = new BufferedReader(new InputStreamReader(file_Name));
-        if (file_Name != null) {
-            if (filname.equals("dictionary")) {
-                db = new DatabaseHandler(this);
-                while ((str = reader.readLine()) != null) {
-                    separated = str.split(",");
-                    db.addDictionary(new DictionaryModel(separated[1], Integer.parseInt(separated[0])));
-                }
-                db.close();
-            } else if (filname.equals("sectionorder")) {
-                db = new DatabaseHandler(this);
-                while ((str = reader.readLine()) != null) {
-                    separated = str.split(",");
-                    db.addSection(new SectionModel(Integer.parseInt(separated[0]), separated[1],
-                            separated[2], Integer.parseInt(separated[3])));
-                }
-                db.close();
-            } else if (filname.equals("currentlist")) {
-                db = new DatabaseHandler(this);
-                while ((str = reader.readLine()) != null) {
-                    separated = str.split(",");
-                    db.addCurrentList(new CurrentListModel(Integer.parseInt(separated[0]), separated[1],
-                            Integer.parseInt(separated[2]), separated[3], separated[4], Integer.parseInt(separated[5])));
-                }
-                db.close();
-            } else if (filname.equals("favoritlist")) {
-                db = new DatabaseHandler(this);
-                while ((str = reader.readLine()) != null) {
-                    separated = str.split(",");
-                    db.addFavorit(new FavoritListModel(separated[0]));
-                }
-                db.close();
-            } else if (filname.equals("inventrylist")) {
-                db = new DatabaseHandler(this);
-                while ((str = reader.readLine()) != null) {
-                    separated = str.split(",");
-                    db.addInventry(new InventoryModel(Integer.parseInt(separated[0]), separated[1]));
-                }
-                db.close();
-            } else if (filname.equals("settinglist")) {
-                db = new DatabaseHandler(this);
-                while ((str = reader.readLine()) != null) {
-                    separated = str.split(",");
-                    db.addSetting(new SettingModel(separated[0], Integer.parseInt(separated[1]),
-                            Integer.parseInt(separated[2]), Integer.parseInt(separated[3]),
-                            Integer.parseInt(separated[4]), Integer.parseInt(separated[5]),
-                            Integer.parseInt(separated[6]), Integer.parseInt(separated[7]),
-                            Integer.parseInt(separated[8]), Integer.parseInt(separated[9]),
-                            Integer.parseInt(separated[10]), Integer.parseInt(separated[11])));
-                }
-                db.close();
-            } else if (filname.equals("historylist")) {
-                db = new DatabaseHandler(this);
-                while ((str = reader.readLine()) != null) {
-                    separated = str.split(",");
-                    db.addHistory(new HistoryModel(separated[0], separated[1], separated[2]));
-                }
-                db.close();
-            } else if (filname.equals("screentextlist")) {
-                db = new DatabaseHandler(this);
-                while ((str = reader.readLine()) != null) {
-                    separated = str.split(",");
-                    db.addScreenText(new ScreenTextModel(separated[0], separated[1]));
-                }
-                db.close();
-            }
-        }
-        file_Name.close();
     }
 
     @Override
@@ -343,23 +206,90 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
                 startActivity(mIntent);
                 break;
         }
-        /*prefs = getSharedPreferences(MyPREFERENCES, MODE_PRIVATE);
-        String restoredText = prefs.getString(list_add_intro_dialog, null);
-        if (restoredText == null) {
-            thirdDialog();
-            editor = prefs.edit();
-            editor.putString(list_add_intro_dialog,"success");
-            editor.commit();
-        }*/
-        //getSupportActionBar().setIcon(R.drawable.back);
         return super.onOptionsItemSelected(item);
     }
-
 
     @Override
     protected void onResume() {
         super.onResume();
+    }
 
-        Log.d("Activity", "List");
+    private class BackgroundTask extends AsyncTask<Void, Void, Void> {
+        private ProgressDialog progressDialog;
+
+        public BackgroundTask(MainActivity activity) {
+            progressDialog = new ProgressDialog(activity);
+        }
+
+        @Override
+        protected void onPreExecute() {
+            progressDialog.setMessage("Logging data. Please wait.");
+            progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+            progressDialog.setCancelable(false);
+            progressDialog.setIndeterminate(true);
+            progressDialog.show();
+        }
+
+        @Override
+        protected void onPostExecute(Void result) {
+            if (progressDialog.isShowing()) {
+                progressDialog.dismiss();
+                displayView(3);
+                dbCreate = true;
+            }
+        }
+
+        @Override
+        protected Void doInBackground(Void... params) {
+
+            StringBuffer sb = new StringBuffer();
+            BufferedReader reader = null;
+            String str = "";
+            String[] separated;
+
+            try {
+                str = "";
+                List<DictionaryModel> dicList = new ArrayList<DictionaryModel>();
+                DictionaryModel dicModel;
+                reader = new BufferedReader(new InputStreamReader(getAssets().open("dictionary")));
+                while ((str = reader.readLine()) != null) {
+                    separated = str.split(",");
+                    dicModel = new DictionaryModel();
+                    dicModel.setSectionId(Integer.parseInt(separated[0]));
+                    dicModel.setItemName(separated[1].toString());
+                    dicList.add(dicModel);
+                }
+                DatabaseHandler.getInstance(MainActivity.this).addDictionary(dicList);
+                str = "";
+                List<SectionModel> secList = new ArrayList<SectionModel>();
+                SectionModel secModel;
+                reader = new BufferedReader(new InputStreamReader(getAssets().open("sectionorder")));
+
+                while ((str = reader.readLine()) != null) {
+                    separated = str.split(",");
+                    secModel = new SectionModel();
+                    secModel.setSectionOrderNo(Integer.parseInt(separated[0]));
+                    secModel.setSectionName(separated[1]);
+                    secModel.setSectionImage(separated[2]);
+                    secModel.setDefaultSection(Integer.parseInt(separated[3]));
+                    secList.add(secModel);
+                }
+                DatabaseHandler.getInstance(MainActivity.this).addSection(secList);
+                dbCreate = true;
+
+            } catch (IOException e) {
+                //e.printStackTrace();
+                Toast.makeText(getApplicationContext(),
+                        "Problems: " + e.getMessage(), Toast.LENGTH_LONG).show();
+            } finally {
+                try {
+                    reader.close();
+                    //db.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+            return null;
+        }
     }
 }

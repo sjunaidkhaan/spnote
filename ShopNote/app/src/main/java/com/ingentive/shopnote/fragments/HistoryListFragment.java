@@ -33,14 +33,12 @@ import java.util.List;
 
 public class HistoryListFragment extends Fragment {
 
-    public static SharedPreferences.Editor editor;
-    public static final String MYPREFERENCES = "MyPrefs";
-    public static final String dbCreated = "dbKey";
-    public static final String first_time_dialog = "first_time";
-    public static SharedPreferences prefs;
+    private SharedPreferences.Editor editor;
+    private final String HISTORYPREFERENCES = "MyPrefs";
+    private final String history_dialog = "history_dialog";
+    private SharedPreferences prefs;
     private ExpandableListView mExpHistoryList;
     private HistoryListAdapter mAdapter;
-    private DatabaseHandler db;
     private List<HistoryModel> historyList;
     private List<HistoryModel> searchItem;
     private SwipeMenuListView mListView;
@@ -58,19 +56,11 @@ public class HistoryListFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_history, null);
-        prefs = this.getActivity().getSharedPreferences(MYPREFERENCES, Context.MODE_PRIVATE);
-        String restoredText = prefs.getString(first_time_dialog, null);
-        if (restoredText == null) {
-            showDialog();
-            editor = prefs.edit();
-            editor.putString(first_time_dialog, "success");
-            editor.commit();
-        }
+
         mListView = (SwipeMenuListView) rootView.findViewById(R.id.history_list_view);
         getData();
         mAdapter = new HistoryListAdapter(getActivity(), searchItem, R.layout.custom_row_history);
         mListView.setAdapter(mAdapter);
-        //mAdapter.notifyDataSetChanged();
         SwipeMenuCreator creator = new SwipeMenuCreator() {
             @Override
             public void create(SwipeMenu menu) {
@@ -99,14 +89,17 @@ public class HistoryListFragment extends Fragment {
                         boolean isParent = searchItem.get(position).isDate();
                         if (isParent) {
                             String datePurchased = searchItem.get(position).getDatePurchased();
-                            db.deleteDateBaseFromHistory(datePurchased);
+                            DatabaseHandler.getInstance(getActivity()).deleteDateBaseFromHistory(datePurchased);
                             getData();
                             mAdapter = new HistoryListAdapter(getActivity(), searchItem, R.layout.custom_row_history);
                             mListView.setAdapter(mAdapter);
                         } else {
                             int itemId = searchItem.get(position).getHistoryId();
-                            db.deleteItemBaseFromHistory(itemId);
+                            DatabaseHandler.getInstance(getActivity()).deleteItemBaseFromHistory(itemId);
                             searchItem.remove(position);
+                            if(searchItem.size()==1){
+                                searchItem.clear();
+                            }
                             mAdapter.notifyDataSetChanged();
                         }
                         break;
@@ -170,14 +163,6 @@ public class HistoryListFragment extends Fragment {
         return super.onOptionsItemSelected(item);
     }
 
-    @Override
-    public void setMenuVisibility(boolean menuVisible) {
-        super.setMenuVisibility(menuVisible);
-        if (menuVisible) {
-
-        }
-    }
-
     public void showDialog() {
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(getActivity())
                 .setMessage("Your history stores your completed purchased for your records." +
@@ -194,9 +179,7 @@ public class HistoryListFragment extends Fragment {
 
     public void getData() {
         searchItem = new ArrayList<HistoryModel>();
-        db = new DatabaseHandler(getActivity());
-        historyList = db.getHistory();
-        HistoryModel modleObj = new HistoryModel();
+        historyList = DatabaseHandler.getInstance(getActivity()).getHistory();
         for (int i = 0; i < historyList.size(); i++) {
             boolean exists = false;
             for (int j = 0; j < searchItem.size(); ++j) {
@@ -207,7 +190,6 @@ public class HistoryListFragment extends Fragment {
             if (!exists) {
                 HistoryModel hTemp = new HistoryModel();
                 hTemp.setDatePurchased(historyList.get(i).getDatePurchased());
-                //hTemp.setQuantity(historyList.get(i).getQuantity());
                 hTemp.setItemName(historyList.get(i).getItemName());
                 hTemp.setHistoryId(historyList.get(i).getHistoryId());
                 hTemp.setIsDate(true);
@@ -215,7 +197,6 @@ public class HistoryListFragment extends Fragment {
 
                 hTemp = new HistoryModel();
                 hTemp.setDatePurchased(historyList.get(i).getDatePurchased());
-                //hTemp.setQuantity(historyList.get(i).getQuantity());
                 hTemp.setItemName(historyList.get(i).getItemName());
                 hTemp.setHistoryId(historyList.get(i).getHistoryId());
                 hTemp.setIsDate(false);
@@ -223,7 +204,6 @@ public class HistoryListFragment extends Fragment {
             } else {
                 HistoryModel hTemp = new HistoryModel();
                 hTemp.setDatePurchased(historyList.get(i).getDatePurchased());
-                //hTemp.setQuantity(historyList.get(i).getQuantity());
                 hTemp.setItemName(historyList.get(i).getItemName());
                 hTemp.setHistoryId(historyList.get(i).getHistoryId());
                 hTemp.setIsDate(false);
@@ -240,5 +220,34 @@ public class HistoryListFragment extends Fragment {
         menu.findItem(R.id.action_history_search).setVisible(true);
         menu.findItem(R.id.action_favorites_search).setVisible(false);
         super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    @Override
+    public void setMenuVisibility(boolean menuVisible) {
+        super.setMenuVisibility(menuVisible);
+        if (menuVisible) {
+            if (getActivity() != null) {
+
+                getData();
+                mAdapter = new HistoryListAdapter(getActivity(), searchItem, R.layout.custom_row_history);
+                mListView.setAdapter(mAdapter);
+
+                prefs = this.getActivity().getSharedPreferences(HISTORYPREFERENCES, Context.MODE_PRIVATE);
+                String restoredText = prefs.getString(history_dialog, null);
+                if (restoredText == null) {
+                    showDialog();
+                    editor = prefs.edit();
+                    editor.putString(history_dialog, "success");
+                    editor.commit();
+                }
+            }
+        }
+    }
+    @Override
+    public void onResume() {
+        super.onResume();
+        getData();
+        mAdapter = new HistoryListAdapter(getActivity(), searchItem, R.layout.custom_row_history);
+        mListView.setAdapter(mAdapter);
     }
 }

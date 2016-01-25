@@ -16,6 +16,7 @@
         android:layout_gravity="center_vertical"
         android:layout_marginLeft="8dp"
         android:paddingLeft="5dp"
+        android:digits=" abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
         android:layout_marginRight="8dp"
         android:background="@android:color/white"
         android:completionThreshold="1"

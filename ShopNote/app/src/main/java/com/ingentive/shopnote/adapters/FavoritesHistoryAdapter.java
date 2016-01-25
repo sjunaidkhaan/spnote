@@ -8,7 +8,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.TextView;
 
 import com.ingentive.shopnote.R;
@@ -21,18 +20,17 @@ import java.util.List;
  */
 public class FavoritesHistoryAdapter extends BaseAdapter {
 
-    public List<DictionaryModel> data;
-    public int res;
-    public Context context;
-    ListView lv;
-    private static LayoutInflater inflater=null;
+    private List<DictionaryModel> data;
+    private int res;
+    private Context context;
+    private static LayoutInflater inflater = null;
 
     public FavoritesHistoryAdapter(Context context, List<DictionaryModel> dataC, int rowId) {
 
         this.context = context;
         this.res = rowId;
         this.data = dataC;
-        inflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
 
     @Override
@@ -52,15 +50,15 @@ public class FavoritesHistoryAdapter extends BaseAdapter {
 
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
     @Override
-    public View getView(final int postion, View rowView, final ViewGroup viewGroup){
+    public View getView(final int postion, View rowView, final ViewGroup viewGroup) {
 
         View vi = rowView;
         ViewHolder vh = new ViewHolder();
-        if ( vi == null  ){
-            vi = inflater.inflate(res,  viewGroup, false);
-            vh.tvItemName = (TextView)vi.findViewById(R.id.tv_item_name);
-            vh.ivFavIcon = (ImageView)vi.findViewById(R.id.iv_add_list_fav);
-            vh.ivHistIcon = (ImageView)vi.findViewById(R.id.iv_add_list_history);
+        if (vi == null) {
+            vi = inflater.inflate(res, viewGroup, false);
+            vh.tvItemName = (TextView) vi.findViewById(R.id.tv_item_name);
+            vh.ivFavIcon = (ImageView) vi.findViewById(R.id.iv_add_list_fav);
+            vh.ivHistIcon = (ImageView) vi.findViewById(R.id.iv_add_list_history);
             int id = vi.generateViewId();
             vi.setId(id);
             vi.setTag(vh);
@@ -68,27 +66,11 @@ public class FavoritesHistoryAdapter extends BaseAdapter {
             vh = (ViewHolder) vi.getTag();
         }
 
-        /*TextView tvId, tvItemName,tvSectionId;
-
-        tvId = (TextView)mView.findViewById(R.id.tvId);
-        tvItemName = (TextView)mView.findViewById(R.id.tvItemName);
-        tvSectionId = (TextView)mView.findViewById(R.id.tvSectionId);
-
-        tvId.setText(data.get(postion).getDictionaryId()+"");
-        tvItemName.setText(data.get(postion).getItemName());
-        tvSectionId.setText(data.get(postion).getSectionId());
-        return mView;*/
-
         final TextView tvItemName;
-        final ImageView ivHistIcon,ivFavIcon;
+        final ImageView ivHistIcon, ivFavIcon;
 
-//        if(data.get(postion).isPopular()){
-//            vh.ivFavIcon.setVisibility(View.GONE);
-//            vh.ivHistIcon.setVisibility(View.GONE);
-//            vh.tvItemName.setText("Popular Items");
-//        }
         vh.tvItemName.setText(data.get(postion).getItemName());
-        if ( data.get(postion).getHistoryItem()==1 && data.get(postion).getFavItem()==1){
+        if (data.get(postion).getHistoryItem() == 1 && data.get(postion).getFavItem() == 1) {
             vh.ivFavIcon.setVisibility(View.VISIBLE);
             vh.ivHistIcon.setVisibility(View.VISIBLE);
 
@@ -100,10 +82,10 @@ public class FavoritesHistoryAdapter extends BaseAdapter {
         ivHistIcon = vh.ivHistIcon;
         return vi;
     }
-    public class ViewHolder
-    {
+
+    public class ViewHolder {
         TextView tvItemName;
-        ImageView ivHistIcon,ivFavIcon;
+        ImageView ivHistIcon, ivFavIcon;
 
     }
 }

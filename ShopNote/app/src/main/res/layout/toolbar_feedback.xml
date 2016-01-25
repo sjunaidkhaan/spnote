@@ -5,8 +5,6 @@
     android:id="@+id/toolbar"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    app:contentInsetLeft="0dp"
-    app:contentInsetStart="0dp"
     android:background="@drawable/tool_bar_background"
     local:popupTheme="@style/ThemeOverlay.AppCompat.Light"
     local:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
@@ -18,19 +16,8 @@
         android:textSize="18sp"
         android:textStyle="bold"
         android:textColor="#ffffff"
+        android:text="Send Your Feedback"
         android:gravity="center_horizontal"
-        />
-    <EditText
-        android:id="@+id/edittext_toolbar_title"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:visibility="gone"
-        android:digits=" abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
-        android:paddingLeft="5dp"
-        android:textSize="18sp"
-        android:textStyle="bold"
-        android:focusable="true"
-        android:focusableInTouchMode="true"
         />
 
     </android.support.v7.widget.Toolbar>

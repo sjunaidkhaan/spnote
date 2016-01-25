@@ -8,34 +8,51 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".MainActivity"
-            android:windowSoftInputMode="adjustPan">
+        <activity
+            android:name=".MainActivity"
+            android:windowSoftInputMode="adjustPan"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ActivityAddList">
+        <activity android:name=".ActivityAddList"
+            android:screenOrientation="portrait">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.ingentive.shopnote.MainActivity" />
         </activity>
-        <activity android:name=".ActivityManageSections">
+        <activity android:name=".ActivityManageSections"
+            android:screenOrientation="portrait">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.ingentive.shopnote.MainActivity" />
         </activity>
-        <activity android:name=".ActivityHistorySearch">
+        <activity android:name=".ActivityHistorySearch"
+            android:screenOrientation="portrait">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.ingentive.shopnote.MainActivity" />
         </activity>
-        <activity android:name=".ActivityFavoritesSearch">
+        <activity android:name=".ActivityFavoritesSearch"
+            android:screenOrientation="portrait">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.ingentive.shopnote.MainActivity" />
         </activity>
-        <activity android:name=".MainTestNavigation" />
+        <activity android:name=".ActivityShareList"
+            android:screenOrientation="portrait">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.ingentive.shopnote.MainActivity" />
+        </activity>
+        <activity android:name=".ActivityFeedBack"
+            android:screenOrientation="portrait">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.ingentive.shopnote.MainActivity" />
+        </activity>
     </application>
 
 </manifest>

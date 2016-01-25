@@ -25,11 +25,10 @@ import java.util.List;
  */
 public class HistoryListAdapter extends BaseAdapter {
 
-    public List<HistoryModel> data;
-    public int res;
-    public Context mContext;
+    private List<HistoryModel> data;
+    private int res;
+    private Context mContext;
     private static LayoutInflater inflater = null;
-    public DatabaseHandler db;
 
     public HistoryListAdapter(Context context, List<HistoryModel> dataC, int rowId) {
 
@@ -38,6 +37,7 @@ public class HistoryListAdapter extends BaseAdapter {
         this.data = dataC;
         inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
+
     @Override
     public int getCount() {
         return this.data.size();
@@ -77,9 +77,8 @@ public class HistoryListAdapter extends BaseAdapter {
             vh = (ViewHolder) vi.getTag();
         }
 
-
         final TextView itemName, tvDate;
-        final ImageView ivFavorit, ivAdd,ivAddDate;
+        final ImageView ivFavorit, ivAdd, ivAddDate;
 
         vh.tvDate = (TextView) vi.findViewById(R.id.tv_date_history);
         vh.itemName = (TextView) vi.findViewById(R.id.tv_itemname_history);
@@ -98,29 +97,21 @@ public class HistoryListAdapter extends BaseAdapter {
         } else {
             vh.ivAddDate.setVisibility(View.GONE);
             vh.tvDate.setVisibility(View.GONE);
-//            tvDate.setText(data.get(postion).getDatePurchased().toString());
             vh.itemName.setVisibility(View.VISIBLE);
             vh.itemName.setText(data.get(postion).getItemName());
 
             vh.ivFavorit.setVisibility(View.VISIBLE);
             vh.ivAdd.setVisibility(View.VISIBLE);
-            //ivFavorit.setImageResource(R.drawable.favorite_unselected);
 
-            db = new DatabaseHandler(mContext);
-            final boolean itemIsInList = db.isInList(data.get(postion).getItemName());
-            //Toast.makeText(mContext,"itemIsFav "+itemIsFav,Toast.LENGTH_LONG).show();
+            final boolean itemIsInList = DatabaseHandler.getInstance(mContext).isInList(data.get(postion).getItemName());
             if (itemIsInList) {
                 vh.ivAdd.setBackgroundResource(R.drawable.add_selected);
                 vh.ivAdd.setOnClickListener(null);
             } else {
                 vh.ivAdd.setBackgroundResource(R.drawable.add_unselected);
             }
-            //vh.ivAdd.setBackgroundResource(R.drawable.add_unselected);
-           // Toast.makeText(mContext, "getItemName " + data.get(postion).getItemName().toString(), Toast.LENGTH_LONG).show();
-            //Log.d("HistoryListAdapter ","datePurchased "+data.get(postion).getDatePurchased().toString());
 
-            db = new DatabaseHandler(mContext);
-            boolean itemIsFav = db.isFavorit(data.get(postion).getItemName().toString());
+            boolean itemIsFav = DatabaseHandler.getInstance(mContext).isFavorit(data.get(postion).getItemName().toString());
             if (itemIsFav) {
                 vh.ivFavorit.setBackgroundResource(R.drawable.favorite_unselected);
             } else {
@@ -128,32 +119,29 @@ public class HistoryListAdapter extends BaseAdapter {
             }
 
         }
-        tvDate=vh.tvDate;
-        itemName=vh.itemName;
-        ivFavorit=vh.ivFavorit;
-        ivAdd=vh.ivAdd;
-        ivAddDate=vh.ivAddDate;
+        tvDate = vh.tvDate;
+        itemName = vh.itemName;
+        ivFavorit = vh.ivFavorit;
+        ivAdd = vh.ivAdd;
+        ivAddDate = vh.ivAddDate;
 
-        //}
         vh.ivFavorit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //Toast.makeText(mContext, "Favorite Clicked: " + itemName.getText().toString() + ":" + postion, Toast.LENGTH_SHORT).show();
-                db = new DatabaseHandler(mContext);
-                boolean itemIsFav = db.isFavorit(data.get(postion).getItemName().toString());
+                boolean itemIsFav = DatabaseHandler.getInstance(mContext).isFavorit(data.get(postion).getItemName().toString());
 
                 if (itemIsFav) {
                     FavoritListModel remFavItem = new FavoritListModel();
                     remFavItem.setItemName(itemName.getText().toString());
 
                     ivFavorit.setBackgroundResource(R.drawable.favorite_selected);
-                    db.removeFavorit(remFavItem);
+                    DatabaseHandler.getInstance(mContext).removeFavorit(remFavItem);
 
                 } else {
                     FavoritListModel addFavItem = new FavoritListModel();
                     addFavItem.setItemName(itemName.getText().toString());
                     ivFavorit.setBackgroundResource(R.drawable.favorite_unselected);
-                    db.addFavorit(addFavItem);
+                    DatabaseHandler.getInstance(mContext).addFavorit(addFavItem);
                 }
             }
         });
@@ -161,13 +149,10 @@ public class HistoryListAdapter extends BaseAdapter {
             @Override
             public void onClick(View v) {
                 ivAdd.setBackgroundResource(R.drawable.add_selected);
-                db = new DatabaseHandler(mContext);
-                String title = db.getListName();
-                db = new DatabaseHandler(mContext);
-                int order = db.getMaxOrderNo();
+                String title = DatabaseHandler.getInstance(mContext).getListName();
+                int order = DatabaseHandler.getInstance(mContext).getMaxOrderNo();
                 order++;
-                db = new DatabaseHandler(mContext);
-                db.addCurrentList(new CurrentListModel(order, itemName.getText().toString(), 0, null, title, 1));
+                DatabaseHandler.getInstance(mContext).addCurrentList(new CurrentListModel(order, itemName.getText().toString(), 0, null, title, 1));
             }
         });
         vh.ivAddDate.setOnClickListener(new View.OnClickListener() {
@@ -175,33 +160,24 @@ public class HistoryListAdapter extends BaseAdapter {
             public void onClick(View v) {
                 ivAddDate.setBackgroundResource(R.drawable.add_large_selected);
 
-                db = new DatabaseHandler(mContext);
-                boolean itemExist = false;
-                db = new DatabaseHandler(mContext);
-                List<CurrentListModel> currList = db.getCurrList();
                 List<HistoryChildModel> historyList = new ArrayList<HistoryChildModel>();
-                historyList=db.getHisChil(data.get(postion).getDatePurchased());
-                for (int i = 0; i <historyList.size(); i++) {
+                historyList = DatabaseHandler.getInstance(mContext).getHisChil(data.get(postion).getDatePurchased());
+                for (int i = 0; i < historyList.size(); i++) {
                     String itemname = historyList.get(i).getHisChItemName().toString();
-                    db = new DatabaseHandler(mContext);
-                    String title = db.getListName();
-                    db = new DatabaseHandler(mContext);
-                    int order = db.getMaxOrderNo();
+                    String title = DatabaseHandler.getInstance(mContext).getListName();
+                    int order = DatabaseHandler.getInstance(mContext).getMaxOrderNo();
                     order++;
-                    db = new DatabaseHandler(mContext);
-                    db.addCurrentList(new CurrentListModel(order, itemname, 0, null, title, 1));
-                    if(title==null||title.isEmpty())
-                        title="My First ShopNote";
-                    db = new DatabaseHandler(mContext);
-                    final boolean itemIsInList = db.isInList(historyList.get(i).getHisChItemName().toString());
+                    DatabaseHandler.getInstance(mContext).addCurrentList(new CurrentListModel(order, itemname, 0, null, title, 1));
+                    if (title == null || title.isEmpty())
+                        title = "My First ShopNote";
+                    final boolean itemIsInList = DatabaseHandler.getInstance(mContext).isInList(historyList.get(i).getHisChItemName().toString());
                     if (itemIsInList) {
                         ivAdd.setBackgroundResource(R.drawable.add_selected);
                         ivAdd.setOnClickListener(null);
                     } else {
-                        db = new DatabaseHandler(mContext);
-                        int order_no = db.getMaxOrderNo();
+                        int order_no = DatabaseHandler.getInstance(mContext).getMaxOrderNo();
                         order_no++;
-                        db.addCurrentList(new CurrentListModel(order_no, itemname, 0, null, title, 1));
+                        DatabaseHandler.getInstance(mContext).addCurrentList(new CurrentListModel(order_no, itemname, 0, null, title, 1));
                         ivAdd.setBackgroundResource(R.drawable.add_unselected);
                         notifyDataSetChanged();
                     }
@@ -211,9 +187,10 @@ public class HistoryListAdapter extends BaseAdapter {
         });
         return vi;
     }
+
     public class ViewHolder {
         TextView itemName, tvDate;
-        ImageView ivFavorit, ivAdd,ivAddDate;
+        ImageView ivFavorit, ivAdd, ivAddDate;
 
     }
 }
