@@ -37,19 +37,6 @@ public class MyFirstNoteFragment extends android.support.v4.app.Fragment {
 
         viewPager.setPagingEnabled(false);
 
-//        viewPager.setOnTouchListener(new View.OnTouchListener() {
-//            @Override
-//            public boolean onTouch(View v, MotionEvent event) {
-//                return true;
-//            }
-//        });
-
-        /**
-         * Now , this is a workaround ,
-         * The setupWithViewPager dose't works without the runnable .
-         * Maybe a Support Library Bug .
-         */
-
         tabLayout.post(new Runnable() {
             @Override
             public void run() {
@@ -94,7 +81,6 @@ public class MyFirstNoteFragment extends android.support.v4.app.Fragment {
                         } else {
                             tab.getCustomView().setBackgroundResource(R.drawable.history_unselected);
                         }
-
                     }
 
                     @Override
@@ -106,7 +92,6 @@ public class MyFirstNoteFragment extends android.support.v4.app.Fragment {
         });
         return x;
     }
-
 
     class MyAdapter extends FragmentPagerAdapter {
 
@@ -134,25 +119,9 @@ public class MyFirstNoteFragment extends android.support.v4.app.Fragment {
             return int_items;
         }
 
-        /**
-         * This method returns the title of the tab according to the position.
-         */
         @Override
         public CharSequence getPageTitle(int position) {
-           /* switch (position) {
-                case 0:
-                    return "List";
-                case 1:
-                    return "Shop";
-                case 2:
-                    return "Favorits";
-                case 3:
-                    return "History";
-            }*/
-
             return null;
         }
-
     }
-
 }

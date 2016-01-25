@@ -5,12 +5,10 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Handler;
 import android.support.annotation.NonNull;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,7 +17,6 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.ingentive.shopnote.ActivityManageSections;
 import com.ingentive.shopnote.DatabaseHandler;
@@ -49,7 +46,6 @@ public class ManageSectionAdapter extends BaseAdapter implements com.nhaarman.li
         bDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(mContext, "yo", Toast.LENGTH_LONG).show();
                 data.remove(position);
                 notifyDataSetChanged();
             }
@@ -65,15 +61,10 @@ public class ManageSectionAdapter extends BaseAdapter implements com.nhaarman.li
         return view.findViewById(R.id.button_dont_remove);
     }
 
-    public List<ManageSectionModel> data;
-    public int res;
-    public Context mContext;
+    private List<ManageSectionModel> data;
+    private int res;
+    private Context mContext;
     private static LayoutInflater inflater = null;
-    public DatabaseHandler db;
-    public static SharedPreferences.Editor editor;
-    public static final String MyPREFERENCES = "MyPrefs";
-    public static final String unknownSection = "unknown_section";
-    public static SharedPreferences prefs;
 
     public ManageSectionAdapter(Context context, List<ManageSectionModel> dataC, int rowId) {
 
@@ -118,7 +109,6 @@ public class ManageSectionAdapter extends BaseAdapter implements com.nhaarman.li
             vh.ivOption = (ImageView) vi.findViewById(R.id.ivOpt_ms);
             vh.ivSection = (ImageView) vi.findViewById(R.id.ivSection_ms);
             vh.rl_root = (RelativeLayout) vi.findViewById(R.id.custom_row_list);
-            SharedPreferences sharedpreferences = mContext.getSharedPreferences("unknown_section", Context.MODE_PRIVATE);
 
             int id = vi.generateViewId();
             vi.setId(id);
@@ -130,14 +120,9 @@ public class ManageSectionAdapter extends BaseAdapter implements com.nhaarman.li
         final TextView sectionName;
         final ImageView ivOption, ivSection;
 
-
         vh.ivOption.setImageResource(R.drawable.grab_notgrabbed);
         vh.sectionName.setText(data.get(postion).getSectionName());
-        //ivSection.setImageResource(data.get(postion).getSectionIcon());
 
-       /* db = new DatabaseHandler(mContext);
-        String iconSecton = db.getIconSection(data.get(postion).getItemName().toString());
-        db = new DatabaseHandler(mContext);*/
         if (data.get(postion).getManageSectionId() <= 10) {
             switch (data.get(postion).getSectionName()) {
                 case "Clothing":
@@ -264,10 +249,15 @@ public class ManageSectionAdapter extends BaseAdapter implements com.nhaarman.li
         ivSection = vh.ivSection;
 
         final RelativeLayout tRl = vh.rl_root;
-//        Toast.makeText(mContext, " sectionname " + sectionName, Toast.LENGTH_LONG).show();
-        if (sectionName.getText().toString().equals(ActivityManageSections.sectionName)&& ActivityManageSections.itemNameUseInAdapter!=null && !ActivityManageSections.itemNameUseInAdapter.isEmpty()) {
-            tRl.setBackgroundColor(Color.GRAY);
-            //Toast.makeText(mContext, " sectionname " + sectionName.getText().toString(), Toast.LENGTH_LONG).show();
+
+        if (sectionName.getText().toString().equals(ActivityManageSections.sectionName) && ActivityManageSections.itemNameUseInAdapter != null && !ActivityManageSections.itemNameUseInAdapter.isEmpty()) {
+
+            String sectionImage = DatabaseHandler.getInstance(mContext).getSectionIconWithItemName(ActivityManageSections.itemNameUseInAdapter);
+            if (sectionImage.equals("unknown.png")) {
+                tRl.setBackgroundColor(Color.TRANSPARENT);
+            } else {
+                tRl.setBackgroundColor(Color.GRAY);
+            }
         } else {
             tRl.setBackgroundColor(Color.TRANSPARENT);
         }
@@ -275,55 +265,23 @@ public class ManageSectionAdapter extends BaseAdapter implements com.nhaarman.li
             @Override
             public void onClick(View v) {
                 String itemName = "";
-                db = new DatabaseHandler(mContext);
-                int secId = db.getSectionId(sectionName.getText().toString());
-                //Toast.makeText(mContext, "section Id " + sectionName.getText().toString(), Toast.LENGTH_LONG).show();
+                int secId = DatabaseHandler.getInstance(mContext).getSectionId(sectionName.getText().toString());
                 itemName = ActivityManageSections.itemNameUseInAdapter;
-                Toast.makeText(mContext, sectionName.getText().toString() + " Assign to  " + itemName, Toast.LENGTH_LONG).show();
                 if (itemName != null && !itemName.isEmpty()) {
-                    db = new DatabaseHandler(mContext);
-                    db.getSectionData();
-                    db.secAssignToItem(itemName, secId);
-                    Toast.makeText(mContext, sectionName.getText().toString() + " Assign to  " + itemName, Toast.LENGTH_LONG).show();
-                    //((Activity)mContext).finish();
-
+                    tRl.setBackgroundColor(Color.GRAY);
+                    DatabaseHandler.getInstance(mContext).getSectionData();
+                    DatabaseHandler.getInstance(mContext).secAssignToItem(itemName, secId);
                     Handler handler = new Handler();
                     Runnable r = new Runnable() {
                         public void run() {
-                            tRl.setBackgroundColor(Color.GRAY);
                             ((Activity) mContext).finish();
                         }
                     };
                     handler.postDelayed(r, 2000);
                 }
-//                if (secId > 10) {
-//                    //prefs.edit().remove(unknownSection).commit();
-//                    prefs = mContext.getSharedPreferences(MyPREFERENCES, mContext.MODE_PRIVATE);
-//                    editor = prefs.edit();
-//                    editor.putString(unknownSection, secId + "");
-//                    editor.commit();
-//                    iconChangeDialog();
-////                    Toast.makeText(mContext, "restoredText " + restoredText, Toast.LENGTH_LONG).show();
-//                }
-//                prefs = mContext.getSharedPreferences(MyPREFERENCES, mContext.MODE_PRIVATE);
-//                String restoredText = prefs.getString(unknownSection, null);
-//
-//                if (restoredText != null && !restoredText.isEmpty()) {
-//                    db = new DatabaseHandler(mContext);
-//                    String icon = db.getSectionIcon(sectionName.getText().toString());
-//                    //db.secAssignToItem(itemName, secId);
-//                    db.secAssignIcon(icon, Integer.parseInt(restoredText));
-//                    //Toast.makeText(mContext, "icon " + icon, Toast.LENGTH_LONG).show();
-//                    notifyDataSetChanged();
-//                    //prefs.edit().remove(unknownSection).commit();
-//                }
-                //Toast.makeText(mContext, "section name " + sectionName.getText().toString(), Toast.LENGTH_LONG).show();
             }
         });
         return vi;
-    }
-
-    private void showIcon(String optionIcon) {
     }
 
     public class ViewHolder {
@@ -334,12 +292,9 @@ public class ManageSectionAdapter extends BaseAdapter implements com.nhaarman.li
 
     @Override
     public void swapItems(int positionOne, int positionTwo) {
-        Log.d("Postion1:" + positionOne, "Postion2: " + positionTwo);
         Object temp = data.get(positionOne);
         data.set(positionOne, data.get(positionTwo));
         data.set(positionTwo, (ManageSectionModel) temp);
-
-        // data.set(positionOne,data.get(positionTwo).getOrderNo());
         notifyDataSetChanged();
 
     }

@@ -7,13 +7,11 @@ import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
-import android.widget.Toast;
 
 import com.ingentive.shopnote.DatabaseHandler;
 import com.ingentive.shopnote.R;
@@ -34,20 +32,17 @@ import java.util.List;
 
 public class ShopFragmentSimpleListview extends Fragment {
 
-    private static SharedPreferences.Editor editor;
-    private static final String ShopFragment = "ShopFragment";
-    private static final String shopfragment_dialog = "shopfragment_dialog";
-    private static SharedPreferences prefs;
+    private SharedPreferences.Editor editor;
+    private final String ShopFragment = "ShopFragment";
+    private final String shopfragment_dialog = "shopfragment_dialog";
+    private SharedPreferences prefs;
     private DynamicListView mExpShopList;
-    DatabaseHandler db;
-    ShopCustomAdapterSimpleListview mAdapter;
-    ArrayList<String> arrayPar = new ArrayList<String>();
-    ShopParentModel parentModel = new ShopParentModel();
-    List<ShopParentModel> shopList = new ArrayList<ShopParentModel>();
-    List<ShopChildModel> shopChiList = new ArrayList<ShopChildModel>();
-    List<ShopParentModel> shopParList;
-    Button btnFinishShopping;
-    ArrayList<ShopParentModelMerger> finalList = new ArrayList<ShopParentModelMerger>();
+    private ShopCustomAdapterSimpleListview mAdapter;
+    private List<ShopParentModel> shopList = new ArrayList<ShopParentModel>();
+    private List<ShopChildModel> shopChiList = new ArrayList<ShopChildModel>();
+    private List<ShopParentModel> shopParList;
+    private Button btnFinishShopping;
+    private ArrayList<ShopParentModelMerger> finalList = new ArrayList<ShopParentModelMerger>();
     int from = -100;
 
 
@@ -81,10 +76,8 @@ public class ShopFragmentSimpleListview extends Fragment {
                         if (!finalList.get(position).isParent()) {
                             mExpShopList.startDragging(position);
                             from = finalList.get(position).getShopPaId();
-                            Log.d("Drag Position:", position + "");
                             return true;
                         } else {
-                            Toast.makeText(getActivity(), "Can't drag a parent", Toast.LENGTH_LONG).show();
                             return false;
                         }
                     }
@@ -93,24 +86,16 @@ public class ShopFragmentSimpleListview extends Fragment {
         mExpShopList.setOnItemMovedListener(new OnItemMovedListener() {
             @Override
             public void onItemMoved(int originalPosition, int newPosition) {
-                //int from = finalList.get(originalPosition - 1).getShopPaId();
                 int to = finalList.get(newPosition - 1).getShopPaId();
-                Log.d("from:" + originalPosition + "|||" + finalList.get(originalPosition - 1).getShopPaId(), "to:" + newPosition + "|||" + finalList.get(newPosition - 1).getShopPaId());
+                // Log.d("from:" + originalPosition + "|||" + finalList.get(originalPosition - 1).getShopPaId(), "to:" + newPosition + "|||" + finalList.get(newPosition - 1).getShopPaId());
                 if (to != from) {
-                    Log.d("Section Changed", "True");
                     String itemName = finalList.get(newPosition).getShop_chil_item_name();
-                    int secId = finalList.get(originalPosition).getShopPaId();
-
-                    Toast.makeText(getActivity(), "id  " + to, Toast.LENGTH_LONG).show();
-                    Toast.makeText(getActivity(), "itemName  " + itemName, Toast.LENGTH_LONG).show();
-                    finalList.get(newPosition).getShop_chil_id(); //isko jaker tumne TO dedeina
-                    db = new DatabaseHandler(getActivity());
-                    db.secAssignToItem(itemName, to);
+                    finalList.get(newPosition).getShop_chil_id();
+                    //db = new DatabaseHandler(getActivity());
+                    DatabaseHandler.getInstance(getActivity()).secAssignToItem(itemName, to);
                     getData();
                     mExpShopList.setAdapter(new ShopCustomAdapterSimpleListview(getActivity(), finalList, shopList));
 
-                } else {
-                    Log.d("Section Changed", "False");
                 }
             }
         });
@@ -140,33 +125,26 @@ public class ShopFragmentSimpleListview extends Fragment {
         myAlertDialog.setNegativeButton("No", new DialogInterface.OnClickListener() {
 
             public void onClick(DialogInterface arg0, int arg1) {
-                // do something when the Cancel button is clicked
-                //Toast.makeText(getActivity(), "No button click", Toast.LENGTH_LONG).show();
             }
         });
         myAlertDialog.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface arg0, int arg1) {
-                // do something when the OK button is clicked
-                //Toast.makeText(getActivity(), "yes button click", Toast.LENGTH_LONG).show();
-                db = new DatabaseHandler(getActivity());
-                List<CurrentListModel> currList = db.getCurrList();
+                List<CurrentListModel> currList = DatabaseHandler.getInstance(getActivity()).getCurrList();
                 Calendar c = Calendar.getInstance();
                 SimpleDateFormat df = new SimpleDateFormat("EEEE, MMMM dd");
                 String formattedDate = df.format(c.getTime());
-                System.out.println("day, month " + formattedDate);
                 for (int i = 0; i < currList.size(); i++) {
                     if (currList.get(i).getChecked() == 1) {
                         HistoryModel historObj = new HistoryModel();
                         historObj.setDatePurchased(formattedDate);
                         historObj.setItemName(currList.get(i).getItemName().toString());
                         historObj.setQuantity(currList.get(i).getQuantity().toString());
-                        db = new DatabaseHandler(getActivity());
-                        db.addHistory(historObj);
+                        DatabaseHandler.getInstance(getActivity()).addHistory(historObj);
                         CurrentListModel currentListModel = new CurrentListModel();
                         currentListModel = currList.get(i);
-                        db.deleteItem(currentListModel);
+                        DatabaseHandler.getInstance(getActivity()).deleteItem(currentListModel);
                         getData();
-                        db.close();
+                        DatabaseHandler.getInstance(getActivity()).close();
                         mAdapter = new ShopCustomAdapterSimpleListview(getActivity(), finalList, shopList);
                         mExpShopList.setAdapter(mAdapter);
                     }
@@ -177,21 +155,17 @@ public class ShopFragmentSimpleListview extends Fragment {
     }
 
     public void getData() {
-        db = new DatabaseHandler(getActivity());
-        shopParList = db.getShopParSection();
+        shopParList = DatabaseHandler.getInstance(getActivity()).getShopParSection();
         btnFinishShopping.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 finishDialog();
             }
         });
-        // db = new DatabaseHandler(getActivity());
-        //shopChiList = db.getShopChil();
         shopList = new ArrayList<ShopParentModel>();
         for (int i = 0; i < shopParList.size(); i++) {
-            db = new DatabaseHandler(getActivity());
             shopChiList = new ArrayList<ShopChildModel>();
-            shopChiList = db.getShopChilData(shopParList.get(i).getShopPaId());
+            shopChiList = DatabaseHandler.getInstance(getActivity()).getShopChilData(shopParList.get(i).getShopPaId());
             ShopParentModel parentModel = new ShopParentModel();
             if (shopChiList.size() != 0) {
                 parentModel.setShopPaId(shopParList.get(i).getShopPaId());
@@ -200,7 +174,6 @@ public class ShopFragmentSimpleListview extends Fragment {
                 parentModel.setArrayChildren(shopChiList);
                 parentModel.setIsClick(false);
                 shopList.add(parentModel);
-                //Toast.makeText(getActivity(), " " + shopChiList.size(), Toast.LENGTH_LONG).show();
             }
         }
         if (shopList.size() == 0) {
@@ -222,7 +195,6 @@ public class ShopFragmentSimpleListview extends Fragment {
             finalList.add(tParent);
 
             for (int j = 0; j < shopList.get(i).getArrayChildren().size(); ++j) {
-
                 ShopParentModelMerger tChild = new ShopParentModelMerger();
                 tChild.setIsParent(false);
                 tChild.setIsClick(false);
@@ -245,7 +217,6 @@ public class ShopFragmentSimpleListview extends Fragment {
         super.setMenuVisibility(menuVisible);
 
         if (menuVisible) {
-            Log.d("I am fragment", "2");
             shopList = new ArrayList<ShopParentModel>();
             getData();
             mAdapter = new ShopCustomAdapterSimpleListview(getActivity(), finalList, shopList);
@@ -262,13 +233,12 @@ public class ShopFragmentSimpleListview extends Fragment {
         }
     }
 
-
     @Override
     public void onResume() {
         super.onResume();
         shopList = new ArrayList<ShopParentModel>();
         getData();
-        mAdapter = new ShopCustomAdapterSimpleListview(getActivity(), finalList,shopList);
+        mAdapter = new ShopCustomAdapterSimpleListview(getActivity(), finalList, shopList);
         mExpShopList.setAdapter(mAdapter);
     }
 }

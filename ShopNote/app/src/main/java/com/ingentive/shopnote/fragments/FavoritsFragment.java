@@ -23,14 +23,13 @@ import java.util.List;
 
 public class FavoritsFragment extends Fragment {
 
-    public static SharedPreferences.Editor editor;
-    public static final String MYPREFERENCES = "MyPrefs" ;
-    public static final String dbCreated = "dbKey";
-    public static final String first_time_dialog = "first_time";
-    public static SharedPreferences prefs;
+    private SharedPreferences.Editor editor;
+    private final String MYPREFERENCES = "MyPrefs";
+    private final String first_time_dialog = "first_time";
+    private SharedPreferences prefs;
     private ListView mListView;
-    private DatabaseHandler db;
     private FavoritesListAdapter mAdapter;
+    private List<FavoritListModel> favList;
 
     public FavoritsFragment() {
         // Required empty public constructor
@@ -41,6 +40,7 @@ public class FavoritsFragment extends Fragment {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
     }
+
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         // TODO Add your menu entries here
@@ -54,34 +54,55 @@ public class FavoritsFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View rootView =  inflater.inflate(R.layout.fragment_favorits, null);
+        View rootView = inflater.inflate(R.layout.fragment_favorits, null);
         prefs = this.getActivity().getSharedPreferences(MYPREFERENCES, Context.MODE_PRIVATE);
         String restoredText = prefs.getString(first_time_dialog, null);
         if (restoredText == null) {
             showDialog();
             editor = prefs.edit();
-            editor.putString(first_time_dialog,"success");
+            editor.putString(first_time_dialog, "success");
             editor.commit();
         }
 
         mListView = (ListView) rootView.findViewById(R.id.lv_favorites);
-        db = new DatabaseHandler(getActivity());
-        List<FavoritListModel> favList = db.getFavList();
-        mAdapter  = new FavoritesListAdapter(getActivity(), favList, R.layout.custom_row_favorites);
+        favList = DatabaseHandler.getInstance(getActivity()).getFavList();
+        mAdapter = new FavoritesListAdapter(getActivity(), favList, R.layout.custom_row_favorites);
         mListView.setAdapter(mAdapter);
         return rootView;
     }
-    public void showDialog(){
+
+    public void showDialog() {
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(getActivity())
                 .setMessage("Your favorites list contain regular items that you can easily add" +
                         "in the future. You can marks favorite items as you add item to your list.")
                 .setPositiveButton("Got it", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface arg0, int arg1) {
-                        // Toast.makeText(MainActivity.this, "You clicked yes button", Toast.LENGTH_LONG).show();
                     }
                 });
         AlertDialog alertDialog = alertDialogBuilder.create();
         alertDialog.show();
     }
+
+    @Override
+    public void setMenuVisibility(boolean menuVisible) {
+        super.setMenuVisibility(menuVisible);
+        if (menuVisible) {
+
+            if (getActivity() != null) {
+                favList = DatabaseHandler.getInstance(getActivity()).getFavList();
+                mAdapter = new FavoritesListAdapter(getActivity(), favList, R.layout.custom_row_favorites);
+                mListView.setAdapter(mAdapter);
+            }
+        }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        favList = DatabaseHandler.getInstance(getActivity()).getFavList();
+        mAdapter = new FavoritesListAdapter(getActivity(), favList, R.layout.custom_row_favorites);
+        mListView.setAdapter(mAdapter);
+    }
+
 }

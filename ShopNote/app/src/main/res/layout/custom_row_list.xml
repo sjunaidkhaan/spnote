@@ -14,11 +14,12 @@
         android:layout_alignParentLeft="true" />
     <EditText
         android:id="@+id/etQuantity"
-        android:layout_width="30dp"
+        android:layout_width="40dp"
         android:layout_height="30dp"
         android:visibility="gone"
         android:background="#ADD8E6"
         android:focusable="true"
+        android:digits=" .0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
         android:layout_toRightOf="@id/ivOpt"
         android:textColor="@android:color/black"
         android:layout_alignParentLeft="true" />

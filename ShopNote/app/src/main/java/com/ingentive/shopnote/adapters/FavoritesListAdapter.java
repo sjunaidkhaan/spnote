@@ -20,11 +20,10 @@ import java.util.List;
  */
 public class FavoritesListAdapter extends BaseAdapter {
 
-    public List<FavoritListModel> data;
-    public int res;
-    public Context mContext;
+    private List<FavoritListModel> data;
+    private int res;
+    private Context mContext;
     private static LayoutInflater inflater = null;
-    public DatabaseHandler db;
 
     public FavoritesListAdapter(Context context, List<FavoritListModel> dataC, int rowId) {
 
@@ -65,54 +64,50 @@ public class FavoritesListAdapter extends BaseAdapter {
         itemName.setText(data.get(postion).getItemName());
         ivFavorit.setImageResource(R.drawable.favorite_unselected);
 
-
-        db = new DatabaseHandler(mContext);
-        final boolean itemIsInList = db.isInList(data.get(postion).getItemName().toString());
-        //Toast.makeText(mContext,"itemIsFav "+itemIsFav,Toast.LENGTH_LONG).show();
+        final boolean itemIsInList = DatabaseHandler.getInstance(mContext).isInList(data.get(postion).getItemName().toString());
         if (itemIsInList) {
             ivAdd.setBackgroundResource(R.drawable.add_selected);
             ivAdd.setOnClickListener(null);
         } else {
             ivAdd.setBackgroundResource(R.drawable.add_unselected);
         }
-        //ivAdd.setImageResource(R.drawable.add_unselected);
-
         ivFavorit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //Toast.makeText(mContext, "Favorite Clicked: " + itemName.getText().toString() + ":" + postion, Toast.LENGTH_SHORT).show();
-                db = new DatabaseHandler(mContext);
-                boolean itemIsFav = db.isFavorit(data.get(postion).getItemName().toString());
+                boolean itemIsFav = DatabaseHandler.getInstance(mContext).isFavorit(data.get(postion).getItemName().toString());
 
                 if (itemIsFav) {
                     FavoritListModel remFavItem = new FavoritListModel();
                     remFavItem.setItemName(itemName.getText().toString());
                     ivFavorit.setImageResource(R.drawable.favorite_selected);
-                    db.removeFavorit(remFavItem);
+                    DatabaseHandler.getInstance(mContext).removeFavorit(remFavItem);
+
+                    data = getData();
+                    notifyDataSetChanged();
 
                 } else {
                     FavoritListModel addFavItem = new FavoritListModel();
                     addFavItem.setItemName(itemName.getText().toString());
                     ivFavorit.setImageResource(R.drawable.favorite_unselected);
-                    db.addFavorit(addFavItem);
+                    DatabaseHandler.getInstance(mContext).addFavorit(addFavItem);
                 }
-
             }
         });
         ivAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 ivAdd.setImageResource(R.drawable.add_selected);
-               // Toast.makeText(mContext, "get" + data.get(postion).getItemName(), Toast.LENGTH_SHORT).show();
-                db = new DatabaseHandler(mContext);
-                String title = db.getListName();
-                db = new DatabaseHandler(mContext);
-                int order = db.getMaxOrderNo();
+                String title = DatabaseHandler.getInstance(mContext).getListName();
+                int order = DatabaseHandler.getInstance(mContext).getMaxOrderNo();
                 order++;
-                db = new DatabaseHandler(mContext);
-                db.addCurrentList(new CurrentListModel(order, itemName.getText().toString(), 0, null, title, 1));
+                DatabaseHandler.getInstance(mContext).addCurrentList(new CurrentListModel(order, itemName.getText().toString(), 0, null, title, 1));
             }
         });
         return vi;
+    }
+
+    public List<FavoritListModel> getData() {
+        List<FavoritListModel> favList = DatabaseHandler.getInstance(mContext).getFavList();
+        return favList;
     }
 }

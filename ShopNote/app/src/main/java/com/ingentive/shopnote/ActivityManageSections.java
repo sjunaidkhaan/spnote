@@ -17,9 +17,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.ingentive.shopnote.adapters.ManageSectionAdapter;
 import com.ingentive.shopnote.model.ManageSectionModel;
@@ -34,23 +32,21 @@ import java.util.List;
 public class ActivityManageSections extends AppCompatActivity {
 
     private Toolbar mToolbar;
-    private ImageView ivBack;
-    private AlertDialog.Builder builder1;
     private AlertDialog.Builder alertDialogBuilder;
     private SharedPreferences.Editor editor;
     private String MANAGESECTION = "ManageSectionMyPrefs";
     private String manage_section_dialog = "first_time";
     private SharedPreferences prefs;
-    ManageSectionAdapter mAdapter;
-    DynamicListView mListView;
-    DatabaseHandler db;
-    EditText etAddSection;
-    Button btnAddSection;
-    List<ManageSectionModel> sectionData;
-    SimpleSwipeUndoAdapter swipeUndoAdapter;
-    ManageSectionModel model;
-    public static String itemNameUseInAdapter="";
-    public static String sectionName="";
+    private ManageSectionAdapter mAdapter;
+    private DynamicListView mListView;
+    private EditText etAddSection;
+    private Button btnAddSection;
+    private List<ManageSectionModel> sectionData;
+    private SimpleSwipeUndoAdapter swipeUndoAdapter;
+    private ManageSectionModel model;
+    public static String itemNameUseInAdapter = "";
+
+    public static String sectionName = "";
     public View row;
 
     @Override
@@ -66,52 +62,12 @@ public class ActivityManageSections extends AppCompatActivity {
                 finish();
             }
         });
-        //ivBack = (ImageView) findViewById(R.id.back);
         etAddSection = (EditText) findViewById(R.id.et_add_manage_section);
         btnAddSection = (Button) findViewById(R.id.btn_add_manage_section);
         mListView = (DynamicListView) findViewById(R.id.lv_manage_section);
         mListView.enableDragAndDrop();
-        db = new DatabaseHandler(ActivityManageSections.this);
-        sectionData = db.getSectionData();
+        sectionData = DatabaseHandler.getInstance(ActivityManageSections.this).getSectionData();
         mAdapter = new ManageSectionAdapter(ActivityManageSections.this, sectionData, R.layout.custom_row_manage_section);
-
-        //mListView.setAdapter(mAdapter);
-//        Intent intent = getIntent();
-//        String itemName  = intent.getStringExtra("item_name");
-//        Toast.makeText(getApplication(), "item name " + itemName, Toast.LENGTH_LONG).show();
-//        for(int i=0; i<sectionData.size();i++){
-//            db = new DatabaseHandler(ActivityManageSections.this);
-//            boolean exist = db.isExist(sectionData.get(i).getManageSectionId(),itemName);
-//            if(exist){
-//                //row = mListView.getChildAt(i - mListView .getFirstVisiblePosition());
-//                //row.setBackgroundColor(Color.BLACK);
-//                //mListView.getChildAt(i).setBackgroundColor(Color.BLACK);
-//                //mListView.getCount();
-//
-//                final int firstListItemPosition = mListView.getFirstVisiblePosition();
-//                final int lastListItemPosition = firstListItemPosition + mListView.getChildCount() - 1;
-//
-//                if (i < firstListItemPosition || i > lastListItemPosition ) {
-//                    mListView.getAdapter().getView(i, null, mListView);
-//                    Toast.makeText(getApplication(), "if child "+mListView.getAdapter().getView(i, null, mListView), Toast.LENGTH_LONG).show();
-//                } else {
-//                    final int childIndex = i - firstListItemPosition;
-//                    mListView.getChildAt(childIndex);
-//                    Toast.makeText(getApplication(), "else child "+mListView.getChildAt(childIndex), Toast.LENGTH_LONG).show();
-//                }
-//            }
-//        }
-
-
-//        mListView.enableSwipeToDismiss(new OnDismissCallback() {
-//            @Override
-//            public void onDismiss(ViewGroup listView, int[] reverseSortedPositions) {
-//                for (int position : reverseSortedPositions) {
-//                    section.remove(position);
-//                }
-//            }
-//        });
-
 
         mListView.setOnItemLongClickListener(
                 new AdapterView.OnItemLongClickListener() {
@@ -127,29 +83,18 @@ public class ActivityManageSections extends AppCompatActivity {
         mListView.setOnItemMovedListener(new OnItemMovedListener() {
             @Override
             public void onItemMoved(int originalPosition, int newPosition) {
-                List<ManageSectionModel> secList = db.getSectionData();
-                for(int i=0; i<sectionData.size() && i<secList.size();i++){
-                    model =new ManageSectionModel();
+                List<ManageSectionModel> secList = DatabaseHandler.getInstance(ActivityManageSections.this).getSectionData();
+                for (int i = 0; i < sectionData.size() && i < secList.size(); i++) {
+                    model = new ManageSectionModel();
                     model.setSectionName(sectionData.get(i).getSectionName());
                     model.setOrderNo(secList.get(i).getOrderNo());
                     model.setManageSectionId(sectionData.get(i).getManageSectionId());
-                    db = new DatabaseHandler(ActivityManageSections.this);
-                    db.updateOrderNo(model);
+                    DatabaseHandler.getInstance(ActivityManageSections.this).updateOrderNo(model);
                 }
                 mAdapter.notifyDataSetChanged();
-                //Toast.makeText(ActivityManageSections.this, "Item moved from :" + originalPosition + "To " + newPosition, Toast.LENGTH_LONG).show();
             }
 
         });
-
-//       ivBack.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//               Intent mIntent = new Intent(getApplication(),MainActivity.class);
-//                startActivity(mIntent);
-//            }
-//        });
-
 
         prefs = ActivityManageSections.this.getSharedPreferences(MANAGESECTION, Context.MODE_PRIVATE);
         String restoredText = prefs.getString(manage_section_dialog, null);
@@ -161,39 +106,15 @@ public class ActivityManageSections extends AppCompatActivity {
         }
         showData();
 
-
         Intent intent = getIntent();
-        String itemName  = intent.getStringExtra("item_name");
+        String itemName = intent.getStringExtra("item_name");
         itemNameUseInAdapter = itemName;
-        //sectionId = sectionData.get();
-        Toast.makeText(getApplication(), "item name " + itemName, Toast.LENGTH_LONG).show();
-        for(int i=0; i<sectionData.size();i++){
-            db = new DatabaseHandler(ActivityManageSections.this);
-            boolean exist = db.isExist(sectionData.get(i).getManageSectionId(),itemName);
-            if(exist){
+        for (int i = 0; i < sectionData.size(); i++) {
+            boolean exist = DatabaseHandler.getInstance(ActivityManageSections.this).isExist(sectionData.get(i).getManageSectionId(), itemName);
+            if (exist) {
                 sectionName = sectionData.get(i).getSectionName();
-                //Toast.makeText(getApplication(), "sectionName " + sectionName, Toast.LENGTH_LONG).show();
-                //row = mListView.getChildAt(i - mListView .getFirstVisiblePosition());
-                //row.setBackgroundColor(Color.BLACK);
-                //mListView.getChildAt(i).setBackgroundColor(Color.BLACK);
-                //mListView.getCount();
-
-                //Toast.makeText(getApplication(), itemName+" already assigned", Toast.LENGTH_LONG).show();
-//                final int firstListItemPosition = mListView.getFirstVisiblePosition();
-//                final int lastListItemPosition = firstListItemPosition + mListView.getChildCount() - 1;
-//
-//                if (i < firstListItemPosition || i > lastListItemPosition ) {
-//                    mListView.getAdapter().getView(i, null, mListView).setBackgroundColor(Color.BLACK);
-//                    Toast.makeText(getApplication(), "if child "+mListView.getAdapter().getView(i, null, mListView), Toast.LENGTH_LONG).show();
-//                } else {
-//                    final int childIndex = i - firstListItemPosition;
-//                    mListView.getChildAt(childIndex);
-//                    Toast.makeText(getApplication(), "else child "+mListView.getChildAt(childIndex), Toast.LENGTH_LONG).show();
-//                }
             }
         }
-
-        //db = new DatabaseHandler(getActivity());
         etAddSection.setOnEditorActionListener(new EditText.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
@@ -201,36 +122,29 @@ public class ActivityManageSections extends AppCompatActivity {
                         actionId == EditorInfo.IME_ACTION_DONE ||
                         event.getAction() == KeyEvent.ACTION_DOWN &&
                                 event.getKeyCode() == KeyEvent.KEYCODE_ENTER) {
-//                    ((InputMethodManager) getApplication().getSystemService(Context.INPUT_METHOD_SERVICE))
-//                            .showSoftInput(etAddSection, InputMethodManager.SHOW_FORCED);
-                    ((InputMethodManager) getApplication().getSystemService(Context.INPUT_METHOD_SERVICE)).
-                            hideSoftInputFromWindow(etAddSection.getWindowToken(), 0);
-                   // if (!event.isShiftPressed()) {
+                    if (etAddSection.getText().toString().replaceAll(" ", "").length() > 0 && !etAddSection.getText().toString().isEmpty()) {
+                        ((InputMethodManager) getApplication().getSystemService(Context.INPUT_METHOD_SERVICE)).
+                                hideSoftInputFromWindow(etAddSection.getWindowToken(), 0);
                         if (etAddSection.getText().toString().replaceAll(" ", "").length() > 0) {
                             if (isSection(etAddSection.getText().toString().trim())) {
                                 warningDialog();
                             } else {
-                                db = new DatabaseHandler(ActivityManageSections.this);
                                 SectionModel addSection = new SectionModel();
                                 addSection.setSectionOrderNo(99);
                                 String str = etAddSection.getText().toString();
                                 str = str.trim();
                                 String cap = str.substring(0, 1).toUpperCase() + str.substring(1);
                                 addSection.setSectionName(cap);
-                                addSection.setSectionImage(str.substring(0, 1).toLowerCase()+".png");
+                                addSection.setSectionImage(str.substring(0, 1).toLowerCase() + ".png");
                                 addSection.setDefaultSection(1);
-                                db.addNewSection(addSection);
+                                DatabaseHandler.getInstance(ActivityManageSections.this).addNewSection(addSection);
                                 etAddSection.setText("");
-                                db = new DatabaseHandler(ActivityManageSections.this);
-                                sectionData = db.getSectionData();
+                                sectionData = DatabaseHandler.getInstance(ActivityManageSections.this).getSectionData();
                                 showData();
                             }
                         }
-                        // the user is done typing.
-                        //db = new DatabaseHandler(getApplication());
-                        // db.addCurrentList(new CurrentListModel(1, etSerch.getText().toString(), 0, null, "My Firts Shopnote", 1));
-                        return true;
-                    //}
+                    }
+                    return true;
                 }
                 return false;
             }
@@ -238,26 +152,25 @@ public class ActivityManageSections extends AppCompatActivity {
         btnAddSection.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ((InputMethodManager) getApplication().getSystemService(Context.INPUT_METHOD_SERVICE)).
-                        hideSoftInputFromWindow(etAddSection.getWindowToken(), 0);
-                Toast.makeText(ActivityManageSections.this, "" + etAddSection.getText().toString(), Toast.LENGTH_SHORT).show();
-                if (isSection(etAddSection.getText().toString().trim())) {
-                    warningDialog();
-                } else {
-                    db = new DatabaseHandler(ActivityManageSections.this);
-                    SectionModel addSection = new SectionModel();
-                    addSection.setSectionOrderNo(99);
-                    String str = etAddSection.getText().toString();
-                    str = str.trim();
-                    String cap = str.substring(0, 1).toUpperCase() + str.substring(1);
-                    addSection.setSectionName(cap);
-                    addSection.setSectionImage(str.substring(0, 1).toLowerCase()+".png");
-                    addSection.setDefaultSection(1);
-                    db.addNewSection(addSection);
-                    etAddSection.setText("");
-                    db = new DatabaseHandler(ActivityManageSections.this);
-                    sectionData = db.getSectionData();
-                    showData();
+                if (etAddSection.getText().toString().replaceAll(" ", "").length() > 0 && !etAddSection.getText().toString().isEmpty()) {
+                    ((InputMethodManager) getApplication().getSystemService(Context.INPUT_METHOD_SERVICE)).
+                            hideSoftInputFromWindow(etAddSection.getWindowToken(), 0);
+                    if (isSection(etAddSection.getText().toString().trim())) {
+                        warningDialog();
+                    } else {
+                        SectionModel addSection = new SectionModel();
+                        addSection.setSectionOrderNo(99);
+                        String str = etAddSection.getText().toString();
+                        str = str.trim();
+                        String cap = str.substring(0, 1).toUpperCase() + str.substring(1);
+                        addSection.setSectionName(cap);
+                        addSection.setSectionImage(str.substring(0, 1).toLowerCase() + ".png");
+                        addSection.setDefaultSection(1);
+                        DatabaseHandler.getInstance(ActivityManageSections.this).addNewSection(addSection);
+                        etAddSection.setText("");
+                        sectionData = DatabaseHandler.getInstance(ActivityManageSections.this).getSectionData();
+                        showData();
+                    }
                 }
             }
         });
@@ -273,16 +186,13 @@ public class ActivityManageSections extends AppCompatActivity {
     }
 
     public void showData() {
-        db = new DatabaseHandler(ActivityManageSections.this);
-        sectionData = db.getSectionData();
+        sectionData = DatabaseHandler.getInstance(ActivityManageSections.this).getSectionData();
         mAdapter = new ManageSectionAdapter(ActivityManageSections.this, sectionData, R.layout.custom_row_manage_section);
         swipeUndoAdapter = new SimpleSwipeUndoAdapter(mAdapter, ActivityManageSections.this,
                 new OnDismissCallback() {
                     @Override
                     public void onDismiss(@NonNull final ViewGroup listView, @NonNull final int[] reverseSortedPositions) {
                         for (int position : reverseSortedPositions) {
-                            Toast.makeText(ActivityManageSections.this, "activity", Toast.LENGTH_LONG).show();
-                            //section.remove(position);
 
                         }
                     }
@@ -291,8 +201,8 @@ public class ActivityManageSections extends AppCompatActivity {
         swipeUndoAdapter.setAbsListView(mListView);
         mListView.setAdapter(swipeUndoAdapter);
         mListView.enableSimpleSwipeUndo();
-        //mListView.setAdapter(mAdapter);
     }
+
     public void showDialog() {
         //AlertDialog.Builder
         alertDialogBuilder = new AlertDialog.Builder(ActivityManageSections.this)
@@ -301,12 +211,13 @@ public class ActivityManageSections extends AppCompatActivity {
                 .setPositiveButton("Got it", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface arg0, int arg1) {
-                        // Toast.makeText(MainActivity.this, "You clicked yes button", Toast.LENGTH_LONG).show();
+
                     }
                 });
         AlertDialog alertDialog = alertDialogBuilder.create();
         alertDialog.show();
     }
+
     public void warningDialog() {
         //AlertDialog.Builder
         alertDialogBuilder = new AlertDialog.Builder(ActivityManageSections.this)
@@ -316,7 +227,6 @@ public class ActivityManageSections extends AppCompatActivity {
                 .setPositiveButton("Got it", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface arg0, int arg1) {
-                        // Toast.makeText(MainActivity.this, "You clicked yes button", Toast.LENGTH_LONG).show();
                     }
                 });
         AlertDialog alertDialog = alertDialogBuilder.create();

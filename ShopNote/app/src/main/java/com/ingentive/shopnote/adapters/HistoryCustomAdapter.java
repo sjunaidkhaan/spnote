@@ -26,9 +26,8 @@ public class HistoryCustomAdapter extends BaseExpandableListAdapter {
 
 
     private List<HistoryParentModel> histParent;
-    public Context mContext;
+    private Context mContext;
     private static LayoutInflater inflater = null;
-    public DatabaseHandler db;
 
     public HistoryCustomAdapter(Context context, List<HistoryParentModel> parent) {
         this.histParent = parent;
@@ -76,7 +75,6 @@ public class HistoryCustomAdapter extends BaseExpandableListAdapter {
     }
 
     @Override
-    //in this method you must set the text to see the parent/group on the list
     public View getGroupView(final int groupPosition, boolean b, View rowView, final ViewGroup viewGroup) {
 
         View vi = rowView;
@@ -102,10 +100,8 @@ public class HistoryCustomAdapter extends BaseExpandableListAdapter {
             @Override
             public void onClick(View v) {
                 ivHistParAdd.setBackgroundResource(R.drawable.add_large_selected);
-                db = new DatabaseHandler(mContext);
                 boolean itemExist = false;
-                db = new DatabaseHandler(mContext);
-                List<CurrentListModel> currList = db.getCurrList();
+                List<CurrentListModel> currList = DatabaseHandler.getInstance(mContext).getCurrList();
                 for (int i = 0; i < histParent.get(groupPosition).getArrayChildren().size(); i++) {
                     String itemname = histParent.get(groupPosition).getArrayChildren().get(i).getHisChItemName().toString();
                     for (int j = 0; j < currList.size(); j++) {
@@ -114,15 +110,11 @@ public class HistoryCustomAdapter extends BaseExpandableListAdapter {
                         }
                     }
                     if (!itemExist) {
-                        db = new DatabaseHandler(mContext);
-                        String title = db.getListName();
-                        db = new DatabaseHandler(mContext);
-                        int order = db.getMaxOrderNo();
+                        String title = DatabaseHandler.getInstance(mContext).getListName();
+                        int order = DatabaseHandler.getInstance(mContext).getMaxOrderNo();
                         order++;
-                        db = new DatabaseHandler(mContext);
-                        db.addCurrentList(new CurrentListModel(order, itemname, 0, null, title, 1));
+                        DatabaseHandler.getInstance(mContext).addCurrentList(new CurrentListModel(order, itemname, 0, null, title, 1));
                     }
-                    //db.addCurrentList(new CurrentListModel(1, histParent.get(groupPosition).getArrayChildren().get(i).getHisChItemName(), 0, null, "My Firts Shopnote", 1));
                 }
             }
         });
@@ -147,19 +139,14 @@ public class HistoryCustomAdapter extends BaseExpandableListAdapter {
 
         final String childName = histParent.get(groupPosition).getArrayChildren().get(childPosition).getHisChItemName().toString();
         textView.setText(childName);
-        //ivFavChil.setImageResource(R.drawable.favorite_selected);
-        db = new DatabaseHandler(mContext);
-        final boolean itemIsInList = db.isInList(childName);
-        //Toast.makeText(mContext,"itemIsFav "+itemIsFav,Toast.LENGTH_LONG).show();
+        final boolean itemIsInList = DatabaseHandler.getInstance(mContext).isInList(childName);
         if (itemIsInList) {
             ivAddChil.setBackgroundResource(R.drawable.add_selected);
             ivAddChil.setOnClickListener(null);
         } else {
             ivAddChil.setBackgroundResource(R.drawable.add_unselected);
         }
-        db = new DatabaseHandler(mContext);
-        final boolean itemIsFav = db.isFavorit(childName);
-        //Toast.makeText(mContext,"itemIsFav "+itemIsFav,Toast.LENGTH_LONG).show();
+        final boolean itemIsFav = DatabaseHandler.getInstance(mContext).isFavorit(childName);
         if (itemIsFav) {
             ivFavChil.setBackgroundResource(R.drawable.favorite_unselected);
         } else {
@@ -171,32 +158,28 @@ public class HistoryCustomAdapter extends BaseExpandableListAdapter {
         ivFavChil.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //Toast.makeText(mContext, "Favorite Clicked: " + itemName.getText().toString() + ":" + postion, Toast.LENGTH_SHORT).show();
-                db = new DatabaseHandler(mContext);
                 final String childName = histParent.get(groupPosition).getArrayChildren().get(childPosition).getHisChItemName().toString();
-                final boolean itemIsFav = db.isFavorit(childName);
+                final boolean itemIsFav = DatabaseHandler.getInstance(mContext).isFavorit(childName);
                 if (itemIsFav) {
                     FavoritListModel remFavItem = new FavoritListModel();
                     remFavItem.setItemName(childName);
                     ivFavChil.setBackgroundResource(R.drawable.favorite_selected);
-                    db.removeFavorit(remFavItem);
+                    DatabaseHandler.getInstance(mContext).removeFavorit(remFavItem);
                 } else {
                     FavoritListModel addFavItem = new FavoritListModel();
                     addFavItem.setItemName(childName);
                     ivFavChil.setBackgroundResource(R.drawable.favorite_unselected);
-                    db.addFavorit(addFavItem);
+                    DatabaseHandler.getInstance(mContext).addFavorit(addFavItem);
                 }
             }
         });
         ivAddChil.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                db = new DatabaseHandler(mContext);
-                final boolean itemIsInList = db.isInList(childName);
+                final boolean itemIsInList = DatabaseHandler.getInstance(mContext).isInList(childName);
                 if (!itemIsInList) {
                     ivAddChil.setBackgroundResource(R.drawable.add_selected);
-                    db = new DatabaseHandler(mContext);
-                    List<CurrentListModel> currList = db.getCurrList();
+                    List<CurrentListModel> currList = DatabaseHandler.getInstance(mContext).getCurrList();
                     boolean itemExist = false;
                     for (int i = 0; i < currList.size(); i++) {
                         final String itemname = histParent.get(groupPosition).getArrayChildren().get(childPosition).getHisChItemName().toString();
@@ -205,13 +188,10 @@ public class HistoryCustomAdapter extends BaseExpandableListAdapter {
                         }
                     }
                     if (!itemExist) {
-                        db = new DatabaseHandler(mContext);
-                        String title = db.getListName();
-                        db = new DatabaseHandler(mContext);
-                        db = new DatabaseHandler(mContext);
-                        int order = db.getMaxOrderNo();
+                        String title = DatabaseHandler.getInstance(mContext).getListName();
+                        int order = DatabaseHandler.getInstance(mContext).getMaxOrderNo();
                         order++;
-                        db.addCurrentList(new CurrentListModel(order, childName, 0, null, title, 1));
+                        DatabaseHandler.getInstance(mContext).addCurrentList(new CurrentListModel(order, childName, 0, null, title, 1));
                     }
                 }
             }
@@ -231,17 +211,6 @@ public class HistoryCustomAdapter extends BaseExpandableListAdapter {
         /* used to make the notifyDataSetChanged() method work */
         super.registerDataSetObserver(observer);
     }
-
-// Intentionally put on comment, if you need on click deactivate it
-/*  @Override
-    public void onClick(View view) {
-        ViewHolder holder = (ViewHolder)view.getTag();
-        if (view.getId() == holder.button.getId()){
-
-           // DO YOUR ACTION
-        }
-    }*/
-
 
     protected class ViewHolder {
         protected int childPosition;
