@@ -39,7 +39,7 @@ public class ActivityAddList extends AppCompatActivity {
     private AlertDialog.Builder alertDialogBuilder;
     private SharedPreferences.Editor editor;
     private SharedPreferences mPrefs;
-    public static String ADD_LIST_PREF = "AddListPref";
+    private String ADD_LIST_PREF = "AddListPref";
     private String list_add_intro_dialog = "list_add_intro";
     private List<DictionaryModel> dicSearchList;
     private List<DictionaryModel> dicCurrentList;
@@ -66,17 +66,18 @@ public class ActivityAddList extends AppCompatActivity {
                 finish();
             }
         });
-        etSearch = (EditText) findViewById(R.id.etSearch);
-        mListView = (ListView) findViewById(R.id.lv_add_list);
-        mPrefs = getSharedPreferences(ActivityAddList.ADD_LIST_PREF, MODE_PRIVATE);
+
+        mPrefs = ActivityAddList.this.getSharedPreferences(ADD_LIST_PREF, Context.MODE_PRIVATE);
         String restoredText = mPrefs.getString(list_add_intro_dialog, null);
         if (restoredText == null) {
-            thirdDialog();
+            AddItemDialog();
             editor = mPrefs.edit();
             editor.putString(list_add_intro_dialog, "success");
             editor.commit();
         }
 
+        etSearch = (EditText) findViewById(R.id.etSearch);
+        mListView = (ListView) findViewById(R.id.lv_add_list);
         favoritList = DatabaseHandler.getInstance(ActivityAddList.this).getFavItem();
         historyList = DatabaseHandler.getInstance(ActivityAddList.this).getHistoryItems();
         dicSearchList = DatabaseHandler.getInstance(ActivityAddList.this).getDicItems();
@@ -273,11 +274,11 @@ public class ActivityAddList extends AppCompatActivity {
         }
     }
 
-    public void thirdDialog() {
+    public void AddItemDialog() {
         alertDialogBuilder = new AlertDialog.Builder(this);
-        alertDialogBuilder.setMessage("Supermarket items that match your text " +
-                "will appear as you type. You can also new items which will be " +
-                "saved and matched in the future.");
+        alertDialogBuilder.setMessage("Supermarket items that match\n\t\tyour text " +
+                "will appear as\n\t\t\t\t\t\tyou type.\n\nYou can also new items which\n\twill be " +
+                "saved and matched\n\t\t\t\t\t\tin the future.");
 
         alertDialogBuilder.setPositiveButton("Got it", new DialogInterface.OnClickListener() {
             @Override

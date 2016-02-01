@@ -11,6 +11,18 @@ public class ShopParentModelMerger {
     boolean isClick;
     int shop_chil_id;
 
+    public int getChildArraySize() {
+        return childArraySize;
+    }
+
+    public void setChildArraySize(int childArraySize) {
+        this.childArraySize = childArraySize;
+    }
+
+    int childArraySize;
+
+
+
     public int getCheckBox() {
         return checkBox;
     }
@@ -68,11 +80,13 @@ public class ShopParentModelMerger {
     String shop_chil_quantity;
 
 
-    public ShopParentModelMerger() {
 
-    }
     public boolean isClick() {
         return isClick;
+    }
+
+    public ShopParentModelMerger(){
+
     }
 
     public void setIsClick(boolean isClick) {

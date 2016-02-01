@@ -104,9 +104,9 @@ public class ShopFragmentSimpleListview extends Fragment {
 
     public void showDialog() {
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(getActivity())
-                .setMessage("The Shop screen organizes items into sections and aisles " +
-                        "and allows you check them off. Use this view in store to help " +
-                        "you with your shopping.")
+                .setMessage("The Shop screen organizes\nitems into sections and aisles\n" +
+                        "\t\tand allows you check\n\t\t\t\t\tthem off.\n\nUse this view in store to help\n" +
+                        "\t\tyou with your shopping.")
                 .setPositiveButton("Got it", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface arg0, int arg1) {
@@ -118,9 +118,9 @@ public class ShopFragmentSimpleListview extends Fragment {
 
     public void finishDialog() {
         AlertDialog.Builder myAlertDialog = new AlertDialog.Builder(getActivity());
-        myAlertDialog.setTitle("Finish Shopping?");
-        myAlertDialog.setMessage("Your checked items will be cleared and stored" +
-                " in your history for you to reference in the future.");
+        myAlertDialog.setTitle("\t\t\tFinish Shopping?");
+        myAlertDialog.setMessage("\tYour checked items will be\n\tcleared and stored" +
+                " in your\n\thistory for you to reference\n\t\t\t\t\t\tin the future.");
 
         myAlertDialog.setNegativeButton("No", new DialogInterface.OnClickListener() {
 
@@ -173,7 +173,9 @@ public class ShopFragmentSimpleListview extends Fragment {
                 parentModel.setShopPaSectionIcon(shopParList.get(i).getShopPaSectionIcon().toString());
                 parentModel.setArrayChildren(shopChiList);
                 parentModel.setIsClick(false);
+                parentModel.setCounter(0);
                 shopList.add(parentModel);
+
             }
         }
         if (shopList.size() == 0) {
@@ -193,7 +195,7 @@ public class ShopFragmentSimpleListview extends Fragment {
             tParent.setShopPaSectionIcon(shopList.get(i).getShopPaSectionIcon().toString());
 
             finalList.add(tParent);
-
+            int counter=0;
             for (int j = 0; j < shopList.get(i).getArrayChildren().size(); ++j) {
                 ShopParentModelMerger tChild = new ShopParentModelMerger();
                 tChild.setIsParent(false);
@@ -206,9 +208,12 @@ public class ShopFragmentSimpleListview extends Fragment {
                 tChild.setCheckBox(shopList.get(i).getArrayChildren().get(j).getCheckBox());
                 tChild.setShop_chil_quantity(shopList.get(i).getArrayChildren().get(j).getShopChQuantity());
                 tChild.setShop_selec_icon(shopList.get(i).getArrayChildren().get(j).getShopChSectionId());
-
+                if(shopList.get(i).getArrayChildren().get(j).getCheckBox()==1){
+                    counter++;
+                }
                 finalList.add(tChild);
             }
+
         }
     }
 

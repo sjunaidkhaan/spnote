@@ -44,11 +44,13 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
     private EditText edToolbarTitle;
     public static String title = "My First Shopnote";
     public boolean dbCreate = false;
+    public static Context mContaxt;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        mContaxt = MainActivity.this;
         try {
             prefs = getSharedPreferences(MyPREFERENCES, MODE_PRIVATE);
             String restoredText = prefs.getString(dbCreated, null);
@@ -155,16 +157,16 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
             title = "My First Shopnote";
         switch (position) {
             case 0:
-                intent = new Intent(getApplication(), ActivityShareList.class);
-                startActivity(intent);
+//                intent = new Intent(getApplication(), ActivityShareList.class);
+//                startActivity(intent);
                 break;
             case 1:
                 intent = new Intent(getApplication(), ActivityManageSections.class);
                 startActivity(intent);
                 break;
             case 2:
-                intent = new Intent(getApplication(), ActivityFeedBack.class);
-                startActivity(intent);
+//                intent = new Intent(getApplication(), ActivityFeedBack.class);
+//                startActivity(intent);
                 break;
             case 3:
                 fragment = new MyFirstNoteFragment();
@@ -223,7 +225,7 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
 
         @Override
         protected void onPreExecute() {
-            progressDialog.setMessage("Logging data. Please wait.");
+            progressDialog.setMessage("Loading data. Please wait.");
             progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
             progressDialog.setCancelable(false);
             progressDialog.setIndeterminate(true);

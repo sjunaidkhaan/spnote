@@ -223,9 +223,9 @@ public class ListFragment extends Fragment {
     public void firstDialog() {
         //AlertDialog.Builder
         alertDialogBuilder = new AlertDialog.Builder(getActivity());
-        alertDialogBuilder.setMessage("Welcome to Shopnote We've started you on your " +
-                "first shopping list. Click on the + icon to add to more items or swipe " +
-                "left to delete items.");
+        alertDialogBuilder.setMessage("\t\tWelcome to Shopnote!\n\nWe've started you on your\n" +
+                "\t\t\tfirst shopping list.\n\nClick on the + icon to add to\nmore items or swipe " +
+                "left to\n\t\t\t\tdelete items.");
 
         alertDialogBuilder.setPositiveButton("Got it", new DialogInterface.OnClickListener() {
             @Override
@@ -240,8 +240,8 @@ public class ListFragment extends Fragment {
     public void secondDialog() {
         //AlertDialog.Builder
         alertDialogBuilder = new AlertDialog.Builder(getActivity());
-        alertDialogBuilder.setMessage("Once you're done creating yor list, click" +
-                "the 'Shop' button below. This will organize your list by the sections" +
+        alertDialogBuilder.setMessage("Once you're done creating your\n\tlist, click" +
+                "the 'Shop button\n\t\t\t\t\t\tbelow.\n\nThis will organize your list by the sections" +
                 "of the supermarket.");
 
         alertDialogBuilder.setPositiveButton("Got it", new DialogInterface.OnClickListener() {

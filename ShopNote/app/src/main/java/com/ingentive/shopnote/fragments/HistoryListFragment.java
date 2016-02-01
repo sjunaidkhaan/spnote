@@ -23,6 +23,7 @@ import com.baoyz.swipemenulistview.SwipeMenuCreator;
 import com.baoyz.swipemenulistview.SwipeMenuItem;
 import com.baoyz.swipemenulistview.SwipeMenuListView;
 import com.ingentive.shopnote.DatabaseHandler;
+import com.ingentive.shopnote.MainActivity;
 import com.ingentive.shopnote.R;
 import com.ingentive.shopnote.adapters.HistoryListAdapter;
 import com.ingentive.shopnote.model.HistoryModel;
@@ -34,7 +35,7 @@ import java.util.List;
 public class HistoryListFragment extends Fragment {
 
     private SharedPreferences.Editor editor;
-    private final String HISTORYPREFERENCES = "MyPrefs";
+    private final String HISTORYPREFERENCES = "MyHistoryPrefs";
     private final String history_dialog = "history_dialog";
     private SharedPreferences prefs;
     private ExpandableListView mExpHistoryList;
@@ -43,6 +44,7 @@ public class HistoryListFragment extends Fragment {
     private List<HistoryModel> searchItem;
     private SwipeMenuListView mListView;
 
+    private Context context = MainActivity.mContaxt;
     public HistoryListFragment() {
     }
 
@@ -97,7 +99,7 @@ public class HistoryListFragment extends Fragment {
                             int itemId = searchItem.get(position).getHistoryId();
                             DatabaseHandler.getInstance(getActivity()).deleteItemBaseFromHistory(itemId);
                             searchItem.remove(position);
-                            if(searchItem.size()==1){
+                            if (searchItem.size() == 1) {
                                 searchItem.clear();
                             }
                             mAdapter.notifyDataSetChanged();
@@ -162,11 +164,12 @@ public class HistoryListFragment extends Fragment {
         }
         return super.onOptionsItemSelected(item);
     }
+
     public void showDialog() {
-        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(getActivity())
-                .setMessage("Your history stores your completed purchased for your records." +
-                        " Any items that you mark off your list while shopping will be " +
-                        "stored in history.")
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context)
+                .setMessage("Your history stores your\ncompleted purchased for\n\t\t\tyour records." +
+                        "\n\nAny items that you mark off\nyour list while shopping will\n\t\t" +
+                        "be stored in history.")
                 .setPositiveButton("Got it", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface arg0, int arg1) {
@@ -230,21 +233,30 @@ public class HistoryListFragment extends Fragment {
                 mAdapter = new HistoryListAdapter(getActivity(), searchItem, R.layout.custom_row_history);
                 mListView.setAdapter(mAdapter);
             }
+            prefs =context.getSharedPreferences(HISTORYPREFERENCES, context.MODE_PRIVATE);
+            String restoredText = prefs.getString(history_dialog, null);
+            if (restoredText == null) {
+                showDialog();
+                editor = prefs.edit();
+                editor.putString(history_dialog, "success");
+                editor.commit();
+            }
         }
     }
+
     @Override
     public void onResume() {
         super.onResume();
+//        prefs = this.getActivity().getSharedPreferences(HISTORYPREFERENCES, Context.MODE_PRIVATE);
+//        String restoredText = prefs.getString(history_dialog, null);
+//        if (restoredText == null) {
+//            showDialog();
+//            editor = prefs.edit();
+//            editor.putString(history_dialog, "success");
+//            editor.commit();
+//        }
         getData();
         mAdapter = new HistoryListAdapter(getActivity(), searchItem, R.layout.custom_row_history);
         mListView.setAdapter(mAdapter);
-        prefs = this.getActivity().getSharedPreferences(HISTORYPREFERENCES, Context.MODE_PRIVATE);
-        String restoredText = prefs.getString(history_dialog, null);
-        if (restoredText == null) {
-            showDialog();
-            editor = prefs.edit();
-            editor.putString(history_dialog, "success");
-            editor.commit();
-        }
     }
 }

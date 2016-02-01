@@ -206,8 +206,9 @@ public class ActivityManageSections extends AppCompatActivity {
     public void showDialog() {
         //AlertDialog.Builder
         alertDialogBuilder = new AlertDialog.Builder(ActivityManageSections.this)
-                .setMessage("Reassign item on your list to new sections or" +
-                        " add and delete sections. Rearrange these sections in the order that you shop.")
+                .setMessage("Reassign item on your list to\n\tnew sections or" +
+                        " add and\n\t\t\t\tdelete sections.\n\nRearrange these " +
+                        "sections in\n\t\tthe order that you shop.")
                 .setPositiveButton("Got it", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface arg0, int arg1) {

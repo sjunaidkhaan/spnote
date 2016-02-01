@@ -41,9 +41,9 @@ public class CurrentListAdapter extends ArrayAdapter<CurrentListModel> {
     private Context mContext;
     private LayoutInflater inflater = null;
     private SharedPreferences.Editor editor;
-    private final String MYPREFERENCES = "MyPrefs";
+    private final String MYQUANTITYPREFERENCES = "MyQuanPrefs";
     private SharedPreferences prefs;
-    private final String first_time_dialog = "first_time_unit";
+    private final String quantity_dialog = "quantity_dialog";
 
     public CurrentListAdapter(Context context, List<CurrentListModel> dataC, int rowId) {
         super(context, rowId, dataC);
@@ -233,12 +233,12 @@ public class CurrentListAdapter extends ArrayAdapter<CurrentListModel> {
                 ((InputMethodManager) mContext.getSystemService(Context.INPUT_METHOD_SERVICE))
                         .showSoftInput(etQuantity, InputMethodManager.SHOW_FORCED);
                 ivOption.setVisibility(View.GONE);
-                prefs = mContext.getSharedPreferences(MYPREFERENCES, Context.MODE_PRIVATE);
-                String restoredText = prefs.getString(first_time_dialog, null);
+                prefs = mContext.getSharedPreferences(MYQUANTITYPREFERENCES, Context.MODE_PRIVATE);
+                String restoredText = prefs.getString(quantity_dialog, null);
                 if (restoredText == null) {
                     showDialog();
                     editor = prefs.edit();
-                    editor.putString(first_time_dialog, "success");
+                    editor.putString(quantity_dialog, "success");
                     editor.commit();
                 }
 
@@ -359,8 +359,8 @@ public class CurrentListAdapter extends ArrayAdapter<CurrentListModel> {
     public void showDialog() {
         AlertDialog.Builder
                 alertDialogBuilder = new AlertDialog.Builder(mContext)
-                .setMessage("You can enter a quantity here include any units " +
-                        "of measurement such as oz,L,lb or kg.")
+                .setMessage("You can enter a quantity here\n\t\t\tinclude any units " +
+                        "of measurement such as oz, L,\n\t\t\t\t\t\tlb or kg.")
                 .setPositiveButton("Got it", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface arg0, int arg1) {

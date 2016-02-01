@@ -4,6 +4,7 @@ import android.annotation.TargetApi;
 import android.content.Context;
 import android.graphics.Color;
 import android.os.Build;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,13 +33,13 @@ public class ShopCustomAdapterSimpleListview extends BaseAdapter implements Swap
     private static LayoutInflater inflater = null;
     public ArrayList<Integer> ignoreList = new ArrayList<>();
 
+
     public ShopCustomAdapterSimpleListview(Context context, List<ShopParentModelMerger> data, List<ShopParentModel> oData) {
         this.data = data;
         this.oData = oData;
         this.mContext = context;
         inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
-
 
     @Override
     public int getCount() {
@@ -58,7 +59,7 @@ public class ShopCustomAdapterSimpleListview extends BaseAdapter implements Swap
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
     @Override
     public View getView(final int position, View convertView, final ViewGroup parent) {
-         ViewHolderParent vhp = new ViewHolderParent();
+        ViewHolderParent vhp = new ViewHolderParent();
 
         final ImageView ivArrow;
 
@@ -94,8 +95,9 @@ public class ShopCustomAdapterSimpleListview extends BaseAdapter implements Swap
                 vhp.ivArrow.setBackgroundResource(R.drawable.maximize);
             }
 
-
             vhp.tvShopSecNamePar.setText(data.get(position).getShopPaSectionName().toString());
+            Log.d("ERROR:", position + "");
+            //counter=0;;
             if (data.get(position).getShopPaId() <= 10) {
                 switch (data.get(position).getShopPaSectionName()) {
                     case "Clothing":
@@ -239,6 +241,25 @@ public class ShopCustomAdapterSimpleListview extends BaseAdapter implements Swap
                     }
                 }
             });
+            int childCounter = 0;
+            int childArraySize = 0;
+            int parentId = data.get(position).getShopPaId();
+            for (int i = 0; i < oData.size(); i++) {
+                if (oData.get(i).getShopPaId() == parentId) {
+                    childArraySize = oData.get(i).getArrayChildren().size();
+                    for (int j = 0; j < childArraySize; j++) {
+                        if (oData.get(i).getArrayChildren().get(j).getCheckBox() == 1) {
+                            childCounter++;
+                        }
+                    }
+                }
+            }
+            if (childArraySize == childCounter) {
+                vhp.tvShopSecNamePar.setTextColor(Color.GRAY);
+            } else {
+                vhp.tvShopSecNamePar.setTextColor(Color.BLACK);
+            }
+
         } else {
             vhp.ivArrow.setVisibility(View.GONE);
             vhp.ivShopSecIcon.setVisibility(View.GONE);
@@ -263,6 +284,7 @@ public class ShopCustomAdapterSimpleListview extends BaseAdapter implements Swap
             if (isChecked == 1) {
                 vhp.ivShopChilCheckBox.setBackgroundResource(R.drawable.checkbox_checked);
                 vhp.tvShopChilItemName.setTextColor(Color.GRAY);
+
             } else {
                 vhp.ivShopChilCheckBox.setBackgroundResource(R.drawable.checkbox_unchecked);
                 vhp.tvShopChilItemName.setTextColor(Color.BLACK);
@@ -270,8 +292,8 @@ public class ShopCustomAdapterSimpleListview extends BaseAdapter implements Swap
 
             final ImageView ivShopChilCheckBox = vhp.ivShopChilCheckBox;
             final TextView tvShopChilItemName = vhp.tvShopChilItemName;
-            final TextView tvSectionName =(TextView)vhp.tvShopSecNamePar;
-                vhp.ivShopChilCheckBox.setOnClickListener(new View.OnClickListener() {
+            final TextView tvSectionName = (TextView) vhp.tvShopSecNamePar;
+            vhp.ivShopChilCheckBox.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     int isChecked = DatabaseHandler.getInstance(mContext).isChecked(data.get(position).getShop_chil_item_name());
@@ -284,6 +306,43 @@ public class ShopCustomAdapterSimpleListview extends BaseAdapter implements Swap
                         ivShopChilCheckBox.setBackgroundResource(R.drawable.checkbox_unchecked);
                         tvShopChilItemName.setTextColor(Color.BLACK);
                         data.get(position).setCheckBox(0);
+
+                        for (int i = 0; i < oData.size(); i++) {
+                            if (oData.get(i).getShopPaId() == data.get(position).getShopPaId()) {
+                                for (int j = 0; j < oData.get(i).getArrayChildren().size(); j++) {
+                                    if (oData.get(i).getArrayChildren().get(j).getShopChSectionId() == data.get(i).getShop_chil_id()) {
+                                        oData.get(i).getArrayChildren().get(j).setCheckBox(0);
+                                    }
+                                }
+                            }
+                        }
+
+                        data = getData(ignoreList);
+                        notifyDataSetChanged();
+
+                        int childCounter = 0;
+                        int childArraySize = 0;
+                        int parentId = data.get(position).getShopPaId();
+                        for (int i = 0; i < oData.size(); i++) {
+                            if (oData.get(i).getShopPaId() == parentId) {
+                                childArraySize = oData.get(i).getArrayChildren().size();
+                                for (int j = 0; j < childArraySize; j++) {
+                                    if (oData.get(i).getArrayChildren().get(j).getCheckBox() == 1) {
+                                        childCounter++;
+                                    }
+                                }
+                            }
+                        }
+                        if (childArraySize == childCounter) {
+                            tvSectionName.setTextColor(Color.GRAY);
+                            data = getData(ignoreList);
+                            notifyDataSetChanged();
+                        } else {
+                            tvSectionName.setTextColor(Color.BLACK);
+                            data = getData(ignoreList);
+                            notifyDataSetChanged();
+                        }
+
                     } else {
                         CurrentListModel currCheck = new CurrentListModel();
                         currCheck.setChecked(1);
@@ -294,15 +353,46 @@ public class ShopCustomAdapterSimpleListview extends BaseAdapter implements Swap
                         DatabaseHandler.getInstance(mContext).updateCheckItem(currCheck);
                         data.get(position).setCheckBox(1);
 
-                    }
+                        for (int i = 0; i < oData.size(); i++) {
+                            if (oData.get(i).getShopPaId() == data.get(position).getShopPaId()) {
+                                for (int j = 0; j < oData.get(i).getArrayChildren().size(); j++) {
+                                    if (oData.get(i).getArrayChildren().get(j).getShopChSectionId() == data.get(i).getShop_chil_id()) {
+                                        oData.get(i).getArrayChildren().get(j).setCheckBox(1);
+                                    }
+                                }
+                            }
+                        }
+                        data = getData(ignoreList);
+                        notifyDataSetChanged();
 
+                        int childCounter = 0;
+                        int childArraySize = 0;
+                        int parentId = data.get(position).getShopPaId();
+                        for (int i = 0; i < oData.size(); i++) {
+                            if (oData.get(i).getShopPaId() == parentId) {
+                                childArraySize = oData.get(i).getArrayChildren().size();
+                                for (int j = 0; j < childArraySize; j++) {
+                                    if (oData.get(i).getArrayChildren().get(j).getCheckBox() == 1) {
+                                        childCounter++;
+                                    }
+                                }
+                            }
+                        }
+                        if (childArraySize == childCounter) {
+                            tvSectionName.setTextColor(Color.GRAY);
+                            data = getData(ignoreList);
+                            notifyDataSetChanged();
+                        } else {
+                            tvSectionName.setTextColor(Color.BLACK);
+                            data = getData(ignoreList);
+                            notifyDataSetChanged();
+                        }
+
+                    }
                     DatabaseHandler.getInstance(mContext).close();
                 }
             });
-
         }
-
-
         return convertView;
     }
 
