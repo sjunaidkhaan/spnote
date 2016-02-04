@@ -157,16 +157,16 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
             title = "My First Shopnote";
         switch (position) {
             case 0:
-//                intent = new Intent(getApplication(), ActivityShareList.class);
-//                startActivity(intent);
+                intent = new Intent(getApplication(), ActivityShareList.class);
+                startActivity(intent);
                 break;
             case 1:
                 intent = new Intent(getApplication(), ActivityManageSections.class);
                 startActivity(intent);
                 break;
             case 2:
-//                intent = new Intent(getApplication(), ActivityFeedBack.class);
-//                startActivity(intent);
+                intent = new Intent(getApplication(), ActivityFeedBack.class);
+                startActivity(intent);
                 break;
             case 3:
                 fragment = new MyFirstNoteFragment();

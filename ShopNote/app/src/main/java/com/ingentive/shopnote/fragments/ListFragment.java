@@ -219,7 +219,6 @@ public class ListFragment extends Fragment {
         }
     }
 
-
     public void firstDialog() {
         //AlertDialog.Builder
         alertDialogBuilder = new AlertDialog.Builder(getActivity());
